@@ -40,6 +40,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setCreatedAt($now);
         $category->setModifiedAt($now);
         $category->setName($name);
+        $category->setDescription('This is a test category');
         $category->setStatus('A');
 
         if (null !== $parentCategory)

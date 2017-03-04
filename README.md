@@ -34,5 +34,6 @@ Load fixtures:
 <h5>Migrations</h5>
 <p>
 Run Migrations:
-    <pre>php bin/console doctrine:migrations:migrate</pre>
+    <pre>php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate</pre>
 </p>

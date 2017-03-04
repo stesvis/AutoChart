@@ -26,6 +26,11 @@ class Category
     private $name;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id", nullable=true)
      */
@@ -82,6 +87,22 @@ class Category
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**

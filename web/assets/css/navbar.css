@@ -1,0 +1,27 @@
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+    color: #ffffff;
+}
+
+.navbar .container-fluid {
+    background: #181c20;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a {
+    background: #4f5b69;
+}
+
+.navbar .glyphicon.glyphicon-user {
+    font-size: 32px;
+}
+
+.navbar .glyphicon.glyphicon-triangle-bottom {
+    vertical-align: middle;
+}
+
+.navbar-form {
+    margin-top: 6px;
+    margin-bottom: 0px;
+}

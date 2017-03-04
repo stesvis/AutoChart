@@ -6,24 +6,24 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Title</th>
+            <th>Name</th>
             <th>Description</th>
-            <th>Compensation</th>
-            <th>Location</th>
+            <th>Parent</th>
+            <th>Created</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody>
-        {% for job in jobs %}
+        {% for category in categories %}
             <tr>
-                <td>{{ job.title }}</td>
-                <td>{{ job.description|truncate(50) }}</td>
-                <td>{{ job.compensation }}</td>
-                <td>{{ job.location }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+                <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
+                <td>{{ category.createdAt|date }}</td>
                 <td style="width: 1%; white-space: nowrap;">
-                    <a href="{{ path('admin_job_show', {'id':job.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('admin_job_edit', {'id':job.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('category_edit', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
                     <a href="#" class="btn btn-xs btn-danger"
                        ng-click="showConfirm($event)"><span
