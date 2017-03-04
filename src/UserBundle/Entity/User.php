@@ -1,5 +1,5 @@
 <?php
-// src/UserBundle/Entity/User.php
+
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

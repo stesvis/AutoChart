@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cristian
- * Date: 26/01/17
- * Time: 11:51 AM
- */
+
 namespace UserBundle\EventListener;
 
 use FOS\UserBundle\Event\FormEvent;
