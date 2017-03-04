@@ -25,7 +25,14 @@ Create a super admin user:
 Clear the cache:
     <pre>php bin/console cache:clear</pre>
 </p>
+
+<h5>Fixtures</h5>
 <p>
 Load fixtures:
     <pre>php bin/console doctrine:fixtures:load</pre>
+</p>
+<h5>Migrations</h5>
+<p>
+Run Migrations:
+    <pre>php bin/console doctrine:migrations:migrate</pre>
 </p>

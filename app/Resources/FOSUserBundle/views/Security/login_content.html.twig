@@ -1,0 +1,85 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<h2>{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</h2>
+
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <p>    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+        <a href="{{ path('fos_user_security_logout') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+        </a>
+    </p>
+{% else %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {#
+        <form action="{{ path("fos_user_security_check") }}" method="post">
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+            {% endif %}
+            <div class="form-group">
+                <label for="username">{{ 'security.login.username'|trans }}</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Username"
+                       required="required"
+                       class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="password">{{ 'security.login.password'|trans }}</label>
+                <input type="password" id="password" name="_password" placeholder="Password" required="required"
+                       class="form-control"/>
+            </div>
+            <div class="form-check">
+                <label for="remember_me" class="form-check-label">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="form-check-input"/>
+                    {{ 'security.login.remember_me'|trans }}</label>
+            </div>
+            <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"/>
+            <button type="submit" id="_submit" name="_submit" class="btn btn-lg btn-primary btn-block"
+                    formnovalidate>{{ 'security.login.submit'|trans }}</button>
+        </form>
+    #}
+
+    <div class="main-login main-center">
+        <form name="fos_user_login_form" method="post" action="{{ path("fos_user_security_check") }}"
+              class="fos_user_registration_register">
+
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="username" class="cols-sm-2 control-label">Username *</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" name="_username"
+                               id="username"
+                               placeholder="Enter your Username"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password"
+                       class="cols-sm-2 control-label">Password *</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        <input type="password" class="form-control"
+                               name="_password"
+                               id="password"
+                               placeholder="Enter your Password"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <button type="submit" id="_submit" name="_submit" class="btn btn-lg btn-primary"
+                        formnovalidate>{{ 'security.login.submit'|trans }}</button>
+            </div>
+
+        </form>
+    </div>
+
+{% endif %}

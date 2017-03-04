@@ -1,0 +1,9 @@
+# Global strings
+layout:
+    logout: 'Sign out'
+    login: 'Sign in'
+    register: 'Register'
+
+security:
+    login:
+        submit: 'Sign in'

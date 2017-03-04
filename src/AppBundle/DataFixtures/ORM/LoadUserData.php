@@ -21,13 +21,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         // TODO: Implement load() method.
-        $this->addUser($manager, 'admin', 'admin@phpscheduler.com', 'password', 'Cristian', 'Merli',
+        $this->addUser($manager, 'admin', 'admin@masterlube.com', 'password', 'Cristian', 'Merli',
             ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']);
-        $this->addUser($manager, 'user1', 'user1@phpscheduler.com', 'password', 'Jack', 'Bauer', ['ROLE_ADMIN']);
-        $this->addUser($manager, 'user2', 'user2@phpscheduler.com', 'password', 'Walter', 'White');
-        $this->addUser($manager, 'user3', 'user3@phpscheduler.com', 'password', 'Jim', 'Gordon');
-        $this->addUser($manager, 'user4', 'user4@phpscheduler.com', 'password', 'Sydney', 'Bristow');
-        $this->addUser($manager, 'user5', 'user5@phpscheduler.com', 'password', 'Vick', 'Mackey');
+        $this->addUser($manager, 'user1', 'user1@masterlube.com', 'password', 'Jack', 'Bauer', ['ROLE_ADMIN']);
+        $this->addUser($manager, 'user2', 'user2@masterlube.com', 'password', 'Walter', 'White');
+        $this->addUser($manager, 'user3', 'user3@masterlube.com', 'password', 'Jim', 'Gordon');
+        $this->addUser($manager, 'user4', 'user4@masterlube.com', 'password', 'Sydney', 'Bristow');
+        $this->addUser($manager, 'user5', 'user5@masterlube.com', 'password', 'Vick', 'Mackey');
     }
 
     /**

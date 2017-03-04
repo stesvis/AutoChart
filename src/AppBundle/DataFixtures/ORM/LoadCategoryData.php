@@ -22,6 +22,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $this->CreateCategory($manager, 'Oil Change', new \DateTime('now'), 'oil-change', 'user1');
         $this->CreateCategory($manager, 'Brakes', new \DateTime('now'), 'brakes', 'user1');
+        $this->CreateCategory($manager, 'Rotors', new \DateTime('now'), 'rotors', 'user1', 'brakes');
         $this->CreateCategory($manager, 'Tires', new \DateTime('now'), 'tires', 'user1');
     }
 
@@ -30,7 +31,8 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         string $name,
         \DateTime $now,
         string $reference,
-        string $username
+        string $username,
+        string $parentCategory = null
     ) {
         $category = new Category();
 
@@ -39,6 +41,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setModifiedAt($now);
         $category->setName($name);
         $category->setStatus('A');
+
+        if (null !== $parentCategory)
+        {
+            $category->setParentCategory($this->getReference($parentCategory));
+        }
 
         $manager->persist($category);
         $manager->flush();

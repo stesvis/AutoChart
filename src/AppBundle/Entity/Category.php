@@ -26,6 +26,12 @@ class Category
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id", nullable=true)
+     */
+    private $parentCategory;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -76,6 +82,22 @@ class Category
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getParentCategory()
+    {
+        return $this->parentCategory;
+    }
+
+    /**
+     * @param Category $parentCategory
+     */
+    public function setParentCategory($parentCategory)
+    {
+        $this->parentCategory = $parentCategory;
     }
 
     /**
