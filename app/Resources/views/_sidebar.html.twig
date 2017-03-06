@@ -22,7 +22,7 @@
             </ul>
 
 
-            {#---------------------------------- CATEGORIES ----------------------------------#}
+            {#---------------------------appkernel------- CATEGORIES ----------------------------------#}
             <li data-toggle="collapse" data-target="#categories" class="collapsed">
                 <a href="#"><i class="fa fa-globe fa-lg fa-fw"></i> Categories <span
                             class="arrow"></span></a>
@@ -46,7 +46,7 @@
 
             {#---------------------------------- PROFILE ----------------------------------#}
             <li>
-                <a href="/admin/profile">
+                <a href="{{ path('fos_user_profile_show') }}">
                     <i class="fa fa-user fa-lg fa-fw"></i> Profile
                 </a>
             </li>
