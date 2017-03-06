@@ -1,20 +1,14 @@
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
-    margin-bottom: 0;
     border-radius: 0;
-    color: #ffffff;
 }
 
-.navbar .container-fluid {
-    background: #181c20;
-}
-
-.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a {
-    background: #4f5b69;
+.navbar a {
+    color: #ebebeb;
 }
 
 .navbar .glyphicon.glyphicon-user {
-    font-size: 32px;
+    font-size: 28px;
 }
 
 .navbar .glyphicon.glyphicon-triangle-bottom {
@@ -22,6 +16,6 @@
 }
 
 .navbar-form {
-    margin-top: 6px;
-    margin-bottom: 0px;
+    padding-top: 0;
+    padding-bottom: 0;
 }

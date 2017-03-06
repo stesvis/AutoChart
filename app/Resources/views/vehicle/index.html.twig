@@ -1,29 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Categories</h2>
+    <h2>My Vehicles</h2>
 
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Parent</th>
-            <th>Created</th>
+            <th>Year</th>
+            <th>Make</th>
+            <th>Model</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody>
-        {% for category in categories %}
+        {% for vehicle in vehicles %}
             <tr>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
-                <td>{{ category.createdAt|date }}</td>
+                <td>{{ vehicle.year }}</td>
+                <td>{{ vehicle.make }}</td>
+                <td>{{ vehicle.model }}</td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('category_edit', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
                     <a href="#" class="btn btn-xs btn-danger"
                        ng-click="showConfirm($event)"><span
@@ -31,10 +29,8 @@
                 </td>
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
-{% endblock %}
-
-{% block stylesheets %}
 
 {% endblock %}

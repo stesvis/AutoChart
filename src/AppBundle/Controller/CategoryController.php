@@ -11,9 +11,25 @@ use Symfony\Component\HttpFoundation\Request;
 class CategoryController extends Controller
 {
     /**
+     * @Route("/categories", name="categories_list")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('AppBundle:Category')
+            ->findAll();
+
+        return $this->render('category/index.html.twig', [
+            'categories' => $categories
+        ]);
+    }
+
+    /**
      * @Route("/categories/{id}/edit", name="category_edit")
      * @param Request $request
      * @param Category $category
+     * @
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Category $category)
@@ -22,6 +38,7 @@ class CategoryController extends Controller
 
         // only handles data on POST
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
             $category->setModifiedAt(new \DateTime('now'));
@@ -38,18 +55,4 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/categories", name="categories_list")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('AppBundle:Category')
-            ->findAll();
-
-        return $this->render('category/index.html.twig', [
-            'categories' => $categories
-        ]);
-    }
 }

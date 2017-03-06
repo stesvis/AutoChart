@@ -2,16 +2,14 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use UserBundle\Entity\User;
 
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="categories")
+ * @ORM\Table(name="tasks")
  */
-class Category
+class Task
 {
     /**
      * @ORM\Id
@@ -23,18 +21,17 @@ class Category
     /**
      * @ORM\Column(type="string")
      */
-    private $name;
+    private $category;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string")
      */
     private $description;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id", nullable=true, onDelete="set null")
-     */
-    private $parentCategory;
 
     /**
      * @ORM\Column(type="datetime")
@@ -64,7 +61,7 @@ class Category
     private $status;
 
     /**
-     * @return integer
+     * @return mixed
      */
     public function getId()
     {
@@ -72,7 +69,7 @@ class Category
     }
 
     /**
-     * @param integer $id
+     * @param mixed $id
      */
     public function setId($id)
     {
@@ -80,23 +77,39 @@ class Category
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getName()
+    public function getCategory()
     {
-        return $this->name;
+        return $this->category;
     }
 
     /**
-     * @param string $name
+     * @param mixed $category
      */
-    public function setName($name)
+    public function setCategory($category)
     {
-        $this->name = $name;
+        $this->category = $category;
     }
 
     /**
-     * @return string
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
      */
     public function getDescription()
     {
@@ -104,7 +117,7 @@ class Category
     }
 
     /**
-     * @param string $description
+     * @param mixed $description
      */
     public function setDescription($description)
     {
@@ -112,23 +125,7 @@ class Category
     }
 
     /**
-     * @return Category
-     */
-    public function getParentCategory()
-    {
-        return $this->parentCategory;
-    }
-
-    /**
-     * @param Category $parentCategory
-     */
-    public function setParentCategory($parentCategory)
-    {
-        $this->parentCategory = $parentCategory;
-    }
-
-    /**
-     * @return \DateTime
+     * @return mixed
      */
     public function getCreatedAt()
     {
@@ -136,7 +133,7 @@ class Category
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param mixed $createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -144,15 +141,7 @@ class Category
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getModifiedAt()
-    {
-        return $this->modifiedAt;
-    }
-
-    /**
-     * @return User
+     * @return mixed
      */
     public function getCreatedBy()
     {
@@ -160,7 +149,7 @@ class Category
     }
 
     /**
-     * @param User $createdBy
+     * @param mixed $createdBy
      */
     public function setCreatedBy($createdBy)
     {
@@ -168,7 +157,15 @@ class Category
     }
 
     /**
-     * @param \DateTime $modifiedAt
+     * @return mixed
+     */
+    public function getModifiedAt()
+    {
+        return $this->modifiedAt;
+    }
+
+    /**
+     * @param mixed $modifiedAt
      */
     public function setModifiedAt($modifiedAt)
     {
@@ -192,7 +189,7 @@ class Category
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getStatus()
     {
@@ -200,12 +197,11 @@ class Category
     }
 
     /**
-     * @param string $status
+     * @param mixed $status
      */
     public function setStatus($status)
     {
         $this->status = $status;
     }
-
 
 }

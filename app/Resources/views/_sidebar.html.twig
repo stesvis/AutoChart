@@ -6,42 +6,34 @@
 
         <ul id="menu-content" class="menu-content collapse out">
             <li>
-                <a href="{{ path('') }}">
+                <a href="#">
                     <i class="fa fa-dashboard fa-lg fa-fw"></i> Dashboard
                 </a>
             </li>
 
-            <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                <a href="#"><i class="fa fa-gift fa-lg fa-fw"></i> Jobs <span class="arrow"></span></a>
+            <li data-toggle="collapse" data-target="#tasks" class="collapsed active">
+                <a href="{{ path('task_list') }}"><i class="fa fa-gift fa-lg fa-fw"></i> Tasks <span
+                            class="arrow"></span></a>
             </li>
-            <ul class="sub-menu collapse" id="products">
-                <li class="active"><a href="#">Posted</a></li>
-                <li><a href="#">Applied</a></li>
-                <li><a href="#">Post New</a></li>
-                {#<li><a href="#">Tabs & Accordions</a></li>#}
-                {#<li><a href="#">Typography</a></li>#}
-                {#<li><a href="#">FontAwesome</a></li>#}
-                {#<li><a href="#">Slider</a></li>#}
-                {#<li><a href="#">Panels</a></li>#}
-                {#<li><a href="#">Widgets</a></li>#}
-                {#<li><a href="#">Bootstrap Model</a></li>#}
+            <ul class="sub-menu collapse" id="tasks">
+                <li class="active"><a href="#">Add New</a></li>
             </ul>
 
 
-            <li data-toggle="collapse" data-target="#service" class="collapsed">
-                <a href="#"><i class="fa fa-globe fa-lg fa-fw"></i> Messages <span class="arrow"></span></a><span
+            <li data-toggle="collapse" data-target="#categories" class="collapsed">
+                <a href="{{ path('categories_list') }}"><i class="fa fa-globe fa-lg fa-fw"></i> Categories <span
+                            class="arrow"></span></a><span
                         class="badge">42</span>
             </li>
-            {#<ul class="sub-menu collapse" id="service">#}
-            {#<li>New Service 1</li>#}
-            {#<li>New Service 2</li>#}
-            {#<li>New Service 3</li>#}
-            {#</ul>#}
+            <ul class="sub-menu collapse" id="categories">
+                <li>Add New</li>
+            </ul>
 
 
-            {#<li data-toggle="collapse" data-target="#new" class="collapsed">#}
-            {#<a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>#}
-            {#</li>#}
+            <li data-toggle="collapse" data-target="#new" class="collapsed">
+                <a href="{{ path('vehicle_list') }}"><i class="fa fa-car fa-lg"></i> Vehicles <span
+                            class="arrow"></span></a>
+            </li>
             {#<ul class="sub-menu collapse" id="new">#}
             {#<li>New New 1</li>#}
             {#<li>New New 2</li>#}

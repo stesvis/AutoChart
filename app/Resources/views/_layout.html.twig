@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Master Lube{% endblock %}</title>
+
+    {% set theme = 'superhero' %}
+    {#default: https://bootswatch.com/default/#}
+    {#superhero: https://bootswatch.com/superhero#}
+    {#slate: https://bootswatch.com/slate/#}
+
+    {% if theme == 'default' %}
+        {#====================== Default Bootstrap theme ======================#}
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+              crossorigin="anonymous">
+    {% elseif theme == 'superhero' %}
+        {#====================== Superhero Bootstrap theme ======================#}
+        <link rel="stylesheet" href="{{ asset('assets/SuperheroTheme/bootstrap/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{ asset('assets/SuperheroTheme/bootstrap/variables.less') }}"></link>
+        <link rel="stylesheet" href="{{ asset('assets/SuperheroTheme/bootstrap/bootswatch.less') }}"></link>
+    {% elseif theme == 'slate' %}
+        {#====================== Slate Bootstrap theme ======================#}
+        <link rel="stylesheet" href="{{ asset('assets/SlateTheme/bootstrap/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{ asset('assets/SlateTheme/bootstrap/variables.less') }}"></link>
+        <link rel="stylesheet" href="{{ asset('assets/SlateTheme/bootstrap/bootswatch.less') }}"></link>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ asset('assets/css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+
+<div class="container">
+    {#------------------------------------ NAVBAR ------------------------------------#}
+    <div class="row content">
+        <div class="col-sm-12">
+            {{ include('_navbar.html.twig') }}
+        </div>
+    </div>
+    {#>-----------------<#}
+    {#------------------------------------ CONTENT ------------------------------------#}
+    {% block content %}
+        {% block body %}{% endblock %}
+    {% endblock %}
+    {#>-----------------<#}
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script src="https://use.fontawesome.com/4b364bfeb8.js"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

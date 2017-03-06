@@ -36,15 +36,15 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     ) {
         $category = new Category();
 
-        $category->setCreatedBy($this->getReference($username));
         $category->setCreatedAt($now);
+        $category->setCreatedBy($this->getReference($username));
         $category->setModifiedAt($now);
+        $category->setModifiedBy($this->getReference($username));
         $category->setName($name);
         $category->setDescription('This is a test category');
         $category->setStatus('A');
 
-        if (null !== $parentCategory)
-        {
+        if (null !== $parentCategory) {
             $category->setParentCategory($this->getReference($parentCategory));
         }
 

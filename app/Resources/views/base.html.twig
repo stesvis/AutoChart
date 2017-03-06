@@ -1,37 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>{% block title %}Master Lube{% endblock %}</title>
+{% extends '_layout.html.twig' %}
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    {% block stylesheets %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-</head>
-<body>
-
-{#------------------------------------ CONTENT ------------------------------------#}
-
-<div class="container">
-    {#------------------------------------ NAVBAR ------------------------------------#}
-    <div class="row content">
-        <div class="col-sm-12">
-            {{ include('_navbar.html.twig') }}
-        </div>
-    </div>
+{% block content %}
     <div class="row">
-        {#{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}#}
         {#------------------------------------ LEFT SIDEBAR ------------------------------------#}
-        <div class="col-sm-2">{% block leftSidebar %}{% endblock %}</div>
-        {#{% endif %}#}
-        {#<div class="{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}col-sm-8{% else %}col-sm-10{% endif %}">#}
+        <div class="col-sm-2">{% include '_sidebar.html.twig' %}</div>
         {#------------------------------------ CONTENT ------------------------------------#}
         <div class="col-sm-8">
             <div class="jumbotron">
@@ -41,14 +13,4 @@
         {#------------------------------------ RIGHT SIDEBAR ------------------------------------#}
         <div class="col-sm-2 sidebar-right">{% block rightSidebar %}{% endblock %}</div>
     </div>
-</div>
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-<script src="https://use.fontawesome.com/4b364bfeb8.js"></script>
-
-{% block javascripts %}{% endblock %}
-</body>
-</html>
+{% endblock %}
