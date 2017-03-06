@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Task;
 use AppBundle\Form\TaskFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,25 +34,34 @@ class TaskController extends Controller
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      * @param Request $request
-     * @param Task $task
+     * @param int $id
      * @
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Task $task)
+    public function editAction(Request $request, int $id)
     {
-        $form = $this->createForm(TaskFormType::class, $task);
+        $em = $this->getDoctrine()->getManager();
 
-        // only handles data on POST
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $task->setModifiedAt(new \DateTime('now'));
+        try {
+            $task = $em->getRepository('AppBundle:Task')->find($id);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($task);
-            $em->flush();
+            $form = $this->createForm(TaskFormType::class, $task);
 
-            return $this->redirectToRoute('task_list');
+            // only handles data on POST
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $task = $form->getData();
+                $task->setModifiedAt(new \DateTime('now'));
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($task);
+                $em->flush();
+
+                return $this->redirectToRoute('task_list');
+            }
+        } catch (\Exception $ex) {
+            die($ex->getMessage());
         }
 
         return $this->render('task/edit.html.twig', [

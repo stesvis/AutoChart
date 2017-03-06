@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,25 +32,33 @@ class VehicleController extends Controller
     /**
      * @Route("/vehicle/{id}/edit", name="vehicle_edit")
      * @param Request $request
-     * @param Vehicle $vehicle
+     * @param int $id
      * @return string
      */
-    public function editAction(Request $request, Vehicle $vehicle)
+    public function editAction(Request $request, int $id)
     {
-        $form = $this->createForm(VehicleFormType::class, $vehicle);
+        $em = $this->getDoctrine()->getManager();
 
-        // only handles data on POST
-        $form->handleRequest($request);
+        try {
+            $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $vehicle = $form->getData();
-            $vehicle->setModifiedAt(new \DateTime('now'));
+            $form = $this->createForm(VehicleFormType::class, $vehicle);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($vehicle);
-            $em->flush();
+            // only handles data on POST
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('vehicle_list');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $vehicle = $form->getData();
+                $vehicle->setModifiedAt(new \DateTime('now'));
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($vehicle);
+                $em->flush();
+
+                return $this->redirectToRoute('vehicle_list');
+            }
+        } catch (\Exception $ex) {
+            die($ex->getMessage());
         }
 
         return $this->render('vehicle/edit.html.twig', [

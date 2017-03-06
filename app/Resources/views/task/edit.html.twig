@@ -3,9 +3,5 @@
 {% block body %}
     <h2>Edit Task</h2>
 
-    <div class="row">
-        <div class="col-sm-10">
-            {{ include('task/_form.html.twig') }}
-        </div>
-    </div>
+    {{ form(taskForm) }}
 {% endblock %}

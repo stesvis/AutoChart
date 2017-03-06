@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Category;
 use AppBundle\Form\CategoryFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,9 +15,15 @@ class CategoryController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('AppBundle:Category')
-            ->findAll();
+        $categories = null;
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $categories = $em->getRepository('AppBundle:Category')
+                ->findAll();
+        } catch (\Exception $ex) {
+
+        }
 
         return $this->render('category/index.html.twig', [
             'categories' => $categories
@@ -28,26 +33,33 @@ class CategoryController extends Controller
     /**
      * @Route("/categories/{id}/edit", name="category_edit")
      * @param Request $request
-     * @param Category $category
+     * @param int $id
      * @
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Category $category)
+    public function editAction(Request $request, int $id)
     {
-        $form = $this->createForm(CategoryFormType::class, $category);
+        $em = $this->getDoctrine()->getManager();
 
-        // only handles data on POST
-        $form->handleRequest($request);
+        try {
+            $category = $em->getRepository('AppBundle:Category')->find($id);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $category = $form->getData();
-            $category->setModifiedAt(new \DateTime('now'));
+            $form = $this->createForm(CategoryFormType::class, $category);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
+            // only handles data on POST
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('categories_list');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $category = $form->getData();
+                $category->setModifiedAt(new \DateTime('now'));
+
+                $em->persist($category);
+                $em->flush();
+
+                return $this->redirectToRoute('categories_list');
+            }
+        } catch (\Exception $ex) {
+            die($ex->getMessage());
         }
 
         return $this->render('category/edit.html.twig', [
