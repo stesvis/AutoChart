@@ -22,7 +22,6 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $this->CreateCategory($manager, 'Oil Change', new \DateTime('now'), 'oil-change', 'user1');
         $this->CreateCategory($manager, 'Brakes', new \DateTime('now'), 'brakes', 'user1');
-        $this->CreateCategory($manager, 'Rotors', new \DateTime('now'), 'rotors', 'user1', 'brakes');
         $this->CreateCategory($manager, 'Tires', new \DateTime('now'), 'tires', 'user1');
     }
 
@@ -44,7 +43,8 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setDescription('This is a test category');
         $category->setStatus('A');
 
-        if (null !== $parentCategory) {
+        if (null !== $parentCategory)
+        {
             $category->setParentCategory($this->getReference($parentCategory));
         }
 

@@ -3,26 +3,34 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\TaskFormType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class TaskController
+ * @package AppBundle\Controller
+ */
 class TaskController extends Controller
 {
+
+
     /**
-     * @Route("/", name="task_list")
+     * @Route("/taskss", name="task_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
         $tasks = null;
 
-        try {
+        try
+        {
             $em = $this->getDoctrine()->getManager();
             $tasks = $em->getRepository('AppBundle:Task')
                 ->findAll();
-        } catch (\Exception $ex) {
-
+        } catch (\Exception $ex)
+        {
+            die($ex->getMessage());
         }
 
         return $this->render('task/index.html.twig', [
@@ -42,7 +50,8 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try {
+        try
+        {
             $task = $em->getRepository('AppBundle:Task')->find($id);
 
             $form = $this->createForm(TaskFormType::class, $task);
@@ -50,7 +59,8 @@ class TaskController extends Controller
             // only handles data on POST
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid())
+            {
                 $task = $form->getData();
                 $task->setModifiedAt(new \DateTime('now'));
 
@@ -60,7 +70,8 @@ class TaskController extends Controller
 
                 return $this->redirectToRoute('task_list');
             }
-        } catch (\Exception $ex) {
+        } catch (\Exception $ex)
+        {
             die($ex->getMessage());
         }
 

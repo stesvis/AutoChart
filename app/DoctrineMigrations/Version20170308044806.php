@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170305231333 extends AbstractMigration
+class Version20170308044806 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,9 @@ class Version20170305231333 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE vehicles ADD trim VARCHAR(255) DEFAULT NULL, ADD transmission_type VARCHAR(255) DEFAULT NULL, ADD fuel_type VARCHAR(255) DEFAULT NULL, ADD engine_size VARCHAR(255) DEFAULT NULL, ADD passengers INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE tasks ADD category_id INT DEFAULT NULL, DROP category');
+        $this->addSql('ALTER TABLE tasks ADD CONSTRAINT FK_5058659712469DE2 FOREIGN KEY (category_id) REFERENCES categories (id)');
+        $this->addSql('CREATE INDEX IDX_5058659712469DE2 ON tasks (category_id)');
     }
 
     /**
@@ -29,6 +31,8 @@ class Version20170305231333 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE vehicles DROP trim, DROP transmission_type, DROP fuel_type, DROP engine_size, DROP passengers');
+        $this->addSql('ALTER TABLE tasks DROP FOREIGN KEY FK_5058659712469DE2');
+        $this->addSql('DROP INDEX IDX_5058659712469DE2 ON tasks');
+        $this->addSql('ALTER TABLE tasks ADD category VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, DROP category_id');
     }
 }

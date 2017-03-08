@@ -8,7 +8,7 @@
         <tr>
             <th>Title</th>
             <th>Description</th>
-            <th>Parent</th>
+            <th>Category</th>
             <th>Created</th>
             <th>&nbsp;</th>
         </tr>
@@ -23,7 +23,7 @@
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('task_edit', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
                     <a href="#" class="btn btn-xs btn-danger"
                        ng-click="showConfirm($event)"><span
