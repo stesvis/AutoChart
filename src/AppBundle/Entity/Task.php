@@ -63,6 +63,11 @@ class Task
     private $status;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $type;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -204,6 +209,22 @@ class Task
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
 }

@@ -16,7 +16,7 @@ class TaskController extends Controller
 
 
     /**
-     * @Route("/taskss", name="task_list")
+     * @Route("/tasks", name="task_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
