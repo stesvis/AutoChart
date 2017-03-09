@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Task;
 use AppBundle\Form\TaskFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,6 @@ class TaskController extends Controller
      * @Route("/tasks/{id}/edit", name="task_edit")
      * @param Request $request
      * @param int $id
-     * @
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, int $id)
@@ -80,4 +80,42 @@ class TaskController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/tasks/new", name="task_new")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newAction(Request $request)
+    {
+        $task = new Task();
+        $form = $this->createForm(TaskFormType::class, $task);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            $task = $form->getData();
+            
+            $task->setCreatedAt(new \DateTime('now'));
+            $task->setModifiedAt(new \DateTime('now'));
+            $task->setCreatedBy($this->getUser());
+            $task->setModifiedBy($this->getUser());
+            $task->setStatus('A');
+            $task->setType('Custom');
+            $task->setCategory($em->getRepository('AppBundle:Category')->findOneBy([
+                'name' => 'Brakes',
+            ]));
+
+            $em->persist($task);
+            $em->flush();
+
+            return $this->redirectToRoute('task_list');
+        }
+
+        return $this->render('task/new.html.twig', [
+            'taskForm' => $form->createView()
+        ]);
+    }
 }
