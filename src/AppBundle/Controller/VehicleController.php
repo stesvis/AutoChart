@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,11 +18,13 @@ class VehicleController extends Controller
     {
         $vehicles = null;
 
-        try {
+        try
+        {
             $em = $this->getDoctrine()->getManager();
             $vehicles = $em->getRepository('AppBundle:Vehicle')
                 ->findAll();
-        } catch (\Exception $ex) {
+        } catch (\Exception $ex)
+        {
 
         }
         return $this->render('vehicle/index.html.twig', [
@@ -39,7 +42,8 @@ class VehicleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try {
+        try
+        {
             $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
 
             $form = $this->createForm(VehicleFormType::class, $vehicle);
@@ -47,7 +51,8 @@ class VehicleController extends Controller
             // only handles data on POST
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid())
+            {
                 $vehicle = $form->getData();
                 $vehicle->setModifiedAt(new \DateTime('now'));
 
@@ -57,7 +62,8 @@ class VehicleController extends Controller
 
                 return $this->redirectToRoute('vehicle_list');
             }
-        } catch (\Exception $ex) {
+        } catch (\Exception $ex)
+        {
             die($ex->getMessage());
         }
 
@@ -65,4 +71,40 @@ class VehicleController extends Controller
             'vehicleForm' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/vehicles/new", name="vehicle_new")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newAction(Request $request)
+    {
+        $vehicle = new Vehicle();
+        $form = $this->createForm(VehicleFormType::class, $vehicle);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            $vehicle = $form->getData();
+
+            $vehicle->setCreatedAt(new \DateTime('now'));
+            $vehicle->setModifiedAt(new \DateTime('now'));
+            $vehicle->setCreatedBy($this->getUser());
+            $vehicle->setModifiedBy($this->getUser());
+            $vehicle->setStatus('A');
+
+            $em->persist($vehicle);
+            $em->flush();
+
+            return $this->redirectToRoute('vehicle_list');
+        }
+
+        return $this->render('vehicle/new.html.twig', [
+            'vehicleForm' => $form->createView()
+        ]);
+    }
+
 }
