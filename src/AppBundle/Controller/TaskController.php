@@ -4,14 +4,16 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskFormType;
+use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use AppBundle\Includes\StatusEnums;
 
 /**
  * Class TaskController
+ *
+ * @Route("/tasks")
  * @package AppBundle\Controller
  */
 class TaskController extends Controller
@@ -47,7 +49,7 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
+     * @Route("/{id}/edit", name="task_edit")
      * @param Request $request
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
@@ -60,7 +62,7 @@ class TaskController extends Controller
         {
             $task = $em->getRepository('AppBundle:Task')
                 ->findBy([
-                    'id'=>$id,
+                    'id' => $id,
                     'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
@@ -92,7 +94,7 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/tasks/new", name="task_new")
+     * @Route("/new", name="task_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -131,10 +133,10 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("tasks/{id}/delete", name="task_delete")
+     * @Route("/{id}", name="task_delete")
      * @param $request
      * @param $id
-     * @Method({"DELETE"})
+     * @Method("DELETE")
      * @return Response
      */
     public function deleteAction(Request $request, $id)
@@ -142,7 +144,7 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('AppBundle:Task')
             ->findBy([
-                'id'=>$id,
+                'id' => $id,
                 'status' => StatusEnums::Active,
                 'createdBy' => $this->getUser(),
             ]);

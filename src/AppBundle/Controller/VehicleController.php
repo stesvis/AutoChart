@@ -8,10 +8,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+
+/**
+ * Class VehicleController
+ *
+ * @Route("/vehicles")
+ * @package AppBundle\Controller
+ */
 class VehicleController extends Controller
 {
     /**
-     * @Route("/vehicles", name="vehicle_list")
+     * @Route("/", name="vehicle_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -33,7 +40,7 @@ class VehicleController extends Controller
     }
 
     /**
-     * @Route("/vehicle/{id}/edit", name="vehicle_edit")
+     * @Route("/{id}/edit", name="vehicle_edit")
      * @param Request $request
      * @param int $id
      * @return string
@@ -73,7 +80,7 @@ class VehicleController extends Controller
     }
 
     /**
-     * @Route("/vehicles/new", name="vehicle_new")
+     * @Route("/new", name="vehicle_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */

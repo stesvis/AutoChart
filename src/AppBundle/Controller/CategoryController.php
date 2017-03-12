@@ -12,10 +12,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Category controller.
+ *
+ * @Route("categories")
+ */
 class CategoryController extends Controller
 {
     /**
-     * @Route("/categories", name="category_list")
+     * @Route("/", name="category_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -41,7 +46,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories/{id}", name="category_show")
+     * @Route("/{id}", name="category_show")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -67,7 +72,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories/{id}/edit", name="category_edit")
+     * @Route("/{id}/edit", name="category_edit")
      * @param Request $request
      * @param int $id
      * @
@@ -112,7 +117,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories/new", name="category_new")
+     * @Route("/new", name="category_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -147,10 +152,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("categories/{id}/delete", name="category_delete")
+     * @Route("/{id}", name="category_delete")
      * @param $request
      * @param $id
-     * @Method({"DELETE"})
+     * @Method("DELETE")
      * @return Response
      */
     public function deleteAction(Request $request, $id)

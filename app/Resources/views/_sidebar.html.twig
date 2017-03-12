@@ -11,13 +11,24 @@
                 </a><span class="badge">5</span>
             </li>
 
+            {#---------------------------------- JOBS ----------------------------------#}
+            <li data-toggle="collapse" data-target="#jobs" class="collapsed active">
+                <a href="#"><i class="fa fa-gift fa-lg fa-fw"></i> Jobs <span
+                            class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse" id="jobs">
+                <li class="active"><a href="{{ path('job_list') }}">All Jobs</a></li>
+                <li><a href="#">Add New</a></li>
+            </ul>
+
+
             {#---------------------------------- TASKS ----------------------------------#}
-            <li data-toggle="collapse" data-target="#tasks" class="collapsed active">
+            <li data-toggle="collapse" data-target="#tasks" class="collapsed">
                 <a href="#"><i class="fa fa-gift fa-lg fa-fw"></i> Tasks <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="tasks">
-                <li class="active"><a href="{{ path('task_list') }}">All Tasks</a></li>
+                <li><a href="{{ path('task_list') }}">All Tasks</a></li>
                 <li><a href="#">Add New</a></li>
             </ul>
 

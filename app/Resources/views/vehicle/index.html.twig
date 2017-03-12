@@ -9,6 +9,8 @@
             <th>Year</th>
             <th>Make</th>
             <th>Model</th>
+            <th>Trim</th>
+            <th>Jobs</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -18,14 +20,18 @@
                 <td>{{ vehicle.year }}</td>
                 <td>{{ vehicle.make }}</td>
                 <td>{{ vehicle.model }}</td>
+                <td>{{ vehicle.trim }}</td>
+                <td><a href="{{ path('vehicle_job_list', {'id':vehicle.id}) }}">View</a></td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
-                    <a href="#" class="btn btn-xs btn-danger"
-                       ng-click="showConfirm($event)"><span
-                                class="fa fa-trash"></span></a>
+                    {% if vehicle.status == 'A' %}
+                        <a href="#" class="btn btn-xs btn-danger"
+                           ng-click="showConfirm($event)"><span
+                                    class="fa fa-trash"></span></a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
