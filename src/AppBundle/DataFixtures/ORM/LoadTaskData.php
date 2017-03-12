@@ -51,6 +51,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         $task->setTitle($name);
         $task->setDescription('This is a test task');
         $task->setStatus('A');
+        $task->setType('System');
 
         $manager->persist($task);
         $manager->flush();

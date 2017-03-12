@@ -26,18 +26,85 @@
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('category_edit', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                     class="fa fa-pencil"></span></a>
-                        <a href="#" class="btn btn-xs btn-danger"
-                           ng-click="showConfirm($event, {{ category.id }})"><span
-                                    class="fa fa-trash"></span></a>
+                        {% if category.status == 'A' %}
+                            <a class="btn btn-xs btn-danger deleteCategory" categoryId="{{ category.id }}"
+                               ng-click="showConfirm($event, {{ category.id }})">
+                                <span class="fa fa-trash"></span></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <div id="dialog" title="Empty the recycle bin?" style="display: none;">
+        <p></p>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-    <script type="application/javascript" src="{{ asset('assets/javascript/adminCategory.js') }}"></script>
+    {#<script type="application/javascript" src="{{ asset('assets/javascript/adminCategory.js') }}"></script>#}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.deleteCategory').click(function () {
+                var categoryId = $(this).attr("categoryId");
+                var deleteButton = $(this);
+
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
+
+                $("#dialog").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        "Delete": function () {
+                            $("#loading").show();
+                            $(this).dialog("close");
+
+                            $.ajax({
+                                url: "/categories/" + categoryId + "/delete",
+                                type: "DELETE",
+                                contentType: "application/x-www-form-urlencoded",
+                                success: function (data) {
+                                    console.log(data);
+
+                                    var success = data['success'];
+                                    if (success)
+                                        deleteButton.hide();
+                                    else {
+                                        $("#dialog").find("p").html(data['message']);
+                                        $("#dialog").dialog({
+                                            resizable: false,
+                                            height: "auto",
+                                            width: 400,
+                                            modal: true,
+                                            buttons: {
+                                                "Close": function () {
+                                                    $(this).dialog("close");
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    $("#loading").hide();
+                                }
+                                ,
+                                error: function (msg) {
+                                    console.log(msg);
+                                    $("#loading").hide();
+                                }
+                            });
+                        },
+                        "Cancel": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
 

@@ -4,10 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Form\CategoryFormType;
+use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
@@ -23,7 +26,10 @@ class CategoryController extends Controller
         {
             $em = $this->getDoctrine()->getManager();
             $categories = $em->getRepository('AppBundle:Category')
-                ->findAll();
+                ->findBy([
+                    //'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
         } catch (\Exception $ex)
         {
 
@@ -46,7 +52,10 @@ class CategoryController extends Controller
         {
             $em = $this->getDoctrine()->getManager();
             $category = $em->getRepository('AppBundle:Category')
-                ->find($id);
+                ->findBy([
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
         } catch (\Exception $ex)
         {
 
@@ -58,7 +67,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories/edit/{id}", name="category_edit")
+     * @Route("/categories/{id}/edit", name="category_edit")
      * @param Request $request
      * @param int $id
      * @
@@ -70,7 +79,12 @@ class CategoryController extends Controller
 
         try
         {
-            $category = $em->getRepository('AppBundle:Category')->find($id);
+            $category = $em->getRepository('AppBundle:Category')
+                ->findBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
             $form = $this->createForm(CategoryFormType::class, $category);
 
@@ -133,7 +147,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("categories/delete/{id}", name="category_delete")
+     * @Route("categories/{id}/delete", name="category_delete")
      * @param $request
      * @param $id
      * @Method({"DELETE"})
@@ -143,32 +157,41 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository('AppBundle:Category')
-            ->find($id);
+            ->findBy([
+                'id' => $id,
+                'status' => StatusEnums::Active,
+                'createdBy' => $this->getUser(),
+            ]);
 
-//        $form = $this->createDeleteForm($category);
-//        $form->handleRequest($request);
+        if (!$category)
+        {
+            throw $this->createNotFoundException('Unable to find Category entity.');
+        }
+        $category = $category[0];
 
-//        if ($form->isSubmitted() && $form->isValid())
-//        {
-            $em->remove($category);
+        // Check if the category is in use on any task
+        $tasksByCategory = $em->getRepository('AppBundle:Task')
+            ->findBy([
+                'category' => $category
+            ]);
+
+        if (count($tasksByCategory) == 0)
+        {
+            // Safe to remove
+            $category->setStatus(StatusEnums::Deleted);
+            $em->persist($category);
             $em->flush();
-//        }
-//        else
-//        {
-//
-//        }
 
-        return $this->redirectToRoute('category_list');
+            $response['success'] = true;
+            $response['message'] = 'Category deleted.';
+        }
+        else
+        {
+            $response['success'] = false;
+            $response['message'] = 'This Category is in use on some Tasks. Delete its references first.';
+        }
+
+        return new JsonResponse(($response));
     }
 
-//
-    private function createDeleteForm(Category $category)
-    {
-        return $this->createFormBuilder()
-            ->setAction(($this->generateUrl('category_delete', [
-                'id' => $category->getId()
-            ])))
-            ->setMethod('DELETE')
-            ->getForm();
-    }
 }

@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Includes\StatusEnums;
 
 /**
  * Class TaskController
@@ -17,6 +19,7 @@ class TaskController extends Controller
 
 
     /**
+     * @Route("/")
      * @Route("/tasks", name="task_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -28,7 +31,10 @@ class TaskController extends Controller
         {
             $em = $this->getDoctrine()->getManager();
             $tasks = $em->getRepository('AppBundle:Task')
-                ->findAll();
+                ->findBy([
+                    //'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
         } catch (\Exception $ex)
         {
             die($ex->getMessage());
@@ -52,7 +58,12 @@ class TaskController extends Controller
 
         try
         {
-            $task = $em->getRepository('AppBundle:Task')->find($id);
+            $task = $em->getRepository('AppBundle:Task')
+                ->findBy([
+                    'id'=>$id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
             $form = $this->createForm(TaskFormType::class, $task);
 
@@ -97,7 +108,7 @@ class TaskController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $task = $form->getData();
-            
+
             $task->setCreatedAt(new \DateTime('now'));
             $task->setModifiedAt(new \DateTime('now'));
             $task->setCreatedBy($this->getUser());
@@ -118,4 +129,52 @@ class TaskController extends Controller
             'taskForm' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("tasks/{id}/delete", name="task_delete")
+     * @param $request
+     * @param $id
+     * @Method({"DELETE"})
+     * @return Response
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $task = $em->getRepository('AppBundle:Task')
+            ->findBy([
+                'id'=>$id,
+                'status' => StatusEnums::Active,
+                'createdBy' => $this->getUser(),
+            ]);
+
+        if (!$task)
+        {
+            throw $this->createNotFoundException('Unable to find Category entity.');
+        }
+
+        // Check if the category is in use on any task
+        $jobsByTask = $em->getRepository('AppBundle:Task')
+            ->findBy([
+                'task' => $task
+            ]);
+
+        if (count($jobsByTask) == 0)
+        {
+            // Safe to remove
+            $task->setStatus(StatusEnums::Active);
+            $em->persist($task);
+            $em->flush();
+
+            $response['success'] = true;
+            $response['message'] = 'Task deleted.';
+        }
+        else
+        {
+            $response['success'] = false;
+            $response['message'] = 'This Task is in use on some Jobs. Delete its references first.';
+        }
+
+        return new JsonResponse(($response));
+    }
+
 }

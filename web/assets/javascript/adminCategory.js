@@ -2,10 +2,13 @@
  * Created by stesv on 2017-03-10.
  */
 
+
+
+
 var app = angular.module('AdminCategoryApp', ['ngMaterial'])
     .controller('AdminCategoryController', AdminCategoryController);
 
-function AdminCategoryController($scope, $mdDialog, $http/*, $route*/) {
+function AdminCategoryController($scope, $mdDialog, $http) {
     $scope.status = '  ';
     $scope.showConfirm = function (ev, categoryId) {
         console.log("showConfirm");
@@ -23,19 +26,20 @@ function AdminCategoryController($scope, $mdDialog, $http/*, $route*/) {
             .then(
                 function () {
                     //code in case they click YES
+
                     console.log('submitting form');
                     $http({
-                        url: "/categories/delete/" + categoryId,
+                        url: "/categories/" + categoryId + "/delete",
                         method: "DELETE",
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                         data: $.param(categoryId)
                     })
                         .then(
                             function (success) {
-                                console.log('success');
-                                location.reload();
+                                console.log(success);
+                                // location.reload();
                             }, function (error) {
-                                console.log('error');
+                                console.log(error);
                             });
                 }, function () {
                     //code in case they click NO
