@@ -21,15 +21,29 @@ class JobController extends Controller
      *
      * @Route("/", name="job_list")
      * @Method("GET")
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $jobs = $em->getRepository('AppBundle:Job')
-            ->findBy([
-                'completedBy' => $this->getUser(),
-            ]);
+//        $jobs = $em->getRepository('AppBundle:Job')
+//            ->findBy([
+//                'completedBy' => $this->getUser(),
+//            ]);
+
+        $dql = "SELECT j FROM AppBundle:Job j";
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+
+        $jobs = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            1/*limit per page*/
+        );
 
         return $this->render('job/index.html.twig', array(
             'jobs' => $jobs,
