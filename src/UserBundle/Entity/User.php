@@ -52,6 +52,7 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
+        $this->addRole("ROLE_ADMIN");
     }
 
     /**
@@ -86,20 +87,4 @@ class User extends BaseUser
         $this->lastName = $lastName;
     }
 
-    /**
-     * Overriding Fos User class due to impossible to set default role ROLE_USER
-     * @see User at line 138
-     * @link https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Model/User.php#L138
-     * {@inheritdoc}
-     */
-    public function addRole($role)
-    {
-        $role = strtoupper($role);
-
-        if (!in_array($role, $this->roles, true)) {
-            $this->roles[] = $role;
-        }
-
-        return $this;
-    }
 }
