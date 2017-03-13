@@ -21,7 +21,8 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please a category name")
      */
     private $name;
 

@@ -48,7 +48,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         $task->setCreatedBy($this->getReference($userReference));
         $task->setModifiedAt($now);
         $task->setModifiedBy($this->getReference($userReference));
-        $task->setTitle($name);
+        $task->setName($name);
         $task->setDescription('This is a test task');
         $task->setStatus('A');
         $task->setType('System');

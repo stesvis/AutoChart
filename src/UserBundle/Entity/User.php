@@ -19,12 +19,32 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please enter your first name", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="The name is too short",
+     *     maxMessage="The name is too long",
+     *     groups={"Registration", "Profile"}
+     * )
      */
     private $firstName;
+
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please enter your last name", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="The name is too short",
+     *     maxMessage="The name is too long",
+     *     groups={"Registration", "Profile"}
+     * )
      */
     private $lastName;
 

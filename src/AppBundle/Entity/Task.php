@@ -26,12 +26,13 @@ class Task
     private $category;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please a task name")
      */
-    private $title;
+    private $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $description;
 
@@ -102,17 +103,17 @@ class Task
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
-     * @param mixed $title
+     * @param mixed $name
      */
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     }
 
     /**

@@ -39,4 +39,5 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/categories, role: ROLE_ADMIN }
         - { path: ^/tasks, role: ROLE_ADMIN }
+        - { path: ^/jobs, role: ROLE_ADMIN }
         - { path: ^/, role: ROLE_ADMIN }

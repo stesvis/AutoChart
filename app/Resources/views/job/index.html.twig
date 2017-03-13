@@ -17,7 +17,7 @@
         {% for job in jobs %}
             <tr>
                 <td>{{ job.vehicle.year }} {{ job.vehicle.make }} {{ job.vehicle.model }}</td>
-                <td>{{ job.task.title }}</td>
+                <td>{{ job.task.name }}</td>
                 <td>{{ job.mileage|number_format }} {{ job.mileageType }}</td>
                 <td>{% if job.completedAt %}{{ job.completedAt|date("F j, Y") }}{% endif %}</td>
                 <td style="width: 1%; white-space: nowrap;">

@@ -21,16 +21,19 @@ class Vehicle
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Please enter the year")
      */
     private $year;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please the make")
      */
     private $make;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please the model")
      */
     private $model;
 
