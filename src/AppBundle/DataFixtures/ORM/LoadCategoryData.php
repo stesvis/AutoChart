@@ -46,8 +46,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setDescription('This is a test category');
         $category->setStatus('A');
 
-        if (null !== $parentCategory)
-        {
+        if (null !== $parentCategory) {
             $category->setParentCategory($this->getReference($parentCategory));
         }
 

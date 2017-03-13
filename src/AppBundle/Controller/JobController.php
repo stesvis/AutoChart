@@ -86,8 +86,7 @@ class JobController extends Controller
         $form = $this->createForm('AppBundle\Form\JobType', $job);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($job);
             $em->flush($job);
@@ -129,8 +128,7 @@ class JobController extends Controller
         $editForm = $this->createForm('AppBundle\Form\JobType', $job);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid())
-        {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('job_edit', array('id' => $job->getId()));
@@ -154,8 +152,7 @@ class JobController extends Controller
         $form = $this->createDeleteForm($job);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($job);
             $em->flush();

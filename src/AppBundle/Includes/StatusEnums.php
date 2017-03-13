@@ -9,8 +9,7 @@ abstract class Enum
 
     public function __construct($value)
     {
-        if (!self::has($value))
-        {
+        if (!self::has($value)) {
             throw new \UnexpectedValueException("Value '$value' is not part of the enum " . get_called_class());
         }
 
@@ -36,8 +35,7 @@ abstract class Enum
     {
         $calledClass = get_called_class();
 
-        if (!array_key_exists($calledClass, self::$constantsCache))
-        {
+        if (!array_key_exists($calledClass, self::$constantsCache)) {
             $reflection = new \ReflectionClass($calledClass);
             self::$constantsCache[$calledClass] = $reflection->getConstants();
         }

@@ -25,13 +25,11 @@ class VehicleController extends Controller
     {
         $vehicles = null;
 
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $vehicles = $em->getRepository('AppBundle:Vehicle')
                 ->findAll();
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
 
         }
         return $this->render('vehicle/index.html.twig', [
@@ -49,8 +47,7 @@ class VehicleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try
-        {
+        try {
             $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
 
             $form = $this->createForm(VehicleFormType::class, $vehicle);
@@ -58,8 +55,7 @@ class VehicleController extends Controller
             // only handles data on POST
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $vehicle = $form->getData();
                 $vehicle->setModifiedAt(new \DateTime('now'));
 
@@ -69,8 +65,7 @@ class VehicleController extends Controller
 
                 return $this->redirectToRoute('vehicle_list');
             }
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             die($ex->getMessage());
         }
 
@@ -91,8 +86,7 @@ class VehicleController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $vehicle = $form->getData();

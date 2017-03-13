@@ -20,7 +20,7 @@ class RegistrationListener implements EventSubscriberInterface
 
     public function onRegistrationSuccess(FormEvent $event)
     {
-        $rolesArr = array('ROLE_USER');
+        $rolesArr = array('ROLE_ADMIN');
         /** @var $user \FOS\UserBundle\Model\UserInterface */
         $user = $event->getForm()->getData();
         $user->setRoles($rolesArr);

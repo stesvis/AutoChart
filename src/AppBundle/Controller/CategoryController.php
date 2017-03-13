@@ -27,16 +27,14 @@ class CategoryController extends Controller
     {
         $categories = null;
 
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $categories = $em->getRepository('AppBundle:Category')
                 ->findBy([
                     //'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
 
         }
 
@@ -53,16 +51,14 @@ class CategoryController extends Controller
     public function showAction($id)
     {
         $category = null;
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $category = $em->getRepository('AppBundle:Category')
                 ->findBy([
                     'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
 
         }
 
@@ -82,8 +78,7 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try
-        {
+        try {
             $category = $em->getRepository('AppBundle:Category')
                 ->findBy([
                     'id' => $id,
@@ -96,8 +91,7 @@ class CategoryController extends Controller
             // only handles data on POST
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $category = $form->getData();
                 $category->setModifiedAt(new \DateTime('now'));
 
@@ -106,8 +100,7 @@ class CategoryController extends Controller
 
                 return $this->redirectToRoute('category_list');
             }
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             die($ex->getMessage());
         }
 
@@ -128,8 +121,7 @@ class CategoryController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $category = $form->getData();
@@ -168,8 +160,7 @@ class CategoryController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$category)
-        {
+        if (!$category) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         }
         $category = $category[0];
@@ -180,8 +171,7 @@ class CategoryController extends Controller
                 'category' => $category
             ]);
 
-        if (count($tasksByCategory) == 0)
-        {
+        if (count($tasksByCategory) == 0) {
             // Safe to remove
             $category->setStatus(StatusEnums::Deleted);
             $em->persist($category);
@@ -189,9 +179,7 @@ class CategoryController extends Controller
 
             $response['success'] = true;
             $response['message'] = 'Category deleted.';
-        }
-        else
-        {
+        } else {
             $response['success'] = false;
             $response['message'] = 'This Category is in use on some Tasks. Delete its references first.';
         }

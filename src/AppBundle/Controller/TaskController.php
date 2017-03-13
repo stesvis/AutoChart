@@ -29,16 +29,14 @@ class TaskController extends Controller
     {
         $tasks = null;
 
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $tasks = $em->getRepository('AppBundle:Task')
                 ->findBy([
                     //'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             die($ex->getMessage());
         }
 
@@ -58,8 +56,7 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try
-        {
+        try {
             $task = $em->getRepository('AppBundle:Task')
                 ->findBy([
                     'id' => $id,
@@ -72,8 +69,7 @@ class TaskController extends Controller
             // only handles data on POST
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $task = $form->getData();
                 $task->setModifiedAt(new \DateTime('now'));
 
@@ -83,8 +79,7 @@ class TaskController extends Controller
 
                 return $this->redirectToRoute('task_list');
             }
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             die($ex->getMessage());
         }
 
@@ -105,8 +100,7 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $task = $form->getData();
@@ -149,8 +143,7 @@ class TaskController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$task)
-        {
+        if (!$task) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         }
 
@@ -160,8 +153,7 @@ class TaskController extends Controller
                 'task' => $task
             ]);
 
-        if (count($jobsByTask) == 0)
-        {
+        if (count($jobsByTask) == 0) {
             // Safe to remove
             $task->setStatus(StatusEnums::Active);
             $em->persist($task);
@@ -169,9 +161,7 @@ class TaskController extends Controller
 
             $response['success'] = true;
             $response['message'] = 'Task deleted.';
-        }
-        else
-        {
+        } else {
             $response['success'] = false;
             $response['message'] = 'This Task is in use on some Jobs. Delete its references first.';
         }
