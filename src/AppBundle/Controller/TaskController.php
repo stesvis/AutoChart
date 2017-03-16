@@ -7,6 +7,7 @@ use AppBundle\Form\TaskFormType;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,8 +22,7 @@ class TaskController extends Controller
 
 
     /**
-     * @Route("/")
-     * @Route("/tasks", name="task_list")
+     * @Route("/", name="task_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -135,38 +135,43 @@ class TaskController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $task = $em->getRepository('AppBundle:Task')
-            ->findBy([
-                'id' => $id,
-                'status' => StatusEnums::Active,
-                'createdBy' => $this->getUser(),
-            ]);
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $task = $em->getRepository('AppBundle:Task')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
-        if (!$task) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
+            if (!$task) {
+                throw $this->createNotFoundException('Unable to find Task entity.');
+            }
 
-        // Check if the category is in use on any task
-        $jobsByTask = $em->getRepository('AppBundle:Task')
-            ->findBy([
-                'task' => $task
-            ]);
+            // Check if the task is in use on any task
+            $jobsByTask = $em->getRepository('AppBundle:Job')
+                ->findBy([
+                    'task' => $task
+                ]);
 
-        if (count($jobsByTask) == 0) {
-            // Safe to remove
-            $task->setStatus(StatusEnums::Active);
-            $em->persist($task);
-            $em->flush();
+            if (count($jobsByTask) == 0) {
+                // Safe to remove
+                $task->setStatus(StatusEnums::Active);
+                $em->persist($task);
+                $em->flush();
 
-            $response['success'] = true;
-            $response['message'] = 'Task deleted.';
-        } else {
+                $response['success'] = true;
+                $response['message'] = 'Task deleted.';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'This Task is in use on some Jobs. Delete its references first.';
+            }
+        } catch (Exception $e) {
             $response['success'] = false;
-            $response['message'] = 'This Task is in use on some Jobs. Delete its references first.';
+            $response['message'] = $e->getMessage();
         }
 
-        return new JsonResponse(($response));
+        return new JsonResponse($response);
     }
 
 }

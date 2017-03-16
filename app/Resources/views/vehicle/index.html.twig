@@ -28,8 +28,9 @@
                     <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
                     {% if vehicle.status == 'A' %}
-                        <a href="#" class="btn btn-xs btn-danger"
-                           ng-click="showConfirm($event)"><span
+                        <a class="btn btn-xs btn-danger deleteVehicle" vehicleId="{{ vehicle.id }}"
+                           title="Delete this Vehicle"
+                           ng-click="showConfirm($event, {{ vehicle.id }})"><span
                                     class="fa fa-trash"></span></a>
                     {% endif %}
                 </td>
@@ -38,5 +39,25 @@
 
         </tbody>
     </table>
+
+    <div id="dialog" title="Delete the Vehicle?" style="display: none;">
+        <p></p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.deleteVehicle').click(function () {
+                var vehicleId = $(this).attr("vehicleId");
+                var deleteButton = $(this);
+
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
+
+                openDeleteDialog("#dialog", "/vehicles/" + vehicleId, deleteButton);
+            });
+        });
+    </script>
 
 {% endblock %}

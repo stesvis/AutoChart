@@ -4,8 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
+use AppBundle\Includes\StatusEnums;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -28,7 +31,10 @@ class VehicleController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
             $vehicles = $em->getRepository('AppBundle:Vehicle')
-                ->findAll();
+                ->findBy([
+                    //'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
         } catch (\Exception $ex) {
 
         }
@@ -106,6 +112,43 @@ class VehicleController extends Controller
         return $this->render('vehicle/new.html.twig', [
             'vehicleForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="vehicle_delete")
+     * @param $request
+     * @param $id
+     * @Method("DELETE")
+     * @return Response
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $vehicle = $em->getRepository('AppBundle:Vehicle')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
+
+            if (!$vehicle) {
+                throw $this->createNotFoundException('Unable to find Vehicle entity.');
+            }
+
+            // Safe to remove
+            $vehicle->setStatus(StatusEnums::Active);
+            $em->persist($vehicle);
+            $em->flush();
+
+            $response['success'] = true;
+            $response['message'] = 'Vehicle deleted.';
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+        }
+
+        return new JsonResponse($response);
     }
 
 }

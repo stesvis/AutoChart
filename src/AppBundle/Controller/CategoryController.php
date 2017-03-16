@@ -154,7 +154,7 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository('AppBundle:Category')
-            ->findBy([
+            ->findOneBy([
                 'id' => $id,
                 'status' => StatusEnums::Active,
                 'createdBy' => $this->getUser(),
@@ -163,7 +163,6 @@ class CategoryController extends Controller
         if (!$category) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         }
-        $category = $category[0];
 
         // Check if the category is in use on any task
         $tasksByCategory = $em->getRepository('AppBundle:Task')
@@ -184,7 +183,7 @@ class CategoryController extends Controller
             $response['message'] = 'This Category is in use on some Tasks. Delete its references first.';
         }
 
-        return new JsonResponse(($response));
+        return new JsonResponse($response);
     }
 
 }

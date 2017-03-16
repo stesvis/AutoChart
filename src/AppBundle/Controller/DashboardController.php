@@ -20,6 +20,6 @@ class DashboardController extends Controller
      */
     public function indexAction()
     {
-        return new Response('Dashboard');
+        return $this->render('dashboard/index.html.twig');
     }
 }
