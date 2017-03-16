@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,8 +19,8 @@ class JobFormType extends AbstractType
             ->add('mileageType')
             ->add('completedAt')
             ->add('status')
-            ->add('vehicle')
-            ->add('task')
+            ->add('vehicle', ChoiceType::class)
+            ->add('task', ChoiceType::class)
             ->add('completedBy');
     }
 
