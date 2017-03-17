@@ -2,13 +2,23 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Service\VehicleService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobFormType extends AbstractType
 {
+    protected $vehicleService;
+
+    public function __construct(VehicleService $vehicleService)
+    {
+        $this->vehicleService = $vehicleService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -17,11 +27,20 @@ class JobFormType extends AbstractType
         $builder
             ->add('mileage')
             ->add('mileageType')
-            ->add('completedAt')
+            ->add('completedAt', DateType::class)
             ->add('status')
-            ->add('vehicle', ChoiceType::class)
+            ->add('vehicle', ChoiceType::class, [
+                'choices' => [
+                    $this->vehicleService->getVehiclesDropDown()
+                ]
+            ])
             ->add('task', ChoiceType::class)
-            ->add('completedBy');
+            ->add('completedBy')
+            ->add('save', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ]);
     }
 
     /**

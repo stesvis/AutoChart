@@ -11,3 +11,14 @@ services:
         class: UserBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: masterlube_user_registration }
+
+    utility_service:
+        class: AppBundle\Service\VehicleService
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
+    app.job.form.type:
+        class: AppBundle\Form\JobFormType
+        arguments:
+            - '@utility_service'
+        tags:
+            - { name: form.type }

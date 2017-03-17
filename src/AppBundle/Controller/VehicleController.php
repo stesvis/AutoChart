@@ -26,18 +26,12 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
-        $vehicles = null;
-
         try {
-            $em = $this->getDoctrine()->getManager();
-            $vehicles = $em->getRepository('AppBundle:Vehicle')
-                ->findBy([
-                    //'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
-                ]);
+            $vehicles = $this->get('utility_service')->getMyVehicles();
         } catch (\Exception $ex) {
-
+            $vehicles = null;
         }
+
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicles
         ]);
@@ -150,5 +144,6 @@ class VehicleController extends Controller
 
         return new JsonResponse($response);
     }
+
 
 }
