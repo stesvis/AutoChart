@@ -1,0 +1,40 @@
+Things to do:
+
+	- Populate dropdowns
+	- Add paginator in each index view
+	- Add an "Import System Tasks" feature
+	- Add custom fields for each Task
+	
+		TASKS_FIELDS		EXAMPLE
+		Id					1
+		TaskId				1 (Oil Change)
+		FieldName			Oil Type
+		...
+		CreatedAt
+		CreatedBy
+		ModifiedAt
+		ModifiedBy
+		Status
+		
+	- Vehicle Defaults by Task
+	
+		Id
+		VehicleId
+		TaskId
+		FieldId
+		FieldDefaultValue
+		JobId (if null, these are suggested values, otherwise they are the values that were used to perform that job)
+		...
+		CreatedAt
+		CreatedBy
+		ModifiedAt
+		ModifiedBy
+		Status
+
+	- Map relationship between a job and the extra task fields
+	
+		Id
+		JobId
+		FieldId
+		FieldValue
+		
