@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Job;
 use AppBundle\Service\VehicleService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,14 +29,12 @@ class JobFormType extends AbstractType
             ->add('mileage')
             ->add('mileageType')
             ->add('completedAt', DateType::class)
-            ->add('status')
             ->add('vehicle', ChoiceType::class, [
                 'choices' => [
                     $this->vehicleService->getVehiclesDropDown()
                 ]
             ])
-            ->add('task', ChoiceType::class)
-            ->add('completedBy')
+//            ->add('task', ChoiceType::class)
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary'
@@ -49,7 +48,7 @@ class JobFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Job'
+            'data_class' => Job::class
         ));
     }
 
@@ -58,7 +57,7 @@ class JobFormType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_job';
+        return 'app_bundle_job_form_type';
     }
 
 

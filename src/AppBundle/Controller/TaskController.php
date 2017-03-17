@@ -58,7 +58,7 @@ class TaskController extends Controller
 
         try {
             $task = $em->getRepository('AppBundle:Task')
-                ->findBy([
+                ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),

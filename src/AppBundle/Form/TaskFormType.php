@@ -14,7 +14,8 @@ class TaskFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+            ->add('name')
+//            ->add('category', ChoiceType::class)
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),
             ])

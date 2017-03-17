@@ -134,11 +134,9 @@ class JobController extends Controller
             return $this->redirectToRoute('job_edit', array('id' => $job->getId()));
         }
 
-        return $this->render('job/edit.html.twig', array(
-            'job' => $job,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render('job/edit.html.twig', [
+            'jobForm' => $editForm->createView(),
+        ]);
     }
 
     /**
