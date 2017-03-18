@@ -23,12 +23,14 @@ class VehicleFormType extends AbstractType
             ->add('color')
             ->add('transmissionType', ChoiceType::class, [
                 'choices' => [
+                    '' => '',
                     'Auto' => 'Auto',
                     'Manual' => 'Manual'
                 ]
             ])
             ->add('fuelType', ChoiceType::class, [
                 'choices' => [
+                    '' => '',
                     'Gas' => 'Gas',
                     'Diesel' => 'Diesel',
                     'Propane' => 'Propane',

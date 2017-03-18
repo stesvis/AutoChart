@@ -27,7 +27,7 @@ class VehicleController extends Controller
     public function indexAction()
     {
         try {
-            $vehicles = $this->get('utility_service')->getMyVehicles();
+            $vehicles = $this->get('vehicle_service')->getMyVehicles();
         } catch (\Exception $ex) {
             $vehicles = null;
         }

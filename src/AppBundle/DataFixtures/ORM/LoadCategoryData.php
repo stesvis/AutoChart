@@ -20,12 +20,12 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $this->CreateCategory($manager, 'Oil Change', new \DateTime('now'), 'oil-change', 'user1');
-        $this->CreateCategory($manager, 'Brakes', new \DateTime('now'), 'brakes', 'user1');
-        $this->CreateCategory($manager, 'Tires', new \DateTime('now'), 'tires', 'user1');
-        $this->CreateCategory($manager, 'Test 1', new \DateTime('now'), 'test1', 'user1');
-        $this->CreateCategory($manager, 'Test 2', new \DateTime('now'), 'test2', 'user1');
-        $this->CreateCategory($manager, 'Test 3', new \DateTime('now'), 'test3', 'user1');
+        $this->CreateCategory($manager, 'Oil Change', new \DateTime('now'), 'oil-change', 'superadmin');
+        $this->CreateCategory($manager, 'Brakes', new \DateTime('now'), 'brakes', 'superadmin');
+        $this->CreateCategory($manager, 'Tires', new \DateTime('now'), 'tires', 'superadmin');
+        $this->CreateCategory($manager, 'Test 1', new \DateTime('now'), 'test1', 'superadmin');
+        $this->CreateCategory($manager, 'Test 2', new \DateTime('now'), 'test2', 'superadmin');
+        $this->CreateCategory($manager, 'Test 3', new \DateTime('now'), 'test3', 'superadmin');
     }
 
     private function CreateCategory(

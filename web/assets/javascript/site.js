@@ -1,3 +1,16 @@
+$(document).ready(function () {
+    // $('#menu-content li').click(function () {
+    $('#menu-content li').each(function (index) {
+        if ($(this).hasClass('active')) {
+            $(this).next().addClass('in');
+        }
+    });
+    //
+    //     $(this).addClass('active');
+    // });
+});
+
+
 function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
     return $(dialogId).dialog({
         resizable: false,
@@ -40,6 +53,7 @@ function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
                     }
                     ,
                     error: function (msg) {
+                        console.log('Error');
                         console.log(msg);
                         $("#loading").hide();
 
@@ -65,3 +79,5 @@ function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
         }
     });
 }
+
+

@@ -12,13 +12,24 @@ services:
         tags:
             - { name: form.type, alias: masterlube_user_registration }
 
-    utility_service:
+    vehicle_service:
         class: AppBundle\Service\VehicleService
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
+    category_service:
+        class: AppBundle\Service\CategoryService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
 
     app.job.form.type:
         class: AppBundle\Form\JobFormType
         arguments:
-            - '@utility_service'
+            - '@vehicle_service'
+        tags:
+            - { name: form.type }
+
+    app.task.form.type:
+        class: AppBundle\Form\TaskFormType
+        arguments:
+            - '@category_service'
         tags:
             - { name: form.type }

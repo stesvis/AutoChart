@@ -20,17 +20,17 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        $this->CreateTask($manager, 'Oil Change', new \DateTime('now'), 'task-oil-change', 'user1', 'oil-change');
-        $this->CreateTask($manager, 'Oil Filter Change', new \DateTime('now'), 'task-oil-filter-change', 'user1',
+        $this->CreateTask($manager, 'Oil Change', new \DateTime('now'), 'task-oil-change', 'superadmin', 'oil-change');
+        $this->CreateTask($manager, 'Oil Filter Change', new \DateTime('now'), 'task-oil-filter-change', 'superadmin',
             'oil-change');
-        $this->CreateTask($manager, 'Check Oil Level', new \DateTime('now'), 'task-check-oil-level', 'user1',
+        $this->CreateTask($manager, 'Check Oil Level', new \DateTime('now'), 'task-check-oil-level', 'superadmin',
             'oil-change');
-        $this->CreateTask($manager, 'Dirty Oil Disposal', new \DateTime('now'), 'task-dirty-oil-disposal', 'user1',
+        $this->CreateTask($manager, 'Dirty Oil Disposal', new \DateTime('now'), 'task-dirty-oil-disposal', 'superadmin',
             'oil-change');
         $this->CreateTask($manager, 'Brake Pads Replacement', new \DateTime('now'), 'task-brake-pads-replacement',
-            'user2', 'brakes');
+            'superadmin', 'brakes');
         $this->CreateTask($manager, 'Front Rotors Replacement', new \DateTime('now'), 'task-front-rotors-replacement',
-            'user2', 'brakes');
+            'superadmin', 'brakes');
     }
 
     private function CreateTask(

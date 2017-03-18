@@ -3,6 +3,9 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Task;
+use AppBundle\Includes\StatusEnums;
+use AppBundle\Service\CategoryService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -11,11 +14,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaskFormType extends AbstractType
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-//            ->add('category', ChoiceType::class)
+            ->add('category', EntityType::class, [
+                'class' => 'AppBundle\Entity\Category',
+                'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('c')
+//                        ->orderBy('c.name', 'ASC');
+//                },
+                'choice_label' => 'name',
+            ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),
             ])

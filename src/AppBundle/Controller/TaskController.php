@@ -33,7 +33,6 @@ class TaskController extends Controller
             $em = $this->getDoctrine()->getManager();
             $tasks = $em->getRepository('AppBundle:Task')
                 ->findBy([
-                    //'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
         } catch (\Exception $ex) {
@@ -156,7 +155,7 @@ class TaskController extends Controller
 
             if (count($jobsByTask) == 0) {
                 // Safe to remove
-                $task->setStatus(StatusEnums::Active);
+                $task->setStatus(StatusEnums::Deleted);
                 $em->persist($task);
                 $em->flush();
 

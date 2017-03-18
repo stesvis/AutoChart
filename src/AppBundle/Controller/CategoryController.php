@@ -46,6 +46,7 @@ class CategoryController extends Controller
     /**
      * @Route("/{id}", name="category_show")
      * @param $id
+     * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
@@ -54,8 +55,8 @@ class CategoryController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
             $category = $em->getRepository('AppBundle:Category')
-                ->findBy([
-                    'status' => StatusEnums::Active,
+                ->findOneBy([
+                    'id' => $id,
                     'createdBy' => $this->getUser(),
                 ]);
         } catch (\Exception $ex) {

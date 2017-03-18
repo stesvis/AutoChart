@@ -12,46 +12,54 @@
             </li>
 
             {#---------------------------------- JOBS ----------------------------------#}
-            <li data-toggle="collapse" data-target="#jobs" class="collapsed active">
+            <li data-toggle="collapse" data-target="#jobs"
+                class="collapsed {% if 'jobs' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-calendar-check-o fa-lg fa-fw"></i> Jobs <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="jobs">
-                <li class="active"><a href="{{ path('job_list') }}">All Jobs</a></li>
-                <li><a href="{{ path('job_new') }}">Add New</a></li>
+                <li class="{% if app.request.uri ends with 'jobs/' %}active{% endif %}"><a
+                            href="{{ path('job_list') }}">All
+                        Jobs</a></li>
+                <li class="{% if app.request.uri ends with 'jobs/new' %}active{% endif %}"><a
+                            href="{{ path('job_new') }}">Add
+                        New</a></li>
             </ul>
 
 
             {#---------------------------------- TASKS ----------------------------------#}
-            <li data-toggle="collapse" data-target="#tasks" class="collapsed">
+            <li data-toggle="collapse" data-target="#tasks"
+                class="collapsed {% if 'tasks' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-tasks fa-lg fa-fw"></i> Tasks <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="tasks">
-                <li><a href="{{ path('task_list') }}">All Tasks</a></li>
-                <li><a href="{{ path('task_new') }}">Add New</a></li>
+                <li class="{% if app.request.uri ends with 'tasks/' %}active{% endif %}"><a href="{{ path('task_list') }}">All Tasks</a></li>
+                <li class="{% if app.request.uri ends with 'tasks/new' %}active{% endif %}"><a href="{{ path('task_new') }}">Add New</a></li>
             </ul>
 
 
             {#---------------------------appkernel------- CATEGORIES ----------------------------------#}
-            <li data-toggle="collapse" data-target="#categories" class="collapsed">
+            <li data-toggle="collapse" data-target="#categories"
+                class="collapsed {% if 'categories' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-th fa-lg fa-fw"></i> Categories <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="categories">
-                <li><a href="{{ path('category_list') }}">All Categories</a></li>
-                <li><a href="{{ path('category_new') }}">Add New</a></li>
+                <li class="{% if app.request.uri ends with 'categories/' %}active{% endif %}"><a href="{{ path('category_list') }}">All Categories</a></li>
+                <li class="{% if app.request.uri ends with 'categories/new' %}active{% endif %}"><a href="{{ path('category_new') }}">Add New</a></li>
             </ul>
 
 
             {#---------------------------------- VEHICLES ----------------------------------#}
-            <li data-toggle="collapse" data-target="#new" class="collapsed">
+            <li data-toggle="collapse" data-target="#new"
+                class="collapsed {% if 'vehicles' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-car fa-lg"></i> Vehicles <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="new">
-                <li class="active"><a href="{{ path('vehicle_list') }}">All Vehicles</a></li>
-                <li><a href="{{ path('vehicle_new') }}">Add New</a></li>
+                <li class="{% if app.request.uri ends with 'vehicles/' %}active{% endif %}"><a href="{{ path('vehicle_list') }}">All Vehicles</a></li>
+                <li class="{% if app.request.uri ends with 'vehicles/new' %}active{% endif %}"><a href="{{ path('vehicle_new') }}">Add New</a></li>
             </ul>
 
 
