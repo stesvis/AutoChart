@@ -1,0 +1,4 @@
+# Use PHP7 as default
+        AddHandler application/x-httpd-php70 .php
+
+DirectoryIndex /web/app.php

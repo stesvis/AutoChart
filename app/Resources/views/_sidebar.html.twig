@@ -1,11 +1,16 @@
+{% set route = app.request.attributes.get('_route') %}
+
 <div class="nav-side-menu">
     <div class="brand">Brand Logo</div>
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 
     <div class="menu-list">
 
+
         <ul id="menu-content" class="menu-content collapse out">
-            <li>
+            {#---------------------------------- DASHBOARD ----------------------------------#}
+            <li data-toggle="collapse" data-target="#dashboard"
+                class="collapsed {% if route == 'dashboard_index' %}active{% endif %}">
                 <a href="{{ path('dashboard_index') }}">
                     <i class="fa fa-dashboard fa-lg fa-fw"></i> Dashboard
                 </a><span class="badge">5</span>
@@ -14,14 +19,14 @@
             {#---------------------------------- JOBS ----------------------------------#}
             <li data-toggle="collapse" data-target="#jobs"
                 class="collapsed {% if 'jobs' in app.request.uri %}active{% endif %}">
-                <a href="#"><i class="fa fa-calendar-check-o fa-lg fa-fw"></i> Jobs <span
+                <a><i class="fa fa-calendar-check-o fa-lg fa-fw"></i> Jobs <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="jobs">
-                <li class="{% if app.request.uri ends with 'jobs/' %}active{% endif %}"><a
+                <li class="{% if route == 'job_list' %}active{% endif %}"><a
                             href="{{ path('job_list') }}">All
                         Jobs</a></li>
-                <li class="{% if app.request.uri ends with 'jobs/new' %}active{% endif %}"><a
+                <li class="{% if route == 'job_new' %}active{% endif %}"><a
                             href="{{ path('job_new') }}">Add
                         New</a></li>
             </ul>
@@ -29,25 +34,29 @@
 
             {#---------------------------------- TASKS ----------------------------------#}
             <li data-toggle="collapse" data-target="#tasks"
-                class="collapsed {% if 'tasks' in app.request.uri %}active{% endif %}">
+                class="collapsed {% if route == 'task_list' %}active{% endif %}">
                 <a href="#"><i class="fa fa-tasks fa-lg fa-fw"></i> Tasks <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="tasks">
-                <li class="{% if app.request.uri ends with 'tasks/' %}active{% endif %}"><a href="{{ path('task_list') }}">All Tasks</a></li>
-                <li class="{% if app.request.uri ends with 'tasks/new' %}active{% endif %}"><a href="{{ path('task_new') }}">Add New</a></li>
+                <li class="{% if route == 'task_list' %}active{% endif %}"><a
+                            href="{{ path('task_list') }}">All Tasks</a></li>
+                <li class="{% if route == 'task_new' %}active{% endif %}"><a
+                            href="{{ path('task_new') }}">Add New</a></li>
             </ul>
 
 
-            {#---------------------------appkernel------- CATEGORIES ----------------------------------#}
+            {#---------------------------------- CATEGORIES ----------------------------------#}
             <li data-toggle="collapse" data-target="#categories"
                 class="collapsed {% if 'categories' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-th fa-lg fa-fw"></i> Categories <span
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="categories">
-                <li class="{% if app.request.uri ends with 'categories/' %}active{% endif %}"><a href="{{ path('category_list') }}">All Categories</a></li>
-                <li class="{% if app.request.uri ends with 'categories/new' %}active{% endif %}"><a href="{{ path('category_new') }}">Add New</a></li>
+                <li class="{% if route == 'category_list' %}active{% endif %}"><a
+                            href="{{ path('category_list') }}">All Categories</a></li>
+                <li class="{% if route == 'category_new' %}active{% endif %}"><a
+                            href="{{ path('category_new') }}">Add New</a></li>
             </ul>
 
 
@@ -58,8 +67,10 @@
                             class="arrow"></span></a>
             </li>
             <ul class="sub-menu collapse" id="new">
-                <li class="{% if app.request.uri ends with 'vehicles/' %}active{% endif %}"><a href="{{ path('vehicle_list') }}">All Vehicles</a></li>
-                <li class="{% if app.request.uri ends with 'vehicles/new' %}active{% endif %}"><a href="{{ path('vehicle_new') }}">Add New</a></li>
+                <li class="{% if route == 'vehicle_list' %}active{% endif %}"><a
+                            href="{{ path('vehicle_list') }}">All Vehicles</a></li>
+                <li class="{% if route == 'vehicle_new' %}active{% endif %}"><a
+                            href="{{ path('vehicle_new') }}">Add New</a></li>
             </ul>
 
 
