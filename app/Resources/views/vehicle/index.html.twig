@@ -23,7 +23,7 @@
                 <td>{{ vehicle.trim }}</td>
                 <td><a href="{{ path('vehicle_job_list', {'id':vehicle.id}) }}">View</a></td>
                 <td style="width: 1%; white-space: nowrap;">
-                    <a href="" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>

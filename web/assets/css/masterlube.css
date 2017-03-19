@@ -29,3 +29,7 @@ body {
     margin-left: -75px;
     margin-top: -75px;
 }
+
+table a:not(.btn), .table a:not(.btn) {
+    color: #df691a;
+}

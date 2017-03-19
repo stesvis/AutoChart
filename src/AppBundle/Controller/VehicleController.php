@@ -47,26 +47,30 @@ class VehicleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try {
-            $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
+        $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
 
-            $form = $this->createForm(VehicleFormType::class, $vehicle);
+        if (!$vehicle) {
+            throw $this->createNotFoundException(
+                'No vehicle found for id ' . $id
+            );
+        }
 
-            // only handles data on POST
-            $form->handleRequest($request);
+        $form = $this->createForm(VehicleFormType::class, $vehicle);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $vehicle = $form->getData();
-                $vehicle->setModifiedAt(new \DateTime('now'));
+        // only handles data on POST
+        $form->handleRequest($request);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($vehicle);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $vehicle = $form->getData();
+            $vehicle->setModifiedAt(new \DateTime('now'));
+            $vehicle->setModifiedBy($this->getUser());
+            $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
-                return $this->redirectToRoute('vehicle_list');
-            }
-        } catch (\Exception $ex) {
-            die($ex->getMessage());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vehicle);
+            $em->flush();
+
+            return $this->redirectToRoute('vehicle_list');
         }
 
         return $this->render('vehicle/edit.html.twig', [
@@ -96,6 +100,7 @@ class VehicleController extends Controller
             $vehicle->setCreatedBy($this->getUser());
             $vehicle->setModifiedBy($this->getUser());
             $vehicle->setStatus('A');
+            $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
             $em->persist($vehicle);
             $em->flush();
@@ -105,6 +110,35 @@ class VehicleController extends Controller
 
         return $this->render('vehicle/new.html.twig', [
             'vehicleForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="vehicle_show")
+     * @param $id
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction($id)
+    {
+        $vehicle = null;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $vehicle = $em->getRepository('AppBundle:Vehicle')
+            ->findOneBy([
+                'id' => $id,
+                'createdBy' => $this->getUser(),
+            ]);
+
+        if (!$vehicle) {
+            throw $this->createNotFoundException(
+                'No vehicle found for id ' . $id
+            );
+        }
+
+        return $this->render('vehicle/show.html.twig', [
+            'vehicle' => $vehicle
         ]);
     }
 
@@ -127,7 +161,9 @@ class VehicleController extends Controller
                 ]);
 
             if (!$vehicle) {
-                throw $this->createNotFoundException('Unable to find Vehicle entity.');
+                throw $this->createNotFoundException(
+                    'No vehicle found for id ' . $id
+                );
             }
 
             // Safe to remove

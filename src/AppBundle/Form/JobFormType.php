@@ -3,20 +3,23 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Job;
+use AppBundle\Includes\StatusEnums;
+use AppBundle\Service\TaskService;
 use AppBundle\Service\VehicleService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobFormType extends AbstractType
 {
+    protected $taskService;
     protected $vehicleService;
 
-    public function __construct(VehicleService $vehicleService)
+    public function __construct(TaskService $taskService, VehicleService $vehicleService)
     {
+        $this->taskService = $taskService;
         $this->vehicleService = $vehicleService;
     }
 
@@ -26,15 +29,21 @@ class JobFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mileage')
-            ->add('mileageType')
-            ->add('completedAt', DateType::class)
-            ->add('vehicle', ChoiceType::class, [
-                'choices' => [
-                    $this->vehicleService->getVehiclesDropDown()
-                ]
+            ->add('task', EntityType::class, [
+                'class' => 'AppBundle\Entity\Task',
+                'choices' => $this->taskService->getMyTasks(StatusEnums::Active),
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => '',
             ])
-//            ->add('task', ChoiceType::class)
+            ->add('vehicle', EntityType::class, [
+                'class' => 'AppBundle\Entity\Vehicle',
+                'choices' => $this->vehicleService->getMyVehicles(StatusEnums::Active),
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => '',
+            ])
+            ->add('mileage')
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary'

@@ -20,9 +20,14 @@ services:
         class: AppBundle\Service\CategoryService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
 
+    task_service:
+        class: AppBundle\Service\TaskService
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
     app.job.form.type:
         class: AppBundle\Form\JobFormType
         arguments:
+            - '@task_service'
             - '@vehicle_service'
         tags:
             - { name: form.type }

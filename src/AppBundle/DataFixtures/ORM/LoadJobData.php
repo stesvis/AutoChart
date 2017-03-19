@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Job;
+use AppBundle\Includes\StatusEnums;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,7 +26,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
             '2014-jeep-cherokee',
             'task-oil-change',
             'superadmin',
-            45000, 'Km',
+            45000,
             new \DateTime('now'),
             '2014-jeep-cherokee-task-oil-change');
 
@@ -34,7 +35,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
             '2008-jeep-wrangler',
             'task-oil-change',
             'superadmin',
-            223000, 'Km',
+            223000,
             new \DateTime('now'),
             '2008-jeep-wrangler-task-oil-change');
     }
@@ -45,7 +46,6 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
         string $taskReference,
         string $userReference,
         int $mileage,
-        string $mileageType,
         \DateTime $now,
         string $reference
     ) {
@@ -53,11 +53,12 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
 
         $job->setVehicle($this->getReference($vehicleReference));
         $job->setTask($this->getReference($taskReference));
-        $job->setCompletedBy($this->getReference($userReference));
+        $job->setCreatedAt($now);
+        $job->setCreatedBy($this->getReference($userReference));
+        $job->setModifiedAt($now);
+        $job->setModifiedBy($this->getReference($userReference));
         $job->setMileage($mileage);
-        $job->setMileageType($mileageType);
-        $job->setCompletedAt($now);
-        $job->setStatus('A');
+        $job->setStatus(StatusEnums::Active);
 
         $manager->persist($job);
         $manager->flush();

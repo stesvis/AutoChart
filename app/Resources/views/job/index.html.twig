@@ -18,8 +18,8 @@
             <tr>
                 <td>{{ job.vehicle.year }} {{ job.vehicle.make }} {{ job.vehicle.model }}</td>
                 <td>{{ job.task.name }}</td>
-                <td>{{ job.mileage|number_format }} {{ job.mileageType }}</td>
-                <td>{% if job.completedAt %}{{ job.completedAt|date("F j, Y") }}{% endif %}</td>
+                <td>{{ job.mileage|number_format }} {{ job.vehicle.mileageType }}</td>
+                <td>{{ job.createdAt|date('F j, Y') }}</td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('job_show', {'id':job.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>

@@ -28,11 +28,9 @@ class TaskFormType extends AbstractType
             ->add('category', EntityType::class, [
                 'class' => 'AppBundle\Entity\Category',
                 'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
-//                'query_builder' => function (EntityRepository $er) {
-//                    return $er->createQueryBuilder('c')
-//                        ->orderBy('c.name', 'ASC');
-//                },
                 'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => '',
             ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),

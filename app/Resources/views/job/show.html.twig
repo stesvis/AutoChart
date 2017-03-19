@@ -1,44 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Job</h1>
+{% block title %}Job Details{% endblock %}
 
-    <table>
+{% block stylesheets %}
+    <style type="text/css">
+        table.thisTable {
+            width: auto;
+        }
+
+        table.thisTable > tbody > tr > th {
+            padding-right: 50px !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <h1>Job Details</h1>
+
+    <table class="table table-hover thisTable">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ job.id }}</td>
-            </tr>
-            <tr>
-                <th>Mileage</th>
-                <td>{{ job.mileage }}</td>
-            </tr>
-            <tr>
-                <th>Mileagetype</th>
-                <td>{{ job.mileageType }}</td>
-            </tr>
-            <tr>
-                <th>Completedat</th>
-                <td>{% if job.completedAt %}{{ job.completedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ job.status }}</td>
-            </tr>
+        <tr>
+            <th>Vehicle</th>
+            <td>
+                <a href="{{ path('vehicle_show', {'id':job.vehicle.id}) }}">{{ job.vehicle.name }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Mileage</th>
+            <td>{{ job.mileage }} {{ job.vehicle.mileageType }}</td>
+        </tr>
+        <tr>
+            <th>Completed</th>
+            <td>{{ job.createdAt|date('F j, Y') }} by {{ job.createdBy.username }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ job.status }}</td>
+        </tr>
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('job_list') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('job_edit', { 'id': job.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
 {% endblock %}

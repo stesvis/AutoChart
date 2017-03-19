@@ -1,0 +1,4 @@
+AppBundle\Entity\Job:
+    type: entity
+    table: jobs
+    repositoryClass: AppBundle\Repository\JobRepository

@@ -2,11 +2,10 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Vehicle;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class VehicleService
+class TaskService
 {
     /**
      * Entity Manager
@@ -24,12 +23,12 @@ class VehicleService
     }
 
     /**
-     * Returns the list of vehicles that belong to the logged in user
+     * Returns the list of tasks that belong to the logged in user
      *
      * @param $status
      * @return Vehicle[]|array
      */
-    public function getMyVehicles($status = null): array
+    public function getMyTasks($status = null): array
     {
         $filter['createdBy'] = $this->user;
 
@@ -37,22 +36,12 @@ class VehicleService
             $filter['status'] = $status;
         }
 
-        $vehicles = $this->em->getRepository('AppBundle:Vehicle')
+        $vehicles = $this->em->getRepository('AppBundle:Task')
             ->findBy($filter, [
-                'year' => 'DESC'
+                'name' => 'ASC'
             ]);
 
         return $vehicles;
-    }
-
-    /**
-     * Returns the full name of a vehicle as Year Make Model
-     * @param Vehicle $vehicle
-     * @return string
-     */
-    public function getVehicleName(Vehicle $vehicle): string
-    {
-        return "{$vehicle->getYear()} {$vehicle->getMake()} {$vehicle->getModel()}";
     }
 
 }

@@ -20,6 +20,11 @@ class Vehicle
     private $id;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Please enter the year")
      */
@@ -66,6 +71,11 @@ class Vehicle
      * @ORM\Column(type="integer", nullable=true)
      */
     private $mileage;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mileageType;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -128,6 +138,22 @@ class Vehicle
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -272,6 +298,22 @@ class Vehicle
     public function setMileage($mileage)
     {
         $this->mileage = $mileage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMileageType()
+    {
+        return $this->mileageType;
+    }
+
+    /**
+     * @param mixed $mileageType
+     */
+    public function setMileageType($mileageType)
+    {
+        $this->mileageType = $mileageType;
     }
 
     /**

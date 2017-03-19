@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task: {{ task.name }}{% endblock %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        table.thisTable {
+            width: auto;
+        }
+
+        table.thisTable > tbody > tr > th {
+            padding-right: 50px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h2>Task: {{ task.name }}</h2>
+
+    <table class="table table-hover thisTable">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{ task.name }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ task.description }}</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>{{ task.category.name }}</td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ task.createdAt|date('F j, Y') }} by {{ task.createdBy }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ task.type }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ task.status }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

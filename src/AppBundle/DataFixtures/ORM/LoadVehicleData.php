@@ -68,6 +68,9 @@ class LoadVehicleData extends AbstractFixture implements OrderedFixtureInterface
         string $userReference
     ) {
         $vehicle = new Vehicle();
+
+        $vehicle->setName($year. ' ' . $make . ' ' . $model);
+//        $vehicle->setName('test');
         $vehicle->setYear($year);
         $vehicle->setMake($make);
         $vehicle->setModel($model);

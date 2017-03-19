@@ -52,16 +52,14 @@ class CategoryController extends Controller
     public function showAction($id)
     {
         $category = null;
-        try {
+
             $em = $this->getDoctrine()->getManager();
+
             $category = $em->getRepository('AppBundle:Category')
                 ->findOneBy([
                     'id' => $id,
                     'createdBy' => $this->getUser(),
                 ]);
-        } catch (\Exception $ex) {
-
-        }
 
         return $this->render('category/show.html.twig', [
             'category' => $category

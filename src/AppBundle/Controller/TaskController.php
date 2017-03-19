@@ -55,31 +55,28 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try {
-            $task = $em->getRepository('AppBundle:Task')
-                ->findOneBy([
-                    'id' => $id,
-                    'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
-                ]);
+        $task = $em->getRepository('AppBundle:Task')
+            ->findOneBy([
+                'id' => $id,
+                'status' => StatusEnums::Active,
+                'createdBy' => $this->getUser(),
+            ]);
 
-            $form = $this->createForm(TaskFormType::class, $task);
+        $form = $this->createForm(TaskFormType::class, $task);
 
-            // only handles data on POST
-            $form->handleRequest($request);
+        // only handles data on POST
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $task = $form->getData();
-                $task->setModifiedAt(new \DateTime('now'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+            $task->setModifiedAt(new \DateTime('now'));
+            $task->setModifiedBy($this->getUser());
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($task);
-                $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($task);
+            $em->flush();
 
-                return $this->redirectToRoute('task_list');
-            }
-        } catch (\Exception $ex) {
-            die($ex->getMessage());
+            return $this->redirectToRoute('task_list');
         }
 
         return $this->render('task/edit.html.twig', [
@@ -108,8 +105,9 @@ class TaskController extends Controller
             $task->setModifiedAt(new \DateTime('now'));
             $task->setCreatedBy($this->getUser());
             $task->setModifiedBy($this->getUser());
-            $task->setStatus('A');
+            $task->setStatus(StatusEnums::Active);
             $task->setType('Custom');
+
             $task->setCategory($em->getRepository('AppBundle:Category')->findOneBy([
                 'name' => 'Brakes',
             ]));
@@ -122,6 +120,33 @@ class TaskController extends Controller
 
         return $this->render('task/new.html.twig', [
             'taskForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="task_show")
+     * @param $id
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction($id)
+    {
+        $task = null;
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+
+            $task = $em->getRepository('AppBundle:Task')
+                ->findOneBy([
+                    'id' => $id,
+                    'createdBy' => $this->getUser(),
+                ]);
+        } catch (\Exception $ex) {
+
+        }
+
+        return $this->render('task/show.html.twig', [
+            'task' => $task
         ]);
     }
 

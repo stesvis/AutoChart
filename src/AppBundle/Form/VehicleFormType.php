@@ -23,22 +23,32 @@ class VehicleFormType extends AbstractType
             ->add('color')
             ->add('transmissionType', ChoiceType::class, [
                 'choices' => [
-                    '' => '',
                     'Auto' => 'Auto',
                     'Manual' => 'Manual'
-                ]
+                ],
+                'empty_data' => null,
+                'placeholder' => '',
             ])
             ->add('fuelType', ChoiceType::class, [
                 'choices' => [
-                    '' => '',
                     'Gas' => 'Gas',
                     'Diesel' => 'Diesel',
                     'Propane' => 'Propane',
-                ]
+                ],
+                'empty_data' => null,
+                'placeholder' => '',
             ])
             ->add('engineSize')
             ->add('passengers')
             ->add('mileage')
+            ->add('mileageType', ChoiceType::class, [
+                'choices' => [
+                    'Km' => 'Km',
+                    'Miles' => 'Miles',
+                ],
+                'empty_data' => null,
+                'placeholder' => '',
+            ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),
             ])
@@ -46,7 +56,8 @@ class VehicleFormType extends AbstractType
             ->add('purchasedAt', DateType::class)
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn btn-primary',
+                    'formnovalidate'
                 ]
             ]);
     }

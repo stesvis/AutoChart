@@ -35,20 +35,26 @@ class Job
     private $mileage;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetime")
      */
-    private $mileageType;
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
+     * @ORM\JoinColumn(name="created_by_user_id", referencedColumnName="id", onDelete="set null")
      */
-    private $completedBy;
+    private $createdBy;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $completedAt;
+    private $modifiedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="modified_by_user_id", referencedColumnName="id")
+     */
+    private $modifiedBy;
 
     /**
      * @ORM\Column(type="string")
@@ -122,49 +128,65 @@ class Job
     /**
      * @return mixed
      */
-    public function getMileageType()
+    public function getCreatedBy()
     {
-        return $this->mileageType;
+        return $this->createdBy;
     }
 
     /**
-     * @param mixed $mileageType
+     * @param mixed $createdBy
      */
-    public function setMileageType($mileageType)
+    public function setCreatedBy($createdBy)
     {
-        $this->mileageType = $mileageType;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCompletedBy()
-    {
-        return $this->completedBy;
-    }
-
-    /**
-     * @param mixed $completedBy
-     */
-    public function setCompletedBy($completedBy)
-    {
-        $this->completedBy = $completedBy;
+        $this->createdBy = $createdBy;
     }
 
     /**
      * @return mixed
      */
-    public function getCompletedAt()
+    public function getCreatedAt()
     {
-        return $this->completedAt;
+        return $this->createdAt;
     }
 
     /**
-     * @param mixed $completedAt
+     * @param mixed $createdAt
      */
-    public function setCompletedAt($completedAt)
+    public function setCreatedAt($createdAt)
     {
-        $this->completedAt = $completedAt;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModifiedAt()
+    {
+        return $this->modifiedAt;
+    }
+
+    /**
+     * @param mixed $modifiedAt
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modifiedAt = $modifiedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModifiedBy()
+    {
+        return $this->modifiedBy;
+    }
+
+    /**
+     * @param mixed $modifiedBy
+     */
+    public function setModifiedBy($modifiedBy)
+    {
+        $this->modifiedBy = $modifiedBy;
     }
 
     /**
