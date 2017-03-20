@@ -38,3 +38,10 @@ services:
             - '@category_service'
         tags:
             - { name: form.type }
+
+    app.taskfield.form.type:
+        class: AppBundle\Form\TaskFieldFormType
+        arguments:
+            - '@task_service'
+        tags:
+            - { name: form.type }

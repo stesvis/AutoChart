@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -96,6 +95,11 @@ class Vehicle
      * @ORM\Column(type="datetime")
      */
     private $purchasedAt;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $annualMileage;
 
     /**
      * @ORM\Column(type="datetime")
@@ -378,6 +382,22 @@ class Vehicle
     public function setPurchasedAt($purchasedAt)
     {
         $this->purchasedAt = $purchasedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnnualMileage()
+    {
+        return $this->annualMileage;
+    }
+
+    /**
+     * @param mixed $annualMileage
+     */
+    public function setAnnualMileage($annualMileage)
+    {
+        $this->annualMileage = $annualMileage;
     }
 
     /**

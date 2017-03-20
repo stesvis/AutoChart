@@ -47,7 +47,11 @@ class VehicleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $vehicle = $em->getRepository('AppBundle:Vehicle')->find($id);
+        $vehicle = $em->getRepository('AppBundle:Vehicle')
+            ->findOneBy([
+                'id' => $id,
+                'createdBy' => $this->getUser(),
+            ]);
 
         if (!$vehicle) {
             throw $this->createNotFoundException(

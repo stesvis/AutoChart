@@ -2,33 +2,28 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Job;
+use AppBundle\Entity\TaskField;
 use AppBundle\Includes\StatusEnums;
 use AppBundle\Service\TaskService;
-use AppBundle\Service\VehicleService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JobFormType extends AbstractType
+class TaskFieldFormType extends AbstractType
 {
     protected $taskService;
-    protected $vehicleService;
 
-    public function __construct(TaskService $taskService, VehicleService $vehicleService)
+    public function __construct(TaskService $taskService)
     {
         $this->taskService = $taskService;
-        $this->vehicleService = $vehicleService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name')
             ->add('task', EntityType::class, [
                 'class' => 'AppBundle\Entity\Task',
                 'choices' => $this->taskService->getMyTasks(StatusEnums::Active),
@@ -37,15 +32,6 @@ class JobFormType extends AbstractType
                 'placeholder' => '',
                 'required' => true,
             ])
-            ->add('vehicle', EntityType::class, [
-                'class' => 'AppBundle\Entity\Vehicle',
-                'choices' => $this->vehicleService->getMyVehicles(StatusEnums::Active),
-                'choice_label' => 'name',
-                'empty_data' => null,
-                'placeholder' => '',
-                'required' => true,
-            ])
-            ->add('mileage')
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary'
@@ -53,23 +39,15 @@ class JobFormType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => Job::class
-        ));
+        $resolver->setDefaults([
+            'data_class' => TaskField::class,
+        ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return 'app_bundle_job_form_type';
+        return 'app_bundle_taskfield_form_type';
     }
-
-
 }

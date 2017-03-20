@@ -118,7 +118,6 @@ class JobController extends Controller
         }
 
         return $this->render('job/new.html.twig', array(
-            'job' => $job,
             'jobForm' => $form->createView(),
         ));
     }

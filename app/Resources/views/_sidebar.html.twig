@@ -34,7 +34,7 @@
 
             {#---------------------------------- TASKS ----------------------------------#}
             <li data-toggle="collapse" data-target="#tasks"
-                class="collapsed {% if route == 'task_list' %}active{% endif %}">
+                class="collapsed {% if 'tasks' in app.request.uri or 'taskfields' in app.request.uri %}active{% endif %}">
                 <a href="#"><i class="fa fa-tasks fa-lg fa-fw"></i> Tasks <span
                             class="arrow"></span></a>
             </li>
@@ -43,6 +43,10 @@
                             href="{{ path('task_list') }}">All Tasks</a></li>
                 <li class="{% if route == 'task_new' %}active{% endif %}"><a
                             href="{{ path('task_new') }}">Add New</a></li>
+                <li class="{% if route == 'taskfield_list' %}active{% endif %}"><a
+                            href="{{ path('taskfield_list') }}">Task Fields</a></li>
+                <li class="{% if route == 'taskfield_new' %}active{% endif %}"><a
+                            href="{{ path('taskfield_new') }}">Add New Task Field</a></li>
             </ul>
 
 

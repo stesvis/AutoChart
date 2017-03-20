@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -40,7 +41,6 @@ class VehicleFormType extends AbstractType
             ])
             ->add('engineSize')
             ->add('passengers')
-            ->add('mileage')
             ->add('mileageType', ChoiceType::class, [
                 'choices' => [
                     'Km' => 'Km',
@@ -48,6 +48,12 @@ class VehicleFormType extends AbstractType
                 ],
                 'empty_data' => null,
                 'placeholder' => '',
+            ])
+            ->add('mileage', TextType::class, [
+                'label' => 'Current Mileage',
+            ])
+            ->add('annualMileage', TextType::class, [
+                'label' => 'Average Annual Mileage',
             ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),

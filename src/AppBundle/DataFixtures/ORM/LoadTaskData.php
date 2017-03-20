@@ -20,19 +20,71 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        $this->CreateTask($manager, 'Oil Change', new \DateTime('now'), 'task-oil-change', 'superadmin', 'oil-change');
-        $this->CreateTask($manager, 'Oil Filter Change', new \DateTime('now'), 'task-oil-filter-change', 'superadmin',
+        $this->CreateTask(
+            $manager,
+            'Oil Change',
+            new \DateTime('now'),
+            'task-oil-change',
+            'superadmin',
             'oil-change');
-        $this->CreateTask($manager, 'Check Oil Level', new \DateTime('now'), 'task-check-oil-level', 'superadmin',
+
+        $this->CreateTask(
+            $manager,
+            'Tire Rotation',
+            new \DateTime('now'),
+            'task-tire-rotation',
+            'superadmin',
+            'tires');
+
+        $this->CreateTask(
+            $manager,
+            'Oil Filter Change',
+            new \DateTime('now'),
+            'task-oil-filter-change',
+            'superadmin',
             'oil-change');
-        $this->CreateTask($manager, 'Dirty Oil Disposal', new \DateTime('now'), 'task-dirty-oil-disposal', 'superadmin',
+
+        $this->CreateTask(
+            $manager,
+            'Check Oil Level',
+            new \DateTime('now'),
+            'task-check-oil-level',
+            'superadmin',
             'oil-change');
-        $this->CreateTask($manager, 'Brake Pads Replacement', new \DateTime('now'), 'task-brake-pads-replacement',
-            'superadmin', 'brakes');
-        $this->CreateTask($manager, 'Front Rotors Replacement', new \DateTime('now'), 'task-front-rotors-replacement',
-            'superadmin', 'brakes');
+
+        $this->CreateTask(
+            $manager,
+            'Dirty Oil Disposal',
+            new \DateTime('now'),
+            'task-dirty-oil-disposal',
+            'superadmin',
+            'oil-change');
+
+        $this->CreateTask(
+            $manager,
+            'Brake Pads Replacement',
+            new \DateTime('now'),
+            'task-brake-pads-replacement',
+            'superadmin',
+            'brakes');
+
+        $this->CreateTask(
+            $manager,
+            'Front Rotors Replacement',
+            new \DateTime('now'),
+            'task-front-rotors-replacement',
+            'superadmin',
+            'brakes');
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @param string $name
+     * @param \DateTime $now
+     * @param string $reference
+     * @param string $userReference
+     * @param string|null $categoryReference
+     */
     private function CreateTask(
         ObjectManager $manager,
         string $name,

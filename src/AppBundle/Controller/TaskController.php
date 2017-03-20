@@ -42,7 +42,6 @@ class TaskController extends Controller
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks
         ]);
-
     }
 
     /**
@@ -58,7 +57,6 @@ class TaskController extends Controller
         $task = $em->getRepository('AppBundle:Task')
             ->findOneBy([
                 'id' => $id,
-                'status' => StatusEnums::Active,
                 'createdBy' => $this->getUser(),
             ]);
 
