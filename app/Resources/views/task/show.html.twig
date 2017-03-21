@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th>Category:</th>
-            <td>{{ task.category.name }}</td>
+            <td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>
         </tr>
         <tr>
             <th>Created:</th>
@@ -45,4 +45,23 @@
         </tr>
         </tbody>
     </table>
+{% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('task_edit', {'id':task.id}) }}"
+            class="btn btn-primary btn-block"
+            role="button">Edit</a>
+    <a
+            href="{{ path('task_delete', {'id':task.id}) }}"
+            class="btn btn-danger btn-block {% if task.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('taskfield_new') }}"
+            class="btn btn-default btn-block"
+            role="button">Add a Field</a>
+    <a
+            href="{{ path('job_new', {'task':task.id}) }}"
+            class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
+            role="button">New Job from Task</a>
 {% endblock %}

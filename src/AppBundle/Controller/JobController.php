@@ -100,6 +100,16 @@ class JobController extends Controller
         $job = new Job();
 
         $em = $this->getDoctrine()->getManager();
+
+        if (null !== $request->query->get('task')) {
+            $task = $em->getRepository('AppBundle:Task')
+                ->findOneBy([
+                    'id' => $request->query->get('task'),
+                    'createdBy' => $this->getUser(),
+                ]);
+            $job->setTask($task);
+        }
+
         $form = $this->createForm('AppBundle\Form\JobFormType', $job);
 
         $form->handleRequest($request);

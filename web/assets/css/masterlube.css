@@ -33,3 +33,7 @@ body {
 table a:not(.btn), .table a:not(.btn) {
     color: #df691a;
 }
+
+.active > .badge {
+    background-color: #df691a;
+}

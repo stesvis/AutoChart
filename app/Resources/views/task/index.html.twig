@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ task.name }}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.category.name }}</td>
+                <td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>
                 <td>{{ task.createdAt|date("F j, Y") }}</td>
                 <td>{{ task.type }}</td>
                 <td style="width: 1%; white-space: nowrap;">
