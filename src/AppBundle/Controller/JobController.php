@@ -101,6 +101,7 @@ class JobController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        // Check if we need to pre-populate with a Task
         if (null !== $request->query->get('task')) {
             $task = $em->getRepository('AppBundle:Task')
                 ->findOneBy([
@@ -108,6 +109,16 @@ class JobController extends Controller
                     'createdBy' => $this->getUser(),
                 ]);
             $job->setTask($task);
+        }
+
+        // Check if we need to pre-populate with a Vehicle
+        if (null !== $request->query->get('vehicle')) {
+            $vehicle = $em->getRepository('AppBundle:Vehicle')
+                ->findOneBy([
+                    'id' => $request->query->get('vehicle'),
+                    'createdBy' => $this->getUser(),
+                ]);
+            $job->setVehicle($vehicle);
         }
 
         $form = $this->createForm('AppBundle\Form\JobFormType', $job);

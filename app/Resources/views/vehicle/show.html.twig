@@ -86,3 +86,18 @@
         </tbody>
     </table>
 {% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
+            class="btn btn-primary btn-block"
+            role="button">Edit</a>
+    <a
+            href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"
+            class="btn btn-danger btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('job_new', {'vehicle':vehicle.id}) }}"
+            class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
+            role="button">New Job</a>
+{% endblock %}
