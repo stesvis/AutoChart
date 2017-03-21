@@ -27,13 +27,11 @@
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('task_edit', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
-                    {#{% if (task.status == 'A' and task.type == 'Custom') %}#}
-                    {% if task.status == 'A' %}
-                        <a class="btn btn-xs btn-danger deleteTask" taskId="{{ task.id }}"
-                           title="Delete this Task"
-                           ng-click="showConfirm($event, {{ task.id }})"><span
-                                    class="fa fa-trash"></span></a>
-                    {% endif %}
+                    <a class="btn btn-xs btn-danger deleteTask {% if task.status != 'A' %}disabled{% endif %}"
+                       taskId="{{ task.id }}"
+                       title="Delete this Task"
+                       ng-click="showConfirm($event, {{ task.id }})"><span
+                                class="fa fa-trash"></span></a>
                 </td>
             </tr>
         {% endfor %}

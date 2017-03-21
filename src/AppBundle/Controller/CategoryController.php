@@ -44,29 +44,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="category_show")
-     * @param $id
-     * @Method("GET")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAction($id)
-    {
-        $category = null;
-
-            $em = $this->getDoctrine()->getManager();
-
-            $category = $em->getRepository('AppBundle:Category')
-                ->findOneBy([
-                    'id' => $id,
-                    'createdBy' => $this->getUser(),
-                ]);
-
-        return $this->render('category/show.html.twig', [
-            'category' => $category
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="category_edit")
      * @param Request $request
      * @param int $id
@@ -116,6 +93,7 @@ class CategoryController extends Controller
     public function newAction(Request $request)
     {
         $category = new Category();
+
         $form = $this->createForm(CategoryFormType::class, $category);
 
         $form->handleRequest($request);
@@ -139,6 +117,29 @@ class CategoryController extends Controller
 
         return $this->render('category/new.html.twig', [
             'categoryForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="category_show")
+     * @param $id
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction($id)
+    {
+        $category = null;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $category = $em->getRepository('AppBundle:Category')
+            ->findOneBy([
+                'id' => $id,
+                'createdBy' => $this->getUser(),
+            ]);
+
+        return $this->render('category/show.html.twig', [
+            'category' => $category
         ]);
     }
 

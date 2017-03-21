@@ -45,6 +45,10 @@
         </tr>
         </tbody>
     </table>
+
+    <div id="dialog" title="Delete the Task?" style="display: none;">
+        <p></p>
+    </div>
 {% endblock %}
 
 {% block rightSidebar %}
@@ -53,9 +57,13 @@
             class="btn btn-primary btn-block"
             role="button">Edit</a>
     <a
-            href="{{ path('task_delete', {'id':task.id}) }}"
-            class="btn btn-danger btn-block {% if task.status == 'D' %}disabled{% endif %}"
+            {#href="{{ path('task_delete', {'id':task.id}) }}"#}
+            class="btn btn-danger btn-block deleteTask {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
+    <a
+            href="{{ path('task_new') }}"
+            class="btn btn-success btn-block"
+            role="button">Add Task</a>
     <a
             href="{{ path('taskfield_new') }}"
             class="btn btn-default btn-block"
@@ -65,3 +73,20 @@
             class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">New Job</a>
 {% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.deleteTask').click(function () {
+                var deleteButton = $(this);
+
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
+
+                openDeleteDialog("#dialog", "/tasks/" + {{ task.id }}, deleteButton);
+            });
+        });
+    </script>
+
+{% endblock %}
+

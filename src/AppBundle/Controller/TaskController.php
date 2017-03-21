@@ -90,12 +90,24 @@ class TaskController extends Controller
     public function newAction(Request $request)
     {
         $task = new Task();
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Check if we need to pre-populate with a Task
+        if (null !== $request->query->get('category')) {
+            $category = $em->getRepository('AppBundle:Category')
+                ->findOneBy([
+                    'id' => $request->query->get('category'),
+                    'createdBy' => $this->getUser(),
+                ]);
+            $task->setCategory($category);
+        }
+
         $form = $this->createForm(TaskFormType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             $task = $form->getData();
 

@@ -25,11 +25,10 @@
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('job_edit', {'id':job.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
-                    {% if job.status == 'A' %}
-                        <a class="btn btn-xs btn-danger deleteJob" jobId="{{ job.id }}"
-                           ng-click="showConfirm($event, {{ job.id }})">
-                            <span class="fa fa-trash"></span></a>
-                    {% endif %}
+                    <a class="btn btn-xs btn-danger deleteJob {% if job.status != 'A' %}disabled{% endif %}"
+                       jobId="{{ job.id }}"
+                       ng-click="showConfirm($event, {{ job.id }})">
+                        <span class="fa fa-trash"></span></a>
                 </td>
             </tr>
         {% endfor %}

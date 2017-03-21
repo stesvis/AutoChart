@@ -20,18 +20,18 @@
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
                     <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
-                    <td>{{ category.createdAt|date ('F j, Y')}}</td>
+                    <td>{{ category.createdAt|date ('F j, Y') }}</td>
                     <td style="width: 1%; white-space: nowrap;">
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('category_edit', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                     class="fa fa-pencil"></span></a>
-                        {% if category.status == 'A' %}
-                            <a class="btn btn-xs btn-danger deleteCategory" categoryId="{{ category.id }}"
-                               title="Delete this Category"
-                               ng-click="showConfirm($event, {{ category.id }})">
-                                <span class="fa fa-trash"></span></a>
-                        {% endif %}
+
+                        <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
+                           categoryId="{{ category.id }}"
+                           title="Delete this Category"
+                           ng-click="showConfirm($event, {{ category.id }})">
+                            <span class="fa fa-trash"></span></a>
                     </td>
                 </tr>
             {% endfor %}
