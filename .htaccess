@@ -1,4 +1,7 @@
 # Use PHP7 as default
-        AddHandler application/x-httpd-php70 .php
+# AddHandler application/x-httpd-php70 .php
 
-DirectoryIndex /web/app.php
+RewriteEngine On
+RewriteRule (.*\.php)s$ $1 [H=application/x-httpd-php-source]
+
+#DirectoryIndex /web/app.php
