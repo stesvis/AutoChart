@@ -24,12 +24,11 @@
                     <a href="{{ path('taskfield_edit', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-pencil"></span></a>
                     {#{% if (task.status == 'A' and task.type == 'Custom') %}#}
-                    {% if field.status == 'A' %}
-                        <a class="btn btn-xs btn-danger deleteTask" taskfieldId="{{ field.id }}"
-                           title="Delete this Task Field"
-                           ng-click="showConfirm($event, {{ field.id }})"><span
-                                    class="fa fa-trash"></span></a>
-                    {% endif %}
+                    <a class="btn btn-xs btn-danger deleteTask {% if field.status != 'A' %}disabled{% endif %}"
+                       taskfieldId="{{ field.id }}"
+                       title="Delete this Task Field"
+                       ng-click="showConfirm($event, {{ field.id }})"><span
+                                class="fa fa-trash"></span></a>
                 </td>
             </tr>
         {% endfor %}

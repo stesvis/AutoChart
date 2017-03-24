@@ -191,6 +191,7 @@
     /*height: 400px;*/
     color: #ffffff;
     padding: 15px;
+    text-align: center;
 }
 
 @media (min-width: 767px) {

@@ -32,7 +32,7 @@ function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
 
                         var success = data['success'];
                         if (success)
-                            deleteButton.hide();
+                            deleteButton.addClass('disabled');
                         else {
                             $(dialogId).find("p").html(data['message']);
 
