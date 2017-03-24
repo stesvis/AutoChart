@@ -25,4 +25,4 @@ doctrine:
         default_connection: default
             connections:
                 default:
-                    server_version: 5.7.17
+                    server_version: "5.7.17"
