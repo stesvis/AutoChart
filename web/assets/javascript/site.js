@@ -11,12 +11,13 @@ $(document).ready(function () {
 });
 
 
-function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
+function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
     return $(dialogId).dialog({
         resizable: false,
         height: "auto",
         width: 400,
         modal: true,
+        title: title,
         buttons: {
             "Delete": function () {
                 $("#loading").show();
