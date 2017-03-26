@@ -65,8 +65,8 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $vehicle = $em->getRepository('AppBundle:Vehicle')
-            ->find($id);
+//        $vehicle = $em->getRepository('AppBundle:Vehicle')
+//            ->find($id);
 
 //        $jobs = $em->getRepository('AppBundle:Job')
 //            ->findBy([

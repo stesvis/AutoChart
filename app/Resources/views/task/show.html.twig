@@ -46,6 +46,41 @@
         </tbody>
     </table>
 
+    <br>
+    <br>
+    <h4>Task Fields</h4>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            {#<th>Default</th>#}
+            <th>Created</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in fields %}
+            <tr>
+                <td>{{ field.name }}</td>
+                {#<td>{{ field.defaultValue }}</td>#}
+                <td>{{ field.createdAt|date('F j, Y') }} by {{ field.createdBy }}</td>
+                <td style="width: 1%; white-space: nowrap;">
+                    <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                                class="fa fa-eye"></span></a>
+                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                                class="fa fa-pencil"></span></a>
+                    <a class="btn btn-xs btn-danger deleteTask {% if field.status != 'A' %}disabled{% endif %}"
+                       fieldId="{{ field.id }}"
+                       title="Delete this Field"
+                       ng-click="showConfirm($event, {{ field.id }})"><span
+                                class="fa fa-trash"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div id="dialog" title="Delete the Task?" style="display: none;">
         <p></p>
     </div>

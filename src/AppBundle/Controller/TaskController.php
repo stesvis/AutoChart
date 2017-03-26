@@ -143,20 +143,26 @@ class TaskController extends Controller
     {
         $task = null;
 
-        try {
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-            $task = $em->getRepository('AppBundle:Task')
-                ->findOneBy([
-                    'id' => $id,
-                    'createdBy' => $this->getUser(),
-                ]);
-        } catch (\Exception $ex) {
+        $task = $em->getRepository('AppBundle:Task')
+            ->findOneBy([
+                'id' => $id,
+                'createdBy' => $this->getUser(),
+            ]);
 
+        if (!$task) {
+            throw $this->createNotFoundException(
+                'No task found for id ' . $id
+            );
         }
 
+        $fields = $em->getRepository('AppBundle:TaskField')
+            ->findByTask($id);
+
         return $this->render('task/show.html.twig', [
-            'task' => $task
+            'task' => $task,
+            'fields' => $fields,
         ]);
     }
 
