@@ -20,9 +20,9 @@ monolog:
         console:
             type:  console
             
-doctrine:
-    dbal:
-        default_connection: default
-            connections:
-                default:
-                    server_version: "5.7.17"
+#doctrine:
+#    dbal:
+#        default_connection: default
+#            connections:
+#                default:
+#                    server_version: "5.7.17"
