@@ -48,14 +48,14 @@
 </head>
 <body>
 
-<div class="container">
-    {#------------------------------------ NAVBAR ------------------------------------#}
-    <div class="row content">
-        <div class="col-sm-12">
-            {{ include('_navbar.html.twig') }}
-        </div>
+{#------------------------------------ NAVBAR ------------------------------------#}
+<div class="row content">
+    <div class="col-sm-12">
+        {{ include('_navbar.html.twig') }}
     </div>
-    {#>-----------------<#}
+</div>
+{#>-----------------<#}
+<div class="container">
     {#------------------------------------ CONTENT ------------------------------------#}
     {% block content %}
         {% block body %}{% endblock %}
