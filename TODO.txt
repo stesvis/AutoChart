@@ -38,3 +38,5 @@ Things to do:
 		FieldId
 		FieldValue
 		
+	- Install mb extension and iconv module
+		
