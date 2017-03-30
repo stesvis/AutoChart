@@ -1,0 +1,4 @@
+AppBundle\Entity\VehicleFieldDefault:
+    type: entity
+    table: vehicle_field_defaults
+    repositoryClass: AppBundle\Repository\VehicleFieldDefaultRepository

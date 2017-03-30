@@ -10,7 +10,7 @@ class TaskFieldRepository extends EntityRepository
     public function findByTask($taskId)
     {
         $query = $this->createQueryBuilder('AppBundle:TaskField field')
-            ->andWhere('field.taskId = :taskId')
+            ->andWhere('field.task_id = :taskId')
             ->setParameter('taskId', $taskId)
             ->orderBy('field.name', 'ASC')
             ->getQuery();

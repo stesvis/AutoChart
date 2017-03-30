@@ -50,6 +50,7 @@ class VehicleController extends Controller
         $vehicle = $em->getRepository('AppBundle:Vehicle')
             ->findOneBy([
                 'id' => $id,
+                'status' => StatusEnums::Active, // it's editable only if active, otherwise they are cheating
                 'createdBy' => $this->getUser(),
             ]);
 
@@ -135,14 +136,19 @@ class VehicleController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
+        // Check if it exists
         if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
         }
 
+        $vehicleDefaults = $em->getRepository('AppBundle:VehicleFieldDefault')
+            ->findByVehicle($id);
+
         return $this->render('vehicle/show.html.twig', [
-            'vehicle' => $vehicle
+            'vehicle' => $vehicle,
+            'defaults' => $vehicleDefaults,
         ]);
     }
 
