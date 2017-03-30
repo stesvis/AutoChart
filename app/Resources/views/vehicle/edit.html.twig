@@ -5,4 +5,92 @@
     <h2>Edit Vehicle</h2>
 
     {{ form(vehicleForm) }}
+
+
+    <div id="dialog" title="New Vehicle Info" style="display: none;">
+        <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
+            etc.):</p><br>
+        <form id="newInfoForm" name="app_bundle_vehicle_form_type" method="post" class="form-horizontal">
+            <fieldset>
+                <div id="app_bundle_vehicle_form_type">
+                    <div class="form-group"><label class="col-sm-2 control-label required"
+                                                   for="app_bundle_vehicle_info_name">Name</label>
+                        <div class="col-sm-10"><input type="text" id="app_bundle_vehicle_info_name"
+                                                      name="app_bundle_vehicle_info_name" required="required"
+                                                      class="form-control"></div>
+                    </div>
+                    <div class="form-group"><label class="col-sm-2 control-label required"
+                                                   for="app_bundle_vehicle_info_value">Value</label>
+                        <div class="col-sm-10"><input type="text" id="app_bundle_vehicle_info_value"
+                                                      name="app_bundle_vehicle_info_value" required="required"
+                                                      maxlength="255" class="form-control"></div>
+                    </div>
+                </div>
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+
+{% block rightSidebar %}
+    <a
+            {#href="{{ path('') }}"#}
+            id="newInfoButton"
+            class="btn btn-default btn-block"
+            role="button">New Info</a>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var name = $("#app_bundle_vehicle_info_name"),
+                value = $("#app_bundle_vehicle_info_value"),
+                allFields = $([]).add(name).add(value);
+
+            // Store the dialog in a variable
+            var infoDialog = $('#dialog').dialog({
+                modal: true,
+                autoOpen: false,
+                width: 400,
+                buttons: {
+                    Save: function () {
+                        onSave();
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+                    form[0].reset();
+                    allFields.removeClass("ui-state-error");
+                }
+            });
+
+            var form = infoDialog.find("form");
+
+            form.on("submit", function (event) {
+                event.preventDefault();
+                onSave();
+            });
+
+            // Open the dialog when the button is clicked
+            $('#newInfoButton').click(function () {
+                infoDialog.dialog('open');
+            });
+
+            function onSave() {
+                var formSerialize = form.serialize();
+                $.post('{{ path('vehicle_info_add') }}', formSerialize, function (response) {
+                    //your callback here
+                    console.log(response);
+
+                }, 'JSON');
+            }
+        });
+    </script>
+
 {% endblock %}
