@@ -11,12 +11,13 @@ $(document).ready(function () {
 });
 
 
-function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
+function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
     return $(dialogId).dialog({
         resizable: false,
         height: "auto",
         width: 400,
         modal: true,
+        title: title,
         buttons: {
             "Delete": function () {
                 $("#loading").show();
@@ -27,14 +28,33 @@ function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
                     type: "DELETE",
                     contentType: "application/x-www-form-urlencoded",
                     success: function (data) {
-                        console.log("Result:");
-                        console.log(data);
+                        try {
+                            console.log("Result:");
+                            console.log(data);
 
-                        var success = data['success'];
-                        if (success)
-                            deleteButton.addClass('disabled');
-                        else {
-                            $(dialogId).find("p").html(data['message']);
+                            var success = data['success'];
+                            if (success) {
+                                deleteButton.addClass('disabled');
+                                deleteButton.prev().addClass('disabled');
+                            }
+                            else {
+                                $(dialogId).find("p").html(data['message']);
+
+                                $(dialogId).dialog({
+                                    resizable: false,
+                                    height: "auto",
+                                    width: 400,
+                                    modal: true,
+                                    buttons: {
+                                        "Close": function () {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        catch (ex) {
+                            $(dialogId).find("p").html(ex.message);
 
                             $(dialogId).dialog({
                                 resizable: false,
@@ -48,6 +68,7 @@ function openDeleteDialog(dialogId, deleteRoute, deleteButton) {
                                 }
                             });
                         }
+
 
                         $("#loading").hide();
                     }

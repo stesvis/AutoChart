@@ -8,6 +8,7 @@
         <tr>
             <th>Field</th>
             <th>Task</th>
+            <th>Default</th>
             <th>Created</th>
             <th>&nbsp;</th>
         </tr>
@@ -17,11 +18,13 @@
             <tr>
                 <td>{{ field.name }}</td>
                 <td><a href="{{ path('task_show', {'id':field.task.id}) }}">{{ field.task.name }}</a></td>
+                <td>{{ field.defaultValue }}</td>
                 <td>{{ field.createdAt|date("F j, Y") }} by {{ field.createdBy.username }}</td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}"
+                       class="btn btn-xs btn-success {% if field.status != 'A' %}disabled{% endif %}"><span
                                 class="fa fa-pencil"></span></a>
                     {#{% if (task.status == 'A' and task.type == 'Custom') %}#}
                     <a class="btn btn-xs btn-danger deleteTask {% if field.status != 'A' %}disabled{% endif %}"
@@ -50,7 +53,7 @@
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task Field will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "/taskfields/" + taskfieldId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + taskfieldId, deleteButton);
             });
         });
     </script>

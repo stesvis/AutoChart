@@ -25,7 +25,8 @@
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('task_show', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('task_edit', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('task_edit', {'id':task.id}) }}"
+                       class="btn btn-xs btn-success {% if task.status != 'A' %}disabled{% endif %}"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteTask {% if task.status != 'A' %}disabled{% endif %}"
                        taskId="{{ task.id }}"
@@ -53,7 +54,7 @@
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "/tasks/" + taskId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + taskId, deleteButton);
             });
         });
     </script>

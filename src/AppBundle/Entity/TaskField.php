@@ -31,6 +31,11 @@ class TaskField
     private $name;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $defaultValue;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -103,6 +108,22 @@ class TaskField
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @param mixed $defaultValue
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
     }
 
     /**

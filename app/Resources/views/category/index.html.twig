@@ -24,7 +24,8 @@
                     <td style="width: 1%; white-space: nowrap;">
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                     class="fa fa-eye"></span></a>
-                        <a href="{{ path('category_edit', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
+                        <a href="{{ path('category_edit', {'id':category.id}) }}"
+                           class="btn btn-xs btn-success {% if category.status != 'A' %}disabled{% endif %}"><span
                                     class="fa fa-pencil"></span></a>
 
                         <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
@@ -55,7 +56,7 @@
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "/categories/" + categoryId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + categoryId, deleteButton);
             });
         });
     </script>

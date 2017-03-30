@@ -46,6 +46,41 @@
         </tbody>
     </table>
 
+    <br>
+    <br>
+    <h4>Task Fields</h4>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            {#<th>Default</th>#}
+            <th>Created</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in fields %}
+            <tr>
+                <td>{{ field.name }}</td>
+                {#<td>{{ field.defaultValue }}</td>#}
+                <td>{{ field.createdAt|date('F j, Y') }} by {{ field.createdBy }}</td>
+                <td style="width: 1%; white-space: nowrap;">
+                    <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                                class="fa fa-eye"></span></a>
+                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                                class="fa fa-pencil"></span></a>
+                    <a class="btn btn-xs btn-danger deleteField {% if field.status != 'A' %}disabled{% endif %}"
+                       fieldId="{{ field.id }}"
+                       title="Delete this Field"
+                       ng-click="showConfirm($event, {{ field.id }})"><span
+                                class="fa fa-trash"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div id="dialog" title="Delete the Task?" style="display: none;">
         <p></p>
     </div>
@@ -54,7 +89,7 @@
 {% block rightSidebar %}
     <a
             href="{{ path('task_edit', {'id':task.id}) }}"
-            class="btn btn-primary btn-block"
+            class="btn btn-primary btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             {#href="{{ path('task_delete', {'id':task.id}) }}"#}
@@ -64,9 +99,10 @@
             href="{{ path('task_new') }}"
             class="btn btn-success btn-block"
             role="button">Add Task</a>
+    <br/>
     <a
             href="{{ path('taskfield_new') }}"
-            class="btn btn-default btn-block"
+            class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Add a Field</a>
     <a
             href="{{ path('job_new', {'task':task.id}) }}"
@@ -81,9 +117,22 @@
             $('.deleteTask').click(function () {
                 var deleteButton = $(this);
 
-                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
+                $("#dialog").find("p").html('' +
+                    '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
+                    'This Task will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "/tasks/" + {{ task.id }}, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + {{ task.id }}, deleteButton);
+            });
+
+            $('.deleteField').click(function () {
+                var deleteButton = $(this);
+                var fieldId = $(this).attr('fieldId');
+
+                $("#dialog").find("p").html('' +
+                    '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
+                    'This Field will be permanently removed from the Task and cannot be recovered. Are you sure?');
+
+                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + fieldId, deleteButton);
             });
         });
     </script>

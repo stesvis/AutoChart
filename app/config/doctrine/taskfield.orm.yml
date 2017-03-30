@@ -1,0 +1,4 @@
+AppBundle\Entity\TaskField:
+    type: entity
+    table: task_fields
+    repositoryClass: AppBundle\Repository\TaskFieldRepository

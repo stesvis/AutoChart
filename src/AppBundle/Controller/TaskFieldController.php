@@ -5,8 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\TaskField;
 use AppBundle\Form\TaskFieldFormType;
 use AppBundle\Includes\StatusEnums;
+use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -158,9 +160,46 @@ class TaskFieldController extends Controller
      * @param Request $request
      * @param $id
      * @Method("DELETE")
+     * @return EntityRepository
      */
     public function deleteAction(Request $request, $id)
     {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $field = $em->getRepository('AppBundle:TaskField')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
+            if (!$field) {
+                throw $this->createNotFoundException('Unable to find TaskField entity.');
+            }
+
+            // Check if the task is in use on any task
+            $jobsByTask = $em->getRepository('AppBundle:Job')
+                ->findBy([
+                    'task' => $field->getTask()
+                ]);
+
+            if (count($jobsByTask) == 0) {
+                // Safe to remove
+                $field->setStatus(StatusEnums::Deleted);
+                $em->persist($field);
+                $em->flush();
+
+                $response['success'] = true;
+                $response['message'] = 'Task deleted.';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'This Field belongs to a Task that is in use on some Jobs. Delete its references first.';
+            }
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+        }
+
+        return new JsonResponse($response);
     }
 }

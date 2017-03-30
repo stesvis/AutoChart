@@ -37,3 +37,7 @@ table a:not(.btn), .table a:not(.btn) {
 .active > .badge {
     background-color: #df691a;
 }
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    opacity: 0.25;
+}
