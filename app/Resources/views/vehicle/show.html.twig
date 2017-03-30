@@ -94,7 +94,7 @@
 {% block rightSidebar %}
     <a
             href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
-            class="btn btn-primary btn-block"
+            class="btn btn-primary btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             {#href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"#}
@@ -104,9 +104,10 @@
             href="{{ path('vehicle_new') }}"
             class="btn btn-success btn-block"
             role="button">Add Vehicle</a>
+    <br/>
     <a
-            href="{{ path('job_new', {'vehicle':vehicle.id}) }}"
-            class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
+            href="{{ path('job_new') }}"
+            class="btn btn-default btn-block"
             role="button">New Job</a>
 {% endblock %}
 
@@ -125,4 +126,3 @@
     </script>
 
 {% endblock %}
-

@@ -89,7 +89,7 @@
 {% block rightSidebar %}
     <a
             href="{{ path('task_edit', {'id':task.id}) }}"
-            class="btn btn-primary btn-block"
+            class="btn btn-primary btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             {#href="{{ path('task_delete', {'id':task.id}) }}"#}
@@ -99,9 +99,10 @@
             href="{{ path('task_new') }}"
             class="btn btn-success btn-block"
             role="button">Add Task</a>
+    <br/>
     <a
             href="{{ path('taskfield_new') }}"
-            class="btn btn-default btn-block"
+            class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Add a Field</a>
     <a
             href="{{ path('job_new', {'task':task.id}) }}"

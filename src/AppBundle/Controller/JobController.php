@@ -9,6 +9,7 @@ use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -222,34 +223,39 @@ class JobController extends Controller
      * Deletes a job entity.
      *
      * @Route("/{id}", name="job_delete")
+     * @param $request
+     * @param $id
      * @Method("DELETE")
+     * @return Response
      */
-    public function deleteAction(Request $request, Job $job)
+    public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($job);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        try {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($job);
+            $job = $em->getRepository('AppBundle:Job')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
+
+            if (!$job) {
+                throw $this->createNotFoundException('Unable to find Job entity.');
+            }
+
+            // Safe to remove
+            $job->setStatus(StatusEnums::Deleted);
+            $em->persist($job);
             $em->flush();
+
+            $response['success'] = true;
+            $response['message'] = 'Task deleted.';
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
         }
 
-        return $this->redirectToRoute('job_list');
+        return new JsonResponse($response);
     }
 
-    /**
-     * Creates a form to delete a job entity.
-     *
-     * @param Job $job The job entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Job $job)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('job_delete', array('id' => $job->getId())))
-            ->setMethod('DELETE')
-            ->getForm();
-    }
 }
