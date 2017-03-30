@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="jobs")
+ * @ORM\Table(name="vehicle_info")
  */
-class Job
+class VehicleInfo
 {
     /**
      * @ORM\Id
@@ -24,20 +24,14 @@ class Job
     private $vehicle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Task")
-     * @ORM\JoinColumn(name="task_id", referencedColumnName="id", onDelete="set null")
+     * @ORM\Column(type="string")
      */
-    private $task;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $mileage;
+    private $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $notes;
+    private $value;
 
     /**
      * @ORM\Column(type="datetime")
@@ -101,65 +95,33 @@ class Job
     /**
      * @return mixed
      */
-    public function getTask()
+    public function getName()
     {
-        return $this->task;
+        return $this->name;
     }
 
     /**
-     * @param mixed $task
+     * @param mixed $name
      */
-    public function setTask($task)
+    public function setName($name)
     {
-        $this->task = $task;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMileage()
-    {
-        return $this->mileage;
-    }
-
-    /**
-     * @param mixed $mileage
-     */
-    public function setMileage($mileage)
-    {
-        $this->mileage = $mileage;
+        $this->name = $name;
     }
 
     /**
      * @return mixed
      */
-    public function getNotes()
+    public function getValue()
     {
-        return $this->notes;
+        return $this->value;
     }
 
     /**
-     * @param mixed $notes
+     * @param mixed $value
      */
-    public function setNotes($notes)
+    public function setValue($value)
     {
-        $this->notes = $notes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param mixed $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
+        $this->value = $value;
     }
 
     /**
@@ -176,6 +138,22 @@ class Job
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
     }
 
     /**

@@ -9,6 +9,7 @@ use AppBundle\Service\VehicleService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -46,6 +47,11 @@ class JobFormType extends AbstractType
                 'required' => true,
             ])
             ->add('mileage')
+            ->add('notes', TextareaType::class, [
+                "attr" => [
+                    "rows" => 7
+                ]
+            ])
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary'
