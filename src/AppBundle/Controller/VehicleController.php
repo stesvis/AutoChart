@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Vehicle;
+use AppBundle\Entity\VehicleInfo;
 use AppBundle\Form\VehicleFormType;
+use AppBundle\Form\VehicleInfoFormType;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,11 +28,9 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
-        try
-        {
+        try {
             $vehicles = $this->get('vehicle_service')->getMyVehicles();
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             $vehicles = null;
         }
 
@@ -56,20 +56,24 @@ class VehicleController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$vehicle)
-        {
+        if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
         }
 
         $form = $this->createForm(VehicleFormType::class, $vehicle);
+        $info = new VehicleInfo();
+        $info->setVehicle($vehicle);
+        $infoForm = $this->createForm(VehicleInfoFormType::class, $info, [
+            'hideVehicle' => true,
+            'hideSubmit' => true,
+        ]);
 
         // only handles data on POST
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $vehicle = $form->getData();
             $vehicle->setModifiedAt(new \DateTime('now'));
             $vehicle->setModifiedBy($this->getUser());
@@ -83,7 +87,8 @@ class VehicleController extends Controller
         }
 
         return $this->render('vehicle/edit.html.twig', [
-            'vehicleForm' => $form->createView()
+            'vehicleForm' => $form->createView(),
+            'infoForm' => $infoForm->createView(),
         ]);
     }
 
@@ -99,8 +104,7 @@ class VehicleController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $vehicle = $form->getData();
@@ -109,7 +113,7 @@ class VehicleController extends Controller
             $vehicle->setModifiedAt(new \DateTime('now'));
             $vehicle->setCreatedBy($this->getUser());
             $vehicle->setModifiedBy($this->getUser());
-            $vehicle->setStatus('A');
+            $vehicle->setStatus(StatusEnums::Active);
             $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
             $em->persist($vehicle);
@@ -142,8 +146,7 @@ class VehicleController extends Controller
             ]);
 
         // Check if it exists
-        if (!$vehicle)
-        {
+        if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
@@ -167,8 +170,7 @@ class VehicleController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $vehicle = $em->getRepository('AppBundle:Vehicle')
                 ->findOneBy([
@@ -177,8 +179,7 @@ class VehicleController extends Controller
                     'createdBy' => $this->getUser(),
                 ]);
 
-            if (!$vehicle)
-            {
+            if (!$vehicle) {
                 throw $this->createNotFoundException(
                     'No vehicle found for id ' . $id
                 );
@@ -191,8 +192,7 @@ class VehicleController extends Controller
 
             $response['success'] = true;
             $response['message'] = 'Vehicle deleted.';
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $response['success'] = false;
             $response['message'] = $e->getMessage();
         }
