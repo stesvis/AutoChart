@@ -6,7 +6,6 @@
 
     {{ form(vehicleForm) }}
 
-
     <div id="dialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
             etc.)</p><br>
@@ -16,10 +15,28 @@
 
 {% block rightSidebar %}
     <a
+            href="{{ path('vehicle_show', {'id':vehicle.id}) }}"
+            class="btn btn-info btn-block"
+            role="button">View</a>
+    <a
+            {#href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"#}
+            class="btn btn-danger btn-block deleteVehicle {% if vehicle.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <br/>
+    <a
             {#href="{{ path('') }}"#}
             id="newInfoButton"
-            class="btn btn-default btn-block"
+            class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">New Info</a>
+    <a
+            href="{{ path('vehicle_new') }}"
+            class="btn btn-success btn-block"
+            role="button">Add Vehicle</a>
+    <br/>
+    <a
+            href="{{ path('job_new') }}"
+            class="btn btn-default btn-block"
+            role="button">New Job</a>
 {% endblock %}
 
 {% block javascripts %}

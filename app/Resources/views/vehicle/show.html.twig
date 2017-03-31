@@ -4,11 +4,11 @@
 
 {% block stylesheets %}
     <style type="text/css">
-        table.thisTable {
+        table.customTable {
             width: auto;
         }
 
-        table.thisTable > tbody > tr > th {
+        table.customTable > tbody > tr > th {
             padding-right: 50px !important;
         }
     </style>
@@ -17,7 +17,7 @@
 {% block body %}
     <h2>Vehicle: {{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h2>
 
-    <table class="table table-hover thisTable">
+    <table class="table table-hover customTable">
         <tbody>
         <tr>
             <th>Maintenance History:</th>
@@ -83,6 +83,37 @@
             <th>Status:</th>
             <td>{{ vehicle.status }}</td>
         </tr>
+        </tbody>
+    </table>
+
+    <h4>More Vehicle Details</h4>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for thisInfo in info %}
+            <tr>
+                <td>{{ thisInfo.name }}</td>
+                <td>{{ thisInfo.value }}</td>
+                <td>
+                    {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
+                    {#class="fa fa-eye"></span></a>#}
+                    <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
+                       class="btn btn-xs btn-success {% if vehicle.status != 'A' %}disabled{% endif %}"><span
+                                class="fa fa-pencil"></span></a>
+                    <a class="btn btn-xs btn-danger deleteVehicle {% if vehicle.status != 'A' %}disabled{% endif %}"
+                       vehicleId="{{ vehicle.id }}"
+                       title="Delete this Vehicle"
+                       ng-click="showConfirm($event, {{ vehicle.id }})"><span
+                                class="fa fa-trash"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 

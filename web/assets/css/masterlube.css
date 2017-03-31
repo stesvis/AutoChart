@@ -2,6 +2,20 @@ body {
     font-family: Verdana;
 }
 
+/*---------------------------- Headings ----------------------------*/
+
+h1, h2, h3, h4, h5 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    /*border-bottom: 2px solid #ffffff;*/
+    /*padding-bottom: 5px;*/
+    /*text-decoration: underline;*/
+    /*text-decoration-style: wavy;*/
+    text-decoration: solid;
+}
+
+/*---------------------------- Spinning wheel ----------------------------*/
+
 .ui-widget-overlay {
     background: #72879c;
 }
@@ -30,9 +44,21 @@ body {
     margin-top: -75px;
 }
 
+/*---------------------------- Tables ----------------------------*/
+
+table {
+    margin-bottom: 45px !important;
+}
+
 table a:not(.btn), .table a:not(.btn) {
     color: #df691a;
 }
+
+th {
+    color: #ffc73d;
+}
+
+/*---------------------------- Misc ----------------------------*/
 
 .active > .badge {
     background-color: #df691a;

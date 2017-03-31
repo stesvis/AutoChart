@@ -1,0 +1,4 @@
+AppBundle\Entity\VehicleInfo:
+    type: entity
+    table: vehicle_info
+    repositoryClass: AppBundle\Repository\VehicleInfoRepository
