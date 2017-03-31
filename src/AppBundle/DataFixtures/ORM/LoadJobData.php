@@ -53,6 +53,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
 
         $job->setVehicle($this->getReference($vehicleReference));
         $job->setTask($this->getReference($taskReference));
+        $job->setNotes('This is a test');
         $job->setCreatedAt($now);
         $job->setCreatedBy($this->getReference($userReference));
         $job->setModifiedAt($now);
