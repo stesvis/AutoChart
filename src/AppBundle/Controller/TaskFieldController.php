@@ -5,11 +5,11 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\TaskField;
 use AppBundle\Form\TaskFieldFormType;
 use AppBundle\Includes\StatusEnums;
-use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -47,7 +47,7 @@ class TaskFieldController extends Controller
     /**
      * @Route("/new", name="taskfield_new")
      * @param Request $request
-     * @return TaskFieldFormType
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -82,7 +82,7 @@ class TaskFieldController extends Controller
      * @Route("/{id}/edit", name="taskfield_edit")
      * @param Request $request
      * @param $id
-     * @return TaskFieldFormType
+     * @return Response
      */
     public function editAction(Request $request, $id)
     {
@@ -130,7 +130,7 @@ class TaskFieldController extends Controller
     /**
      * @Route("/{id}/show", name="taskfield_show")
      * @param $id
-     * @return TaskFieldFormType
+     * @return Response
      */
     public function showAction($id)
     {
@@ -160,7 +160,7 @@ class TaskFieldController extends Controller
      * @param Request $request
      * @param $id
      * @Method("DELETE")
-     * @return EntityRepository
+     * @return JsonResponse
      */
     public function deleteAction(Request $request, $id)
     {

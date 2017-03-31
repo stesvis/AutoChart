@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Vehicle;
+use AppBundle\Entity\VehicleInfo;
 use AppBundle\Form\VehicleFormType;
+use AppBundle\Form\VehicleInfoFormType;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,6 +52,7 @@ class VehicleController extends Controller
         $vehicle = $em->getRepository('AppBundle:Vehicle')
             ->findOneBy([
                 'id' => $id,
+                'status' => StatusEnums::Active, // it's editable only if active, otherwise they are cheating
                 'createdBy' => $this->getUser(),
             ]);
 
@@ -60,6 +63,12 @@ class VehicleController extends Controller
         }
 
         $form = $this->createForm(VehicleFormType::class, $vehicle);
+        $info = new VehicleInfo();
+        $info->setVehicle($vehicle);
+        $infoForm = $this->createForm(VehicleInfoFormType::class, $info, [
+            'hideVehicle' => true,
+            'hideSubmit' => true,
+        ]);
 
         // only handles data on POST
         $form->handleRequest($request);
@@ -78,7 +87,8 @@ class VehicleController extends Controller
         }
 
         return $this->render('vehicle/edit.html.twig', [
-            'vehicleForm' => $form->createView()
+            'vehicleForm' => $form->createView(),
+            'infoForm' => $infoForm->createView(),
         ]);
     }
 
@@ -103,7 +113,7 @@ class VehicleController extends Controller
             $vehicle->setModifiedAt(new \DateTime('now'));
             $vehicle->setCreatedBy($this->getUser());
             $vehicle->setModifiedBy($this->getUser());
-            $vehicle->setStatus('A');
+            $vehicle->setStatus(StatusEnums::Active);
             $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
             $em->persist($vehicle);
@@ -135,14 +145,19 @@ class VehicleController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
+        // Check if it exists
         if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
         }
 
+        $vehicleDefaults = $em->getRepository('AppBundle:VehicleFieldDefault')
+            ->findByVehicle($id);
+
         return $this->render('vehicle/show.html.twig', [
-            'vehicle' => $vehicle
+            'vehicle' => $vehicle,
+            'defaults' => $vehicleDefaults,
         ]);
     }
 
@@ -151,7 +166,7 @@ class VehicleController extends Controller
      * @param $request
      * @param $id
      * @Method("DELETE")
-     * @return Response
+     * @return JsonResponse
      */
     public function deleteAction(Request $request, $id)
     {

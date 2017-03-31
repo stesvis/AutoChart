@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="jobs")
+ * @ORM\Table(name="vehicle_field_defaults")
  */
-class Job
+class VehicleFieldDefault
 {
     /**
      * @ORM\Id
@@ -24,20 +24,15 @@ class Job
     private $vehicle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Task")
-     * @ORM\JoinColumn(name="task_id", referencedColumnName="id", onDelete="set null")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TaskField")
+     * @ORM\JoinColumn(name="task_field_id", referencedColumnName="id", onDelete="set null")
      */
-    private $task;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $mileage;
+    private $taskField;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $notes;
+    private $value;
 
     /**
      * @ORM\Column(type="datetime")
@@ -60,11 +55,6 @@ class Job
      * @ORM\JoinColumn(name="modified_by_user_id", referencedColumnName="id")
      */
     private $modifiedBy;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $status;
 
     /**
      * @return mixed
@@ -101,65 +91,33 @@ class Job
     /**
      * @return mixed
      */
-    public function getTask()
+    public function getTaskField()
     {
-        return $this->task;
+        return $this->taskField;
     }
 
     /**
-     * @param mixed $task
+     * @param mixed $taskField
      */
-    public function setTask($task)
+    public function setTaskField($taskField)
     {
-        $this->task = $task;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMileage()
-    {
-        return $this->mileage;
-    }
-
-    /**
-     * @param mixed $mileage
-     */
-    public function setMileage($mileage)
-    {
-        $this->mileage = $mileage;
+        $this->taskField = $taskField;
     }
 
     /**
      * @return mixed
      */
-    public function getNotes()
+    public function getValue()
     {
-        return $this->notes;
+        return $this->value;
     }
 
     /**
-     * @param mixed $notes
+     * @param mixed $value
      */
-    public function setNotes($notes)
+    public function setValue($value)
     {
-        $this->notes = $notes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param mixed $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
+        $this->value = $value;
     }
 
     /**
@@ -176,6 +134,22 @@ class Job
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
     }
 
     /**
@@ -209,21 +183,4 @@ class Job
     {
         $this->modifiedBy = $modifiedBy;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
 }

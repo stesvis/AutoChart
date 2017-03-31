@@ -45,3 +45,10 @@ services:
             - '@task_service'
         tags:
             - { name: form.type }
+
+    app.vehicleinfo.form.type:
+        class: AppBundle\Form\VehicleInfoFormType
+        arguments:
+            - '@vehicle_service'
+        tags:
+            - { name: form.type }
