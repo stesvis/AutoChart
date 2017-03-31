@@ -196,7 +196,7 @@ class JobController extends Controller
      * @param $id
      * @Method("GET")
      *
-     * @return Job
+     * @return Response
      */
     public function showAction($id)
     {

@@ -20,7 +20,6 @@ class VehicleService
     {
         $this->em = $em;
         $this->user = $tokenStorage->getToken()->getUser();
-
     }
 
     /**

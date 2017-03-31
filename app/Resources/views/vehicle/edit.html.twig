@@ -9,28 +9,8 @@
 
     <div id="dialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
-            etc.):</p><br>
-        <form id="newInfoForm" name="app_bundle_vehicle_form_type" method="post" class="form-horizontal">
-            <fieldset>
-                <div id="app_bundle_vehicle_form_type">
-                    <div class="form-group"><label class="col-sm-2 control-label required"
-                                                   for="app_bundle_vehicle_info_name">Name</label>
-                        <div class="col-sm-10"><input type="text" id="app_bundle_vehicle_info_name"
-                                                      name="app_bundle_vehicle_info_name" required="required"
-                                                      class="form-control"></div>
-                    </div>
-                    <div class="form-group"><label class="col-sm-2 control-label required"
-                                                   for="app_bundle_vehicle_info_value">Value</label>
-                        <div class="col-sm-10"><input type="text" id="app_bundle_vehicle_info_value"
-                                                      name="app_bundle_vehicle_info_value" required="required"
-                                                      maxlength="255" class="form-control"></div>
-                    </div>
-                </div>
-                <!-- Allow form submission with keyboard without duplicating the dialog button -->
-                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-
-            </fieldset>
-        </form>
+            etc.)</p><br>
+        {{ form(infoForm) }}
     </div>
 {% endblock %}
 
@@ -79,18 +59,55 @@
 
             // Open the dialog when the button is clicked
             $('#newInfoButton').click(function () {
-                infoDialog.dialog('open');
+                infoDialog.dialog("open")
             });
 
             function onSave() {
-                var formSerialize = form.serialize();
-                $.post('{{ path('vehicle_info_add') }}', formSerialize, function (response) {
-                    //your callback here
-                    console.log(response);
 
-                }, 'JSON');
+                var formSerialize = form.serialize();
+                var message = '';
+
+                infoDialog.dialog("close");
+                $("#loading").show();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('vehicle_info_add') }}',
+                    data: formSerialize,
+                    dataType: 'JSON',
+                    statusCode: {
+                        404: function () {
+                            message = 'Page not found';
+                        }
+                    },
+                    success: function (data) {
+                        $("#loading").hide();
+//                        infoDialog.html('<p>' + data['message'] + '</p>');
+//                        infoDialog.dialog({
+//                            buttons: {
+//                                Close: function () {
+//                                    $(this).dialog("close");
+//                                }
+//                            }
+//                        });
+                    },
+                    error: function (data) {
+                        $("#loading").hide();
+
+                        infoDialog.html('<p>' + data['message'] + '</p>');
+                        infoDialog.dialog({
+                            buttons: {
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    },
+                });
             }
+
         });
+
     </script>
 
 {% endblock %}

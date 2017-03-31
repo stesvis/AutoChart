@@ -38,7 +38,7 @@ function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
                                 deleteButton.prev().addClass('disabled');
                             }
                             else {
-                                $(dialogId).find("p").html(data['message']);
+                                $(dialogId).html('<p>' + data['message'] + '</p>');
 
                                 $(dialogId).dialog({
                                     resizable: false,
@@ -54,7 +54,7 @@ function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
                             }
                         }
                         catch (ex) {
-                            $(dialogId).find("p").html(ex.message);
+                            $(dialogId).html('<p>' + ex.message + '</p>');
 
                             $(dialogId).dialog({
                                 resizable: false,
@@ -73,12 +73,12 @@ function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
                         $("#loading").hide();
                     }
                     ,
-                    error: function (msg) {
+                    error: function (data) {
                         console.log('Error');
-                        console.log(msg);
+                        console.log(data);
                         $("#loading").hide();
 
-                        $(dialogId).find("p").html("Could not delete it. (" + msg["status"] + ")");
+                        $(dialogId).html("<p>Could not delete it. (" + data["status"] + ")</p>");
 
                         $(dialogId).dialog({
                             resizable: false,
@@ -100,5 +100,3 @@ function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
         }
     });
 }
-
-
