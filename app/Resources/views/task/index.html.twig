@@ -23,7 +23,7 @@
                 <td>{{ task.createdAt|date("F j, Y") }}</td>
                 <td>{{ task.type }}</td>
                 <td style="width: 1%; white-space: nowrap;">
-                    <a href="{{ path('task_show', {'id':task.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('task_show', {'id':task.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('task_edit', {'id':task.id}) }}"
                        class="btn btn-xs btn-success editTask {% if task.status != 'A' %}disabled{% endif %}"><span

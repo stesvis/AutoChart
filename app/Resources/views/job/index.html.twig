@@ -21,7 +21,7 @@
                 <td>{{ job.mileage|number_format }} {{ job.vehicle.mileageType }}</td>
                 <td>{{ job.createdAt|date('F j, Y') }}</td>
                 <td style="width: 1%; white-space: nowrap;">
-                    <a href="{{ path('job_show', {'id':job.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('job_show', {'id':job.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('job_edit', {'id':job.id}) }}"
                        class="btn btn-xs btn-success editJob {% if job.status != 'A' %}disabled{% endif %}"><span

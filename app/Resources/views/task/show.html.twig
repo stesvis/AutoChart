@@ -66,7 +66,7 @@
                 {#<td>{{ field.defaultValue }}</td>#}
                 <td>{{ field.createdAt|date('F j, Y') }} by {{ field.createdBy }}</td>
                 <td style="width: 1%; white-space: nowrap;">
-                    <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('taskfield_edit', {'id':field.id}) }}"
                        class="btn btn-xs btn-success editField"><span
