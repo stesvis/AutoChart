@@ -25,7 +25,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Oil Change',
             new \DateTime('now'),
             'task-oil-change',
-            'superadmin',
+            'admintest',
             'oil-change');
 
         $this->CreateTask(
@@ -33,7 +33,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Tire Rotation',
             new \DateTime('now'),
             'task-tire-rotation',
-            'superadmin',
+            'admintest',
             'tires');
 
         $this->CreateTask(
@@ -41,7 +41,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Oil Filter Change',
             new \DateTime('now'),
             'task-oil-filter-change',
-            'superadmin',
+            'admintest',
             'oil-change');
 
         $this->CreateTask(
@@ -49,7 +49,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Check Oil Level',
             new \DateTime('now'),
             'task-check-oil-level',
-            'superadmin',
+            'admintest',
             'oil-change');
 
         $this->CreateTask(
@@ -57,7 +57,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Dirty Oil Disposal',
             new \DateTime('now'),
             'task-dirty-oil-disposal',
-            'superadmin',
+            'admintest',
             'oil-change');
 
         $this->CreateTask(
@@ -65,7 +65,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Brake Pads Replacement',
             new \DateTime('now'),
             'task-brake-pads-replacement',
-            'superadmin',
+            'admintest',
             'brakes');
 
         $this->CreateTask(
@@ -73,7 +73,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             'Front Rotors Replacement',
             new \DateTime('now'),
             'task-front-rotors-replacement',
-            'superadmin',
+            'admintest',
             'brakes');
     }
 

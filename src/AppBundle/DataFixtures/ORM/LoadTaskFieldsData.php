@@ -26,7 +26,7 @@ class LoadTaskFieldsData extends AbstractFixture implements OrderedFixtureInterf
             'Change Oil Filter',
             new \DateTime('now'),
             'field-oil-filter',
-            'superadmin',
+            'admintest',
             'task-oil-change');
 
 //        $this->CreateTaskField(

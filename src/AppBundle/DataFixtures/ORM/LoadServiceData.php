@@ -25,7 +25,7 @@ class LoadServiceData extends AbstractFixture implements OrderedFixtureInterface
             $manager,
             '2014-jeep-cherokee',
             'task-oil-change',
-            'superadmin',
+            'admintest',
             45000,
             new \DateTime('now'),
             '2014-jeep-cherokee-task-oil-change');
@@ -34,7 +34,7 @@ class LoadServiceData extends AbstractFixture implements OrderedFixtureInterface
             $manager,
             '2008-jeep-wrangler',
             'task-oil-change',
-            'superadmin',
+            'admintest',
             223000,
             new \DateTime('now'),
             '2008-jeep-wrangler-task-oil-change');

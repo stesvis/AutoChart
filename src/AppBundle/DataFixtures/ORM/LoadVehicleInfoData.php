@@ -27,7 +27,7 @@ class LoadVehicleInfoData extends AbstractFixture implements OrderedFixtureInter
             '16mm',
             new \DateTime('now'),
             'oil-pan-plug-size',
-            'superadmin',
+            'admintest',
             '2008-jeep-wrangler');
 
         $this->CreateVehicleInfo(
@@ -36,7 +36,7 @@ class LoadVehicleInfoData extends AbstractFixture implements OrderedFixtureInter
             '5W-20',
             new \DateTime('now'),
             'oil-type',
-            'superadmin',
+            'admintest',
             '2008-jeep-wrangler');
 
         $this->CreateVehicleInfo(
@@ -45,7 +45,7 @@ class LoadVehicleInfoData extends AbstractFixture implements OrderedFixtureInter
             '110 tf/lbs',
             new \DateTime('now'),
             'oil-capacity',
-            'superadmin',
+            'admintest',
             '2014-jeep-cherokee');
 
     }

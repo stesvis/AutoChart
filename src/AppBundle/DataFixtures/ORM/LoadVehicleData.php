@@ -26,28 +26,28 @@ class LoadVehicleData extends AbstractFixture implements OrderedFixtureInterface
             'Rubicon', 'Manual', 'Gas', '3.8L V6', 5, 'Yellow',
             12500, new \DateTime('2015-09-15'),
             new \DateTime('now'),
-            '2008-jeep-wrangler', 'superadmin');
+            '2008-jeep-wrangler', 'admintest');
         $this->CreateVehicle(
             $manager,
             2014, 'Jeep', 'Cherokee',
             'Trailhawk', 'Auto', 'Gas', '3.2L V6', 5, 'Green',
             45000, new \DateTime('2014-05-03'),
             new \DateTime('now'),
-            '2014-jeep-cherokee', 'superadmin');
+            '2014-jeep-cherokee', 'admintest');
         $this->CreateVehicle(
             $manager,
             2007, 'Ford', 'Focus',
             'SE', 'Auto', 'Gas', '2.0L', 5, 'Gold',
             8000, new \DateTime('2008-08-05'),
             new \DateTime('now'),
-            '2007-ford-focus', 'superadmin');
+            '2007-ford-focus', 'admintest');
         $this->CreateVehicle(
             $manager,
             2006, 'Honda', 'Odyssey',
             'EXL', 'Auto', 'Gas', '3.5L V6', 8, 'Silver',
             11000, new \DateTime('2016-09-27'),
             new \DateTime('now'),
-            '2006-honda-odyssey', 'superadmin');
+            '2006-honda-odyssey', 'admintest');
     }
 
     private function CreateVehicle(
