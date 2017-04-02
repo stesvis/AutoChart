@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Job;
-use AppBundle\Form\JobFormType;
+use AppBundle\Entity\Service;
+use AppBundle\Form\ServiceFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,16 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Job controller.
+ * Service controller.
  *
- * @Route("/jobs")
+ * @Route("/services")
  */
-class JobController extends Controller
+class ServiceController extends Controller
 {
     /**
-     * Lists all job entities.
+     * Lists all service entities.
      *
-     * @Route("/", name="job_list")
+     * @Route("/", name="service_list")
      * @Method("GET")
      * @param Request $request
      *
@@ -33,31 +33,31 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-//        $jobs = $em->getRepository('AppBundle:Job')
+//        $services = $em->getRepository('AppBundle:Service')
 //            ->findBy([
 //                'createdBy' => $this->getUser(),
 //            ]);
 
-        $dql = "SELECT j FROM AppBundle:Job j";
+        $dql = "SELECT j FROM AppBundle:Service j";
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
 
-        $jobs = $paginator->paginate(
+        $services = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), //page number
             Constants::ROWS_PER_PAGE //limit per page
         );
 
-        return $this->render('job/index.html.twig', array(
-            'jobs' => $jobs,
+        return $this->render('service/index.html.twig', array(
+            'services' => $services,
         ));
     }
 
     /**
-     * Lists all jobs performed on a specific vehicle.
+     * Lists all services performed on a specific vehicle.
      *
-     * @Route("/vehicle/{id}", name="vehicle_job_list")
+     * @Route("/vehicle/{id}", name="vehicle_service_list")
      * @param $request
      * @param $id
      * @return Response
@@ -69,36 +69,36 @@ class JobController extends Controller
 //        $vehicle = $em->getRepository('AppBundle:Vehicle')
 //            ->find($id);
 
-//        $jobs = $em->getRepository('AppBundle:Job')
+//        $services = $em->getRepository('AppBundle:Service')
 //            ->findBy([
 //                'vehicle' => $vehicle,
 //            ]);
 
-        $query = $em->getRepository('AppBundle:Job')->findByVehicle($id);
+        $query = $em->getRepository('AppBundle:Service')->findByVehicle($id);
 
         $paginator = $this->get('knp_paginator');
 
-        $jobs = $paginator->paginate(
+        $services = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             Constants::ROWS_PER_PAGE
         );
 
 
-        return $this->render('job/index.html.twig', array(
-            'jobs' => $jobs,
+        return $this->render('service/index.html.twig', array(
+            'services' => $services,
         ));
     }
 
     /**
-     * Creates a new job entity.
+     * Creates a new service entity.
      *
-     * @Route("/new", name="job_new")
+     * @Route("/new", name="service_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $job = new Job();
+        $service = new Service();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -109,7 +109,7 @@ class JobController extends Controller
                     'id' => $request->query->get('task'),
                     'createdBy' => $this->getUser(),
                 ]);
-            $job->setTask($task);
+            $service->setTask($task);
         }
 
         // Check if we need to pre-populate with a Vehicle
@@ -119,80 +119,80 @@ class JobController extends Controller
                     'id' => $request->query->get('vehicle'),
                     'createdBy' => $this->getUser(),
                 ]);
-            $job->setVehicle($vehicle);
+            $service->setVehicle($vehicle);
         }
 
-        $form = $this->createForm('AppBundle\Form\JobFormType', $job);
+        $form = $this->createForm('AppBundle\Form\ServiceFormType', $service);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $job->setCreatedAt(new \DateTime('now'));
-            $job->setModifiedAt(new \DateTime('now'));
-            $job->setCreatedBy($this->getUser());
-            $job->setModifiedBy($this->getUser());
-            $job->setStatus(StatusEnums::Active);
+            $service->setCreatedAt(new \DateTime('now'));
+            $service->setModifiedAt(new \DateTime('now'));
+            $service->setCreatedBy($this->getUser());
+            $service->setModifiedBy($this->getUser());
+            $service->setStatus(StatusEnums::Active);
 
-            $em->persist($job);
-            $em->flush($job);
+            $em->persist($service);
+            $em->flush($service);
 
-            return $this->redirectToRoute('job_show', $job->getId());
+            return $this->redirectToRoute('service_show', $service->getId());
         }
 
-        return $this->render('job/new.html.twig', array(
-            'jobForm' => $form->createView(),
+        return $this->render('service/new.html.twig', array(
+            'serviceForm' => $form->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing job entity.
+     * Displays a form to edit an existing service entity.
      *
-     * @Route("/{id}/edit", name="job_edit")
+     * @Route("/{id}/edit", name="service_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, int $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $job = $em->getRepository('AppBundle:Job')
+        $service = $em->getRepository('AppBundle:Service')
             ->findOneBy([
                 'id' => $id,
                 'createdBy' => $this->getUser(),
             ]);
 
 
-        if (!$job) {
+        if (!$service) {
             throw $this->createNotFoundException(
-                'No job found for id ' . $id
+                'No service found for id ' . $id
             );
         }
 
-        $form = $this->createForm(JobFormType::class, $job);
+        $form = $this->createForm(ServiceFormType::class, $service);
 
         // only handles data on POST
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $job = $form->getData();
-            $job->setModifiedAt(new \DateTime('now'));
-            $job->setModifiedBy($this->getUser());
+            $service = $form->getData();
+            $service->setModifiedAt(new \DateTime('now'));
+            $service->setModifiedBy($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($job);
+            $em->persist($service);
             $em->flush();
 
-            return $this->redirectToRoute('job_list');
+            return $this->redirectToRoute('service_list');
         }
 
-        return $this->render('job/edit.html.twig', [
-            'jobForm' => $form->createView()
+        return $this->render('service/edit.html.twig', [
+            'serviceForm' => $form->createView()
         ]);
     }
 
     /**
-     * Finds and displays a job entity.
+     * Finds and displays a service entity.
      *
-     * @Route("/{id}", name="job_show")
+     * @Route("/{id}", name="service_show")
      * @param $id
      * @Method("GET")
      *
@@ -202,27 +202,27 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $job = $em->getRepository('AppBundle:Job')
+        $service = $em->getRepository('AppBundle:Service')
             ->findOneBy([
                 'id' => $id,
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$job) {
+        if (!$service) {
             throw $this->createNotFoundException(
-                'No job found for id ' . $id
+                'No service found for id ' . $id
             );
         }
 
-        return $this->render('job/show.html.twig', [
-            'job' => $job
+        return $this->render('service/show.html.twig', [
+            'service' => $service
         ]);
     }
 
     /**
-     * Deletes a job entity.
+     * Deletes a service entity.
      *
-     * @Route("/{id}", name="job_delete")
+     * @Route("/{id}", name="service_delete")
      * @param $request
      * @param $id
      * @Method("DELETE")
@@ -232,20 +232,20 @@ class JobController extends Controller
     {
         try {
             $em = $this->getDoctrine()->getManager();
-            $job = $em->getRepository('AppBundle:Job')
+            $service = $em->getRepository('AppBundle:Service')
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
                     'createdBy' => $this->getUser(),
                 ]);
 
-            if (!$job) {
-                throw $this->createNotFoundException('Unable to find Job entity.');
+            if (!$service) {
+                throw $this->createNotFoundException('Unable to find Service entity.');
             }
 
             // Safe to remove
-            $job->setStatus(StatusEnums::Deleted);
-            $em->persist($job);
+            $service->setStatus(StatusEnums::Deleted);
+            $em->persist($service);
             $em->flush();
 
             $response['success'] = true;

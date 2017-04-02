@@ -1,4 +1,4 @@
-AppBundle\Entity\Job:
+AppBundle\Entity\Service:
     type: entity
-    table: jobs
-    repositoryClass: AppBundle\Repository\JobRepository
+    table: services
+    repositoryClass: AppBundle\Repository\ServiceRepository

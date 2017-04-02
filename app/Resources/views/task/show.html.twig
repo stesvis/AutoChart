@@ -109,10 +109,10 @@
             class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Add a Field</a>
     <a
-            id="newJobButton"
-            href="{{ path('job_new', {'task':task.id}) }}"
+            id="newServiceButton"
+            href="{{ path('service_new', {'task':task.id}) }}"
             class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
-            role="button">New Job</a>
+            role="button">New Service</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -144,7 +144,7 @@
             $('#deleteTaskButton').addClass('disabled');
             $('#editTaskButton').addClass('disabled');
             $('#addFieldButton').addClass('disabled');
-            $('#newJobButton').addClass('disabled');
+            $('#newServiceButton').addClass('disabled');
             $('.editField').addClass('disabled');
             $('.deleteField').addClass('disabled');
         }

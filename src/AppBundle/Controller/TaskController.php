@@ -189,12 +189,12 @@ class TaskController extends Controller
             }
 
             // Check if the task is in use on any task
-            $jobsByTask = $em->getRepository('AppBundle:Job')
+            $servicesByTask = $em->getRepository('AppBundle:Service')
                 ->findBy([
                     'task' => $task
                 ]);
 
-            if (count($jobsByTask) == 0) {
+            if (count($servicesByTask) == 0) {
                 // Safe to remove
                 $task->setStatus(StatusEnums::Deleted);
                 $em->persist($task);
@@ -204,7 +204,7 @@ class TaskController extends Controller
                 $response['message'] = 'Task deleted.';
             } else {
                 $response['success'] = false;
-                $response['message'] = 'This Task is in use on some Jobs. Delete its references first.';
+                $response['message'] = 'This Task is in use on some Services. Delete its references first.';
             }
         } catch (Exception $e) {
             $response['success'] = false;

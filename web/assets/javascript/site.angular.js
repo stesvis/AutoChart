@@ -15,8 +15,8 @@ function AdminCategoryController($scope, $mdDialog, $http) {
 
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()
-            .title('Would you like to delete this Job?')
-            .textContent('You will not be able to access this job anymore.')
+            .title('Would you like to delete this Service?')
+            .textContent('You will not be able to access this service anymore.')
             // .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Yes')
@@ -45,7 +45,6 @@ function AdminCategoryController($scope, $mdDialog, $http) {
                     //code in case they click NO
                 });
     };
-};
-
+}
 //AdminCategoryController.$inject = ['$scope', '$mdDialog', '$http', '$route'];
 

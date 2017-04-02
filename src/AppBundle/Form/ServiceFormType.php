@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Job;
+use AppBundle\Entity\Service;
 use AppBundle\Includes\StatusEnums;
 use AppBundle\Service\TaskService;
 use AppBundle\Service\VehicleService;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JobFormType extends AbstractType
+class ServiceFormType extends AbstractType
 {
     protected $taskService;
     protected $vehicleService;
@@ -65,7 +65,7 @@ class JobFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Job::class
+            'data_class' => Service::class
         ));
     }
 
@@ -74,7 +74,7 @@ class JobFormType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'app_bundle_job_form_type';
+        return 'app_bundle_service_form_type';
     }
 
 

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service Details{% endblock %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        table.customTable {
+            width: auto;
+        }
+
+        table.customTable > tbody > tr > th {
+            padding-right: 50px !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <h1>Service Details</h1>
+
+    <table class="table table-hover thisTable">
+        <tbody>
+        <tr>
+            <th>Vehicle</th>
+            <td>
+                <a href="{{ path('vehicle_show', {'id':service.vehicle.id}) }}">{{ service.vehicle.name }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Mileage</th>
+            <td>{{ service.mileage }} {{ service.vehicle.mileageType }}</td>
+        </tr>
+        <tr>
+            <th>Completed</th>
+            <td>{{ service.createdAt|date('F j, Y') }} by {{ service.createdBy.username }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ service.status }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="dialog" title="Delete the Service?" style="display: none;">
+        <p></p>
+    </div>
+{% endblock %}
+
+{% block rightSidebar %}
+    <a
+            id="editobButton"
+            href="{{ path('service_edit', {'id':service.id}) }}"
+            class="btn btn-primary btn-block {% if service.status == 'D' %}disabled{% endif %}"
+            role="button">Edit</a>
+    <a
+            id="deleteServiceButton"
+            {#href="{{ path('service_delete', {'id':service.id}) }}"#}
+            class="btn btn-danger btn-block {% if service.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('service_new') }}"
+            class="btn btn-default btn-block"
+            role="button">New Service</a>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.deleteService').click(function () {
+
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
+
+                openDeleteDialog("#dialog", "Delete the Service?", "/services/" + {{ service.id }}, afterDelete);
+            });
+        });
+
+        function afterDelete() {
+            $('#deleteServiceButton').addClass('disabled');
+            $('#editServiceButton').addClass('disabled');
+        }
+    </script>
+
+{% endblock %}
+

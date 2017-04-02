@@ -178,12 +178,12 @@ class TaskFieldController extends Controller
             }
 
             // Check if the task is in use on any task
-            $jobsByTask = $em->getRepository('AppBundle:Job')
+            $servicesByTask = $em->getRepository('AppBundle:Service')
                 ->findBy([
                     'task' => $field->getTask()
                 ]);
 
-            if (count($jobsByTask) == 0) {
+            if (count($servicesByTask) == 0) {
                 // Safe to remove
                 $field->setStatus(StatusEnums::Deleted);
                 $em->persist($field);
@@ -193,7 +193,7 @@ class TaskFieldController extends Controller
                 $response['message'] = 'Task deleted.';
             } else {
                 $response['success'] = false;
-                $response['message'] = 'This Field belongs to a Task that is in use on some Jobs. Delete its references first.';
+                $response['message'] = 'This Field belongs to a Task that is in use on some Services. Delete its references first.';
             }
         } catch (Exception $e) {
             $response['success'] = false;

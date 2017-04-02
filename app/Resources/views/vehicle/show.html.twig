@@ -21,7 +21,7 @@
         <tbody>
         <tr>
             <th>Maintenance History:</th>
-            <td><a href="{{ path('vehicle_job_list', {'id':vehicle.id}) }}">Click here to view</a></td>
+            <td><a href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">Click here to view</a></td>
         </tr>
         <tr>
             <th>Year:</th>
@@ -152,10 +152,10 @@
             role="button">Add Details</a>
     <br/>
     <a
-            id="newJobButton"
-            href="{{ path('job_new') }}"
+            id="newServiceButton"
+            href="{{ path('service_new') }}"
             class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
-            role="button">New Job</a>
+            role="button">New Service</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -223,7 +223,7 @@
             $('#editVehicleButton').addClass('disabled');
 
             $('#newInfoButton').addClass('disabled');
-            $('#newJobButton').addClass('disabled');
+            $('#newServiceButton').addClass('disabled');
             $('.deleteVehicleInfo').addClass('disabled');
         }
 

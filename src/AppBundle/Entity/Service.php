@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="jobs")
+ * @ORM\Table(name="services")
  */
-class Job
+class Service
 {
     /**
      * @ORM\Id

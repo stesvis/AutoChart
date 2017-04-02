@@ -2,7 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Job;
+use AppBundle\Entity\Service;
 use AppBundle\Includes\StatusEnums;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadServiceData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     private $container;
 
@@ -21,7 +21,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
      */
     public function load(ObjectManager $manager)
     {
-        $this->CreateJob(
+        $this->CreateService(
             $manager,
             '2014-jeep-cherokee',
             'task-oil-change',
@@ -30,7 +30,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
             new \DateTime('now'),
             '2014-jeep-cherokee-task-oil-change');
 
-        $this->CreateJob(
+        $this->CreateService(
             $manager,
             '2008-jeep-wrangler',
             'task-oil-change',
@@ -40,7 +40,7 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
             '2008-jeep-wrangler-task-oil-change');
     }
 
-    private function CreateJob(
+    private function CreateService(
         ObjectManager $manager,
         string $vehicleReference,
         string $taskReference,
@@ -49,21 +49,21 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface, Co
         \DateTime $now,
         string $reference
     ) {
-        $job = new Job();
+        $service = new Service();
 
-        $job->setVehicle($this->getReference($vehicleReference));
-        $job->setTask($this->getReference($taskReference));
-        $job->setNotes('This is a test');
-        $job->setCreatedAt($now);
-        $job->setCreatedBy($this->getReference($userReference));
-        $job->setModifiedAt($now);
-        $job->setModifiedBy($this->getReference($userReference));
-        $job->setMileage($mileage);
-        $job->setStatus(StatusEnums::Active);
+        $service->setVehicle($this->getReference($vehicleReference));
+        $service->setTask($this->getReference($taskReference));
+        $service->setNotes('This is a test');
+        $service->setCreatedAt($now);
+        $service->setCreatedBy($this->getReference($userReference));
+        $service->setModifiedAt($now);
+        $service->setModifiedBy($this->getReference($userReference));
+        $service->setMileage($mileage);
+        $service->setStatus(StatusEnums::Active);
 
-        $manager->persist($job);
+        $manager->persist($service);
         $manager->flush();
-        $this->addReference($reference, $job);
+        $this->addReference($reference, $service);
     }
 
     /**
