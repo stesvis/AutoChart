@@ -25,7 +25,7 @@
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-success"><span
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('category_edit', {'id':category.id}) }}"
-                           class="btn btn-xs btn-success {% if category.status != 'A' %}disabled{% endif %}"><span
+                           class="btn btn-xs btn-success editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
                                     class="fa fa-pencil"></span></a>
 
                         <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
@@ -51,14 +51,19 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.deleteCategory').click(function () {
-                var categoryId = $(this).attr("categoryId");
-                var deleteButton = $(this);
 
+                var categoryId = $(this).attr("categoryId");
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + categoryId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + categoryId, afterDelete, categoryId);
             });
         });
+
+        function afterDelete(id) {
+            $('.deleteCategory[categoryId=' + id + ']').addClass('disabled');
+            $('.deleteCategory[categoryId=' + id + ']').prev().addClass('disabled');
+        }
+
     </script>
 {% endblock %}
 

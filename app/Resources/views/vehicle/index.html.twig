@@ -49,15 +49,20 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.deleteVehicle').click(function () {
                 var vehicleId = $(this).attr("vehicleId");
-                var deleteButton = $(this);
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, afterDelete, vehicleId);
             });
         });
+
+        function afterDelete(id) {
+            $('.deleteVehicle[vehicleId=' + id + ']').addClass('disabled');
+            $('.deleteVehicle[vehicleId=' + id + ']').prev().addClass('disabled');
+        }
     </script>
 
 {% endblock %}

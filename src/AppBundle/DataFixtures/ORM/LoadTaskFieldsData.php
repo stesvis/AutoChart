@@ -23,27 +23,27 @@ class LoadTaskFieldsData extends AbstractFixture implements OrderedFixtureInterf
     {
         $this->CreateTaskField(
             $manager,
-            'Oil Pan Plug Size',
+            'Change Oil Filter',
             new \DateTime('now'),
-            'oil-pan-plug-size',
+            'field-oil-filter',
             'superadmin',
             'task-oil-change');
 
-        $this->CreateTaskField(
-            $manager,
-            'Oil Type',
-            new \DateTime('now'),
-            'oil-type',
-            'superadmin',
-            'task-oil-change');
-
-        $this->CreateTaskField(
-            $manager,
-            'Oil Capacity',
-            new \DateTime('now'),
-            'oil-capacity',
-            'superadmin',
-            'task-oil-change');
+//        $this->CreateTaskField(
+//            $manager,
+//            'Oil Type',
+//            new \DateTime('now'),
+//            'oil-type',
+//            'superadmin',
+//            'task-oil-change');
+//
+//        $this->CreateTaskField(
+//            $manager,
+//            'Oil Capacity',
+//            new \DateTime('now'),
+//            'oil-capacity',
+//            'superadmin',
+//            'task-oil-change');
 
 //        $this->CreateTaskField(
 //            $manager,

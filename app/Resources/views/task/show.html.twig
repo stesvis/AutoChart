@@ -68,7 +68,8 @@
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}" class="btn btn-xs btn-success"><span
+                    <a href="{{ path('taskfield_edit', {'id':field.id}) }}"
+                       class="btn btn-xs btn-success editField"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteField {% if field.status != 'A' %}disabled{% endif %}"
                        fieldId="{{ field.id }}"
@@ -88,12 +89,14 @@
 
 {% block rightSidebar %}
     <a
+            id="editTaskButton"
             href="{{ path('task_edit', {'id':task.id}) }}"
             class="btn btn-primary btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
+            id="deleteTaskButton"
             {#href="{{ path('task_delete', {'id':task.id}) }}"#}
-            class="btn btn-danger btn-block deleteTask {% if task.status == 'D' %}disabled{% endif %}"
+            class="btn btn-danger btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
     <a
             href="{{ path('task_new') }}"
@@ -101,10 +104,12 @@
             role="button">Add Task</a>
     <br/>
     <a
+            id="addFieldButton"
             href="{{ path('taskfield_new') }}"
             class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">Add a Field</a>
     <a
+            id="newJobButton"
             href="{{ path('job_new', {'task':task.id}) }}"
             class="btn btn-default btn-block {% if task.status == 'D' %}disabled{% endif %}"
             role="button">New Job</a>
@@ -121,20 +126,34 @@
                     '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
                     'This Task will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + {{ task.id }}, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + {{ task.id }}, afterDeleteTask,{{ task.id }});
             });
 
             $('.deleteField').click(function () {
-                var deleteButton = $(this);
                 var fieldId = $(this).attr('fieldId');
 
                 $("#dialog").find("p").html('' +
                     '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
                     'This Field will be permanently removed from the Task and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + fieldId, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + fieldId, afterDeleteField, fieldId);
             });
         });
+
+        function afterDeleteTask(id) {
+            $('#deleteTaskButton').addClass('disabled');
+            $('#editTaskButton').addClass('disabled');
+            $('#addFieldButton').addClass('disabled');
+            $('#newJobButton').addClass('disabled');
+            $('.editField').addClass('disabled');
+            $('.deleteField').addClass('disabled');
+        }
+
+        function afterDeleteField(id) {
+            $('.deleteField[fieldId=' + id + ']').addClass('disabled');
+            $('.deleteField[fieldId=' + id + ']').prev().addClass('disabled');
+        }
+
     </script>
 
 {% endblock %}

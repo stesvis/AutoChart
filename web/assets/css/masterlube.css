@@ -60,6 +60,12 @@ th {
 
 /*---------------------------- Misc ----------------------------*/
 
+@media screen and (max-width: 767px) {
+    #_submit, #registerButton {
+        width: 100%;
+    }
+}
+
 .active > .badge {
     background-color: #df691a;
 }

@@ -10,8 +10,17 @@ $(document).ready(function () {
     // });
 });
 
+/**
+ *
+ * @param dialogId
+ * @param title
+ * @param deleteRoute
+ * @param deleteButton
+ * @param callbackFunction
+ * @returns {jQuery}
+ */
+function openDeleteDialog(dialogId, title, deleteRoute, callbackFunction, id) {
 
-function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
     return $(dialogId).dialog({
         resizable: false,
         height: "auto",
@@ -34,8 +43,7 @@ function openDeleteDialog(dialogId, title, deleteRoute, deleteButton) {
 
                             var success = data['success'];
                             if (success) {
-                                deleteButton.addClass('disabled');
-                                deleteButton.prev().addClass('disabled');
+                                callbackFunction(id);
                             }
                             else {
                                 $(dialogId).html('<p>' + data['message'] + '</p>');

@@ -45,12 +45,14 @@
 
 {% block rightSidebar %}
     <a
+            id="editFieldButton"
             href="{{ path('taskfield_edit', {'id':field.id}) }}"
             class="btn btn-primary btn-block {% if field.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
+            id="deleteFieldButton"
             {#href="{{ path('taskfield_delete', {'id':field.id}) }}"#}
-            class="btn btn-danger btn-block deleteField {% if field.status == 'D' %}disabled{% endif %}"
+            class="btn btn-danger btn-block {% if field.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
     <a
             href="{{ path('taskfield_new', {'id':field.id}) }}"
@@ -62,14 +64,19 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.deleteField').click(function () {
-                var deleteButton = $(this);
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Field will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + {{ field.id }}, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + {{ field.id }}, afterDelete, {{ field.id }});
             });
         });
+
+        function afterDelete(id) {
+            $('#editFieldButton').addClass('disabled');
+            $('#deleteFieldButton').addClass('disabled');
+        }
     </script>
 
 {% endblock %}

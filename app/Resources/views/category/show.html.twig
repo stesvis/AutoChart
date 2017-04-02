@@ -42,10 +42,12 @@
 
 {% block rightSidebar %}
     <a
+            id="editCategoryButton"
             href="{{ path('category_edit', {'id':category.id}) }}"
             class="btn btn-primary btn-block {% if category.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
+            id="" deleteCategoryButton
             {#href="{{ path('category_delete', {'id':category.id}) }}"#}
             class="btn btn-danger btn-block deleteCategory {% if category.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
@@ -55,6 +57,7 @@
             role="button">Add Category</a>
     <br/>
     <a
+            id="newTaskButton"
             href="{{ path('task_new', {'category':category.id}) }}"
             class="btn btn-default btn-block {% if category.status == 'D' %}disabled{% endif %}"
             role="button">New Task</a>
@@ -64,14 +67,20 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.deleteCategory').click(function () {
-                var deleteButton = $(this);
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + {{ category.id }}, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + {{ category.id }}, afterDelete);
             });
         });
+
+        function afterDelete() {
+            $('#deleteCategoryButton').addClass('disabled');
+            $('#editCategoryButton').addClass('disabled');
+            $('#newTaskButton').addClass('disabled');
+        }
     </script>
 
 {% endblock %}

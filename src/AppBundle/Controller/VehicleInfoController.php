@@ -21,17 +21,21 @@ use Symfony\Component\HttpFoundation\Request;
 class VehicleInfoController extends Controller
 {
     /**
-     * @Route("/addInfoAjax", name="vehicle_info_add")
+     * @Route("/saveInfoAjax", name="vehicle_info_add")
      * @param $request
      * @Method("POST")
      * @return JsonResponse
      */
-    public function addInfoAjax(Request $request)
+    public function saveInfoAjax(Request $request)
     {
         try {
-            if ($this->insertVehicleInfo($request)) {
+            $info = $this->insertVehicleInfo($request);
+            if ($info->getId() > 0) {
                 $response['success'] = true;
                 $response['message'] = 'Info Added.';
+                $response['infoId'] = $info->getId();
+                $response['infoName'] = $info->getName();
+                $response['infoValue'] = $info->getValue();
             } else {
                 $response['success'] = false;
                 $response['message'] = 'Could not save the info';
@@ -46,10 +50,47 @@ class VehicleInfoController extends Controller
         return new JsonResponse($response);
     }
 
-    private function insertVehicleInfo(Request $request): bool
+    /**
+     * @Route("/{id}", name="vehicle_info_delete")
+     * @param $request
+     * @param $id
+     * @Method("DELETE")
+     * @return JsonResponse
+     */
+    public function deleteAction(Request $request, $id)
     {
-        $success = false;
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $info = $em->getRepository('AppBundle:VehicleInfo')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
+            if (!$info) {
+                throw $this->createNotFoundException(
+                    'No info found for id ' . $id
+                );
+            }
+
+            // Safe to remove
+            $info->setStatus(StatusEnums::Deleted);
+            $em->persist($info);
+            $em->flush();
+
+            $response['success'] = true;
+            $response['message'] = 'Info deleted.';
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+        }
+
+        return new JsonResponse($response);
+    }
+
+    private function insertVehicleInfo(Request $request): VehicleInfo
+    {
         $info = new VehicleInfo();
         $form = $this->createForm(VehicleInfoFormType::class, $info);
 
@@ -68,10 +109,8 @@ class VehicleInfoController extends Controller
 
             $em->persist($info);
             $em->flush();
-
-            $success = true;
         }
 
-        return $success;
+        return $info;
     }
 }

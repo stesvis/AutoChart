@@ -28,11 +28,9 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
-        try
-        {
+        try {
             $vehicles = $this->get('vehicle_service')->getMyVehicles();
-        } catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             $vehicles = null;
         }
 
@@ -58,8 +56,7 @@ class VehicleController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$vehicle)
-        {
+        if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
@@ -76,8 +73,7 @@ class VehicleController extends Controller
         // only handles data on POST
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $vehicle = $form->getData();
             $vehicle->setModifiedAt(new \DateTime('now'));
             $vehicle->setModifiedBy($this->getUser());
@@ -109,8 +105,7 @@ class VehicleController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $vehicle = $form->getData();
@@ -152,24 +147,27 @@ class VehicleController extends Controller
             ]);
 
         // Check if it exists
-        if (!$vehicle)
-        {
+        if (!$vehicle) {
             throw $this->createNotFoundException(
                 'No vehicle found for id ' . $id
             );
         }
 
+        $info = new VehicleInfo();
+        $info->setVehicle($vehicle);
+        $infoForm = $this->createForm(VehicleInfoFormType::class, $info, [
+            'hideVehicle' => true,
+            'hideSubmit' => true,
+        ]);
+
         // Get all the vehicle info records
         $vehicleInfo = $em->getRepository('AppBundle:VehicleInfo')
             ->findByVehicle($id);
 
-        $vehicleDefaults = $em->getRepository('AppBundle:VehicleFieldDefault')
-            ->findByVehicle($id);
-
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
-            'defaults' => $vehicleDefaults,
             'info' => $vehicleInfo,
+            'infoForm' => $infoForm->createView(),
         ]);
     }
 
@@ -182,8 +180,7 @@ class VehicleController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $vehicle = $em->getRepository('AppBundle:Vehicle')
                 ->findOneBy([
@@ -192,28 +189,25 @@ class VehicleController extends Controller
                     'createdBy' => $this->getUser(),
                 ]);
 
-            if (!$vehicle)
-            {
+            if (!$vehicle) {
                 throw $this->createNotFoundException(
                     'No vehicle found for id ' . $id
                 );
             }
 
             // Safe to remove
-            $vehicle->setStatus(StatusEnums::Active);
+            $vehicle->setStatus(StatusEnums::Deleted);
             $em->persist($vehicle);
             $em->flush();
 
             $response['success'] = true;
             $response['message'] = 'Vehicle deleted.';
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $response['success'] = false;
             $response['message'] = $e->getMessage();
         }
 
         return new JsonResponse($response);
     }
-
 
 }

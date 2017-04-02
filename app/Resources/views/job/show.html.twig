@@ -48,12 +48,14 @@
 
 {% block rightSidebar %}
     <a
+            id="editobButton"
             href="{{ path('job_edit', {'id':job.id}) }}"
             class="btn btn-primary btn-block {% if job.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
+            id="deleteJobButton"
             {#href="{{ path('job_delete', {'id':job.id}) }}"#}
-            class="btn btn-danger btn-block deleteJob {% if job.status == 'D' %}disabled{% endif %}"
+            class="btn btn-danger btn-block {% if job.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
     <a
             href="{{ path('job_new') }}"
@@ -66,13 +68,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.deleteJob').click(function () {
-                var deleteButton = $(this);
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Job will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Job?", "/jobs/" + {{ job.id }}, deleteButton);
+                openDeleteDialog("#dialog", "Delete the Job?", "/jobs/" + {{ job.id }}, afterDelete);
             });
         });
+
+        function afterDelete() {
+            $('#deleteJobButton').addClass('disabled');
+            $('#editJobButton').addClass('disabled');
+        }
     </script>
 
 {% endblock %}
