@@ -50,7 +50,7 @@
     <a
             id="editobButton"
             href="{{ path('service_edit', {'id':service.id}) }}"
-            class="btn btn-primary btn-block {% if service.status == 'D' %}disabled{% endif %}"
+            class="btn btn-warning btn-block {% if service.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             id="deleteServiceButton"
@@ -59,7 +59,7 @@
             role="button">Delete</a>
     <a
             href="{{ path('service_new') }}"
-            class="btn btn-default btn-block"
+            class="btn btn-success btn-block"
             role="button">New Service</a>
 {% endblock %}
 

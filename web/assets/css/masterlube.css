@@ -2,6 +2,10 @@ body {
     font-family: Verdana;
 }
 
+.jumbotron p {
+    font-size: 12px;
+}
+
 /*---------------------------- Headings ----------------------------*/
 
 h1, h2, h3, h4, h5 {

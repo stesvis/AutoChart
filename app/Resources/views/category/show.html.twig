@@ -44,7 +44,7 @@
     <a
             id="editCategoryButton"
             href="{{ path('category_edit', {'id':category.id}) }}"
-            class="btn btn-primary btn-block {% if category.status == 'D' %}disabled{% endif %}"
+            class="btn btn-warning btn-block {% if category.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             id="" deleteCategoryButton
@@ -54,7 +54,7 @@
     <a
             href="{{ path('category_new') }}"
             class="btn btn-success btn-block"
-            role="button">Add Category</a>
+            role="button">New</a>
     <br/>
     <a
             id="newTaskButton"

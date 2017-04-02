@@ -24,7 +24,7 @@
                     <a href="{{ path('service_show', {'id':service.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('service_edit', {'id':service.id}) }}"
-                       class="btn btn-xs btn-success editService {% if service.status != 'A' %}disabled{% endif %}"><span
+                       class="btn btn-xs btn-warning editService {% if service.status != 'A' %}disabled{% endif %}"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteService {% if service.status != 'A' %}disabled{% endif %}"
                        serviceId="{{ service.id }}"

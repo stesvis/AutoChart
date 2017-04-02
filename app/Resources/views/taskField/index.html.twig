@@ -24,7 +24,7 @@
                     <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('taskfield_edit', {'id':field.id}) }}"
-                       class="btn btn-xs btn-success {% if field.status != 'A' %}disabled{% endif %}"><span
+                       class="btn btn-xs btn-warning {% if field.status != 'A' %}disabled{% endif %}"><span
                                 class="fa fa-pencil"></span></a>
                     {#{% if (task.status == 'A' and task.type == 'Custom') %}#}
                     <a class="btn btn-xs btn-danger deleteField {% if field.status != 'A' %}disabled{% endif %}"

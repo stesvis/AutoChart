@@ -26,7 +26,7 @@
                     <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
                     <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
-                       class="btn btn-xs btn-success {% if vehicle.status != 'A' %}disabled{% endif %}"><span
+                       class="btn btn-xs btn-warning {% if vehicle.status != 'A' %}disabled{% endif %}"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicle {% if vehicle.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ vehicle.id }}"

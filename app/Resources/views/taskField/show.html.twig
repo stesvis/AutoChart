@@ -47,7 +47,7 @@
     <a
             id="editFieldButton"
             href="{{ path('taskfield_edit', {'id':field.id}) }}"
-            class="btn btn-primary btn-block {% if field.status == 'D' %}disabled{% endif %}"
+            class="btn btn-warning btn-block {% if field.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
             id="deleteFieldButton"
@@ -56,8 +56,8 @@
             role="button">Delete</a>
     <a
             href="{{ path('taskfield_new', {'id':field.id}) }}"
-            class="btn btn-default btn-block {% if field.status == 'D' %}disabled{% endif %}"
-            role="button">New Field</a>
+            class="btn btn-success btn-block {% if field.status == 'D' %}disabled{% endif %}"
+            role="button">New</a>
 {% endblock %}
 
 {% block javascripts %}

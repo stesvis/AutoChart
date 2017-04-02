@@ -25,7 +25,7 @@
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('category_edit', {'id':category.id}) }}"
-                           class="btn btn-xs btn-success editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
+                           class="btn btn-xs btn-warning editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
                                     class="fa fa-pencil"></span></a>
 
                         <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
