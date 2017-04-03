@@ -19,8 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TaskController extends Controller
 {
-
-
     /**
      * @Route("/", name="task_list")
      * @return \Symfony\Component\HttpFoundation\Response
@@ -29,12 +27,17 @@ class TaskController extends Controller
     {
         $tasks = null;
 
+//        $userManager = $this->get('fos_user.user_manager');
+//        $users = $userManager->findUsers();
+
         try {
             $em = $this->getDoctrine()->getManager();
+
             $tasks = $em->getRepository('AppBundle:Task')
                 ->findBy([
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service') > getEntitledUsers(),
                 ]);
+
         } catch (\Exception $ex) {
             die($ex->getMessage());
         }

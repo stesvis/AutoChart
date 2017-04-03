@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 
+use AppBundle\Includes\StatusEnums;
 use Doctrine\ORM\EntityRepository;
 
 class ServiceRepository extends EntityRepository
@@ -17,5 +18,18 @@ class ServiceRepository extends EntityRepository
             ->getQuery();
 
         return $query;
+    }
+
+    public function findAllActive(callable $func = null)
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb->where("s.status = '" . StatusEnums::Active . "''");
+
+        if (is_callable($func)) {
+            return $func($qb);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

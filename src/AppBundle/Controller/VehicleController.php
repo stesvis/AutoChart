@@ -26,7 +26,7 @@ class VehicleController extends Controller
      * @Route("/", name="vehicle_list")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         try {
             $vehicles = $this->get('vehicle_service')->getMyVehicles();

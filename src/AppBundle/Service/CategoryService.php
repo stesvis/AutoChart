@@ -21,7 +21,6 @@ class CategoryService
     {
         $this->em = $em;
         $this->user = $tokenStorage->getToken()->getUser();
-
     }
 
     /**

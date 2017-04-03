@@ -31,8 +31,7 @@ class CategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $categories = $em->getRepository('AppBundle:Category')
                 ->findBy([
-                    //'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
         } catch (\Exception $ex) {
 

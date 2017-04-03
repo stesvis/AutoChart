@@ -33,7 +33,7 @@ class TaskFieldController extends Controller
             $em = $this->getDoctrine()->getManager();
             $taskFields = $em->getRepository('AppBundle:TaskField')
                 ->findBy([
-                    'createdBy' => $this->getUser(),
+                    $this->get('user_service')->getEntitledUsers(),
                 ]);
         } catch (\Exception $ex) {
             die($ex->getMessage());
