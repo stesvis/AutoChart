@@ -2,7 +2,7 @@
 
 namespace AppBundle\Includes;
 
-class StatusEnums extends Enum
+class StatusEnums// extends Enum
 {
     const __default = self::Active;
 

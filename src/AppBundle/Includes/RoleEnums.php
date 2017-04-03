@@ -2,7 +2,7 @@
 
 namespace AppBundle\Includes;
 
-class RoleEnums extends Enum
+class RoleEnums //extends Enum
 {
     const __default = self::User;
 
