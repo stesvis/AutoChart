@@ -40,6 +40,11 @@
         </tbody>
     </table>
 
+    {#Pagination#}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(vehicles) }}
+    </div>
+
     <div id="dialog" title="Delete the Vehicle?" style="display: none;">
         <p></p>
     </div>

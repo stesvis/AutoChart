@@ -14,7 +14,7 @@ services:
 
     vehicle_service:
         class: AppBundle\Service\VehicleService
-        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", '@user_service']
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@user_service"]
 
     category_service:
         class: AppBundle\Service\CategoryService
@@ -22,7 +22,7 @@ services:
 
     task_service:
         class: AppBundle\Service\TaskService
-        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@user_service"]
 
     user_service:
         class: UserBundle\Service\UserService

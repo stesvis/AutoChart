@@ -6,6 +6,8 @@ use AppBundle\Entity\Vehicle;
 use AppBundle\Entity\VehicleInfo;
 use AppBundle\Form\VehicleFormType;
 use AppBundle\Form\VehicleInfoFormType;
+use AppBundle\Includes\Constants;
+use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,7 +31,28 @@ class VehicleController extends Controller
     public function indexAction(Request $request)
     {
         try {
-            $vehicles = $this->get('vehicle_service')->getMyVehicles();
+//            $vehicles = $this->get('vehicle_service')->getMyVehicles();
+            $em = $this->getDoctrine()->getManager();
+
+            $queryBuilder = $em->getRepository('AppBundle:Vehicle')->createQueryBuilder('v');
+
+            if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+                $query = $queryBuilder->getQuery();
+            } else {
+                $query = $queryBuilder
+                    ->andWhere('v.createdBy = :user_id')
+                    ->setParameter('user_id', $this->getUser()->getId())
+                    ->getQuery();
+            }
+
+            $paginator = $this->get('knp_paginator');
+
+            $vehicles = $paginator->paginate(
+                $query, /* query NOT result */
+                $request->query->getInt('page', 1), //page number
+                Constants::ROWS_PER_PAGE //limit per page
+            );
+
         } catch (\Exception $ex) {
             $vehicles = null;
         }

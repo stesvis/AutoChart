@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Service;
 use AppBundle\Form\ServiceFormType;
 use AppBundle\Includes\Constants;
+use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,13 +34,16 @@ class ServiceController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-//        $services = $em->getRepository('AppBundle:Service')
-//            ->findBy([
-//                'createdBy' => $this->getUser(),
-//            ]);
+        $queryBuilder = $em->getRepository('AppBundle:Service')->createQueryBuilder('s');
 
-        $dql = "SELECT j FROM AppBundle:Service j";
-        $query = $em->createQuery($dql);
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $query = $queryBuilder->getQuery();
+        } else {
+            $query = $queryBuilder
+                ->andWhere('s.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->getQuery();
+        }
 
         $paginator = $this->get('knp_paginator');
 
