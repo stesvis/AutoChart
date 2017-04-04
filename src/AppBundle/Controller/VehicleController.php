@@ -176,13 +176,6 @@ class VehicleController extends Controller
             );
         }
 
-        $info = new VehicleInfo();
-        $info->setVehicle($vehicle);
-        $infoForm = $this->createForm(VehicleInfoFormType::class, $info, [
-            'hideVehicle' => true,
-            'hideSubmit' => true,
-        ]);
-
         // Get all the vehicle info records
         $vehicleInfo = $em->getRepository('AppBundle:VehicleInfo')
             ->findByVehicle($id);
@@ -190,7 +183,6 @@ class VehicleController extends Controller
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
             'info' => $vehicleInfo,
-            'infoForm' => $infoForm->createView(),
         ]);
     }
 

@@ -103,9 +103,9 @@
                 <td>
                     {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                     {#class="fa fa-eye"></span></a>#}
-                    {#<a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"#}
-                    {#class="btn btn-xs btn-success {% if vehicle.status != 'A' %}disabled{% endif %}"><span#}
-                    {#class="fa fa-pencil"></span></a>#}
+                    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
+                       vehicleInfoId="{{ thisInfo.id }}" onclick="onEditInfoClick({{ thisInfo.id }})"><span
+                                class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ thisInfo.vehicle.id }}"
                        vehicleInfoId="{{ thisInfo.id }}"
@@ -121,7 +121,8 @@
     <div id="vehicleInfoDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
             etc.)</p><br>
-        {{ form(infoForm) }}
+        <div id="infoForm">
+        </div>
     </div>
 
     <div id="dialog" title="Delete the Vehicle?" style="display: none;">
@@ -161,6 +162,8 @@
 {% block javascripts %}
 
     <script type="text/javascript">
+        var infoDialog = null;
+
         $(document).ready(function () {
 
             var name = $("#app_bundle_vehicle_info_name"),
@@ -168,20 +171,20 @@
                 allFields = $([]).add(name).add(value);
 
             // Store the dialog in a variable
-            var infoDialog = $('#vehicleInfoDialog').dialog({
+            infoDialog = $('#vehicleInfoDialog').dialog({
                 modal: true,
                 autoOpen: false,
                 width: 400,
                 buttons: {
                     Save: function () {
-                        onSave(infoDialog, form);
+                        onSaveInfo(infoDialog, form);
                     },
                     Cancel: function () {
                         $(this).dialog("close");
                     }
                 },
                 close: function () {
-                    form[0].reset();
+//                    form[0].reset();
                     allFields.removeClass("ui-state-error");
                 }
             });
@@ -190,14 +193,14 @@
 
             form.on("submit", function (event) {
                 event.preventDefault();
-                onSave(infoDialog, form);
+                onSaveInfo(infoDialog, form);
             });
 
             // Open the dialog when the button is clicked
             $('#newInfoButton').click(function () {
-                infoDialog.dialog("open")
+                onEditInfoClick(0);
+//                infoDialog.dialog("open");
             });
-
 
             $('#deleteVehicleButton').click(function () {
 
@@ -216,7 +219,83 @@
                 openDeleteDialog("#dialog", "Delete the Detail?", "/vehicle_info/" + vehicleInfoId, afterDeleteInfo, vehicleInfoId);
             });
 
+
+            {#$(document).on('click', '.editInfoButton', function () {#}
+
+            {#$("#loading").show();#}
+            {#var infoId = $(this).attr('vehicleInfoId');#}
+            {#var url = '{{ path('vehicle_info_edit', {'id':7}) }}';#}
+
+            {#$.ajax({#}
+            {#type: 'GET',#}
+            {#url: url,#}
+            {#data: $(this).attr('vehicleInfoId'),#}
+            {#dataType: 'JSON',#}
+            {#statusCode: {#}
+            {#404: function () {#}
+            {#message = 'Page not found';#}
+            {#}#}
+            {#},#}
+            {#success: function (data) {#}
+            {#console.log(data);#}
+            {#$("#loading").hide();#}
+            {#alert('success');#}
+            {#infoDialog.find('#infoForm').html(data.responseText);#}
+            {#infoDialog.dialog("open");#}
+            {#//$('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));#}
+            {#},#}
+            {#error: function (data) {#}
+            {#$("#loading").hide();#}
+            {#console.log(data.responseText);#}
+
+            {#infoDialog.find('#infoForm').html(data.responseText);#}
+            {#infoDialog.dialog("open");#}
+            {#},#}
+            {#});#}
+            {#});#}
+
+
         });
+
+        function onEditInfoClick(id) {
+
+            $("#loading").show();
+            var url = '{{ path('vehicle_info_edit', {'id':7}) }}'; //if i use id instead of 7 it says "unknown variable id"
+
+            if (id > 0)
+                url = '/vehicle_info/' + id + '/edit';
+            else
+                url = '{{ path('vehicle_info_new') }}';
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: id,
+                dataType: 'JSON',
+                statusCode: {
+                    404: function () {
+                        message = 'Page not found';
+                    }
+                },
+                success: function (data) {
+                    $("#loading").hide();
+
+                    console.log(data);
+                    alert('success');
+
+                    infoDialog.find('#infoForm').html(data.responseText);
+                    infoDialog.dialog("open");
+                    //$('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
+                },
+                error: function (data) {
+                    $("#loading").hide();
+                    console.log(data.responseText);
+
+                    infoDialog.find('#infoForm').html(data.responseText);
+                    infoDialog.dialog("open");
+                },
+            });
+        }
 
         function afterDeleteVehicle(id) {
             $('#deleteVehicleButton').addClass('disabled');
@@ -232,7 +311,7 @@
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').prev().addClass('disabled');
         }
 
-        function onSave(infoDialog, form) {
+        function onSaveInfo(infoDialog, form) {
 
             var formSerialize = form.serialize();
             var message = '';
@@ -276,8 +355,8 @@
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
-                    {#'    <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}" class="btn btn-xs btn-success {% if vehicle.status != 'A' %}disabled{% endif %}">' +#}
-                    {#'   <span class="fa fa-pencil"></span></a>' +#}
+                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="onEditInfoClick(' + id + ')">' +
+                '   <span class="fa fa-pencil"></span></a>' +
                 '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle" ng-click="showConfirm($event, {{ vehicle.id }})">' +
                 '   <span class="fa fa-trash"></span></a>' +
                 '</td>' +
