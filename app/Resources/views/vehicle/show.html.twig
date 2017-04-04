@@ -260,10 +260,12 @@
         function onEditInfoClick(id) {
 
             $("#loading").show();
-            var url = '{{ path('vehicle_info_edit', {'id':7}) }}'; //if i use id instead of 7 it says "unknown variable id"
+            var url = '';
 
-            if (id > 0)
-                url = '/vehicle_info/' + id + '/edit';
+            if (id > 0) {
+                url = '{{ path('vehicle_info_edit', {'id':'PLACEHOLDER'}) }}';
+                url = url.replace('PLACEHOLDER', id);
+            }
             else
                 url = '{{ path('vehicle_info_new') }}';
 
@@ -289,7 +291,9 @@
                 },
                 error: function (data) {
                     $("#loading").hide();
+
                     console.log(data.responseText);
+                    alert('error');
 
                     infoDialog.find('#infoForm').html(data.responseText);
                     infoDialog.dialog("open");
