@@ -97,14 +97,14 @@
         </thead>
         <tbody>
         {% for thisInfo in info %}
-            <tr>
+            <tr vehicleInfoId="{{ thisInfo.id }}">
                 <td>{{ thisInfo.name }}</td>
                 <td>{{ thisInfo.value }}</td>
                 <td>
                     {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                     {#class="fa fa-eye"></span></a>#}
                     <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
-                       vehicleInfoId="{{ thisInfo.id }}" onclick="showInfoFormDialog({{ thisInfo.id }})"><span
+                       vehicleInfoId="{{ thisInfo.id }}" onclick="getVehicleInfoForm({{ thisInfo.id }})"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ thisInfo.vehicle.id }}"
@@ -118,7 +118,7 @@
         </tbody>
     </table>
 
-    <div id="vehicleInfoDialog" title="New Vehicle Info" style="display: none;">
+    <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
             etc.)</p><br>
         <div id="infoForm">
@@ -162,22 +162,31 @@
 {% block javascripts %}
 
     <script type="text/javascript">
-        var infoDialog = null;
+        var infoFormDialog = null;
 
         $(document).ready(function () {
 
             var name = $("#app_bundle_vehicle_info_name"),
                 value = $("#app_bundle_vehicle_info_value"),
                 allFields = $([]).add(name).add(value);
+            var form = null;
 
             // Store the dialog in a variable
-            infoDialog = $('#vehicleInfoDialog').dialog({
+            infoFormDialog = $('#vehicleInfoFormDialog').dialog({
                 modal: true,
                 autoOpen: false,
                 width: 400,
+                open: function (event, ui) {
+                    form = infoFormDialog.find("form");
+
+                    form.on("submit", function (event) {
+                        event.preventDefault();
+                        saveVehicleInfo(infoFormDialog, form);
+                    });
+                },
                 buttons: {
                     Save: function () {
-                        onSaveInfo(infoDialog, form);
+                        saveVehicleInfo(infoFormDialog, form);
                     },
                     Cancel: function () {
                         $(this).dialog("close");
@@ -189,18 +198,10 @@
                 }
             });
 
-            // Store the form in a variable for later
-            var form = infoDialog.find("form");
-
-            form.on("submit", function (event) {
-                event.preventDefault();
-                onSaveInfo(infoDialog, form);
-            });
-
             // Open the dialog when the button is clicked
             $('#newInfoButton').click(function () {
-                showInfoFormDialog(0); //0 = new VehicleInfo
-//                infoDialog.dialog("open");
+                getVehicleInfoForm();
+//                infoFormDialog.dialog("open");
             });
 
             $('#deleteVehicleButton').click(function () {
@@ -208,7 +209,6 @@
                 openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + {{ vehicle.id }}, afterDeleteVehicle, {{ vehicle.id }});
             });
 
-            //this .on('click', ...) is to handle those rows dynamically added
             $(document).on('click', '.deleteVehicleInfo', function () {
                 var vehicleInfoId = $(this).attr('vehicleInfoId');
 
@@ -219,92 +219,65 @@
                 openDeleteDialog("#dialog", "Delete the Detail?", "/vehicle_info/" + vehicleInfoId, afterDeleteInfo, vehicleInfoId);
             });
 
-
-            {#$(document).on('click', '.editInfoButton', function () {#}
-
-            {#$("#loading").show();#}
-            {#var infoId = $(this).attr('vehicleInfoId');#}
-            {#var url = '{{ path('vehicle_info_edit', {'id':7}) }}';#}
-
-            {#$.ajax({#}
-            {#type: 'GET',#}
-            {#url: url,#}
-            {#data: $(this).attr('vehicleInfoId'),#}
-            {#dataType: 'JSON',#}
-            {#statusCode: {#}
-            {#404: function () {#}
-            {#message = 'Page not found';#}
-            {#}#}
-            {#},#}
-            {#success: function (data) {#}
-            {#console.log(data);#}
-            {#$("#loading").hide();#}
-            {#alert('success');#}
-            {#infoDialog.find('#infoForm').html(data.responseText);#}
-            {#infoDialog.dialog("open");#}
-            {#//$('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));#}
-            {#},#}
-            {#error: function (data) {#}
-            {#$("#loading").hide();#}
-            {#console.log(data.responseText);#}
-
-            {#infoDialog.find('#infoForm').html(data.responseText);#}
-            {#infoDialog.dialog("open");#}
-            {#},#}
-            {#});#}
-            {#});#}
-
-
         });
 
-        // This is called whenever you click on the Vehicle Details edit button
-        // (either pre-loaded or added dynamically)
-        function showInfoFormDialog(id) {
+        /**
+         * Gets the right form for editing or adding a new VehicleInfo object
+         * @param id 0 for newAction, >0 for editAction
+         */
+        function getVehicleInfoForm(id) {
 
             $("#loading").show();
+
             var url = '';
 
             if (id > 0) {
+                // this will be an edit
                 url = '{{ path('vehicle_info_edit', {'id':'PLACEHOLDER'}) }}';
                 url = url.replace('PLACEHOLDER', id);
             }
-            else
+            else {
+                // id=0 means new record
                 url = '{{ path('vehicle_info_new') }}';
+            }
 
+            /**
+             * Make a GET call to either the editAction or newAction
+             */
             $.ajax({
-                // we need to retrieve the form, so we do a GET to the EDIT or NEW action
                 type: 'GET',
                 url: url,
                 data: id,
-                dataType: 'JSON',
                 statusCode: {
                     404: function () {
-                        message = 'Page not found';
+                        message = 'Page not found.';
                     }
                 },
                 success: function (data) {
                     $("#loading").hide();
 
-                    console.log(data);
-                    alert('success');
+//                    console.log(data);
 
-                    infoDialog.find('#infoForm').html(data.responseText);
-                    infoDialog.dialog("open");
-                    //$('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
+                    // add the form to the dialog
+                    infoFormDialog.find('#infoForm').html(data);
+                    infoFormDialog.find('#infoForm').attr('vehicleInfoId', id);
+                    infoFormDialog.dialog("open");
                 },
                 error: function (data) {
                     $("#loading").hide();
 
-                    console.log(data);
-                    alert('error');
+//                    console.log(data);
 
-                    infoDialog.find('#infoForm').html(data.responseText);
-                    infoDialog.dialog("open");
+                    infoFormDialog.find('#infoForm').html(data['message']);
+                    infoFormDialog.dialog("open");
                 },
             });
         }
 
-        // Takes care of disabling buttons that depend on the Vehicle status
+        /**
+         * Disables other buttons that depend on an active Vehicle
+         * @param id
+         */
         function afterDeleteVehicle(id) {
             $('#deleteVehicleButton').addClass('disabled');
             $('#editVehicleButton').addClass('disabled');
@@ -314,14 +287,17 @@
             $('.deleteVehicleInfo').addClass('disabled');
         }
 
-        // Takes care of disabling buttons that depend on the VehicleInfo status
+        /**
+         * Disables other buttons that depend on an active VehicleInfo
+         * @param id The VehicleInfo.Id that has been deleted
+         */
         function afterDeleteInfo(id) {
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').addClass('disabled');
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').prev().addClass('disabled');
         }
 
-        // Called when it's time to save the VehicleInfo
-        function onSaveInfo(infoDialog, form) {
+
+        function saveVehicleInfo(infoDialog, form) {
 
             var formSerialize = form.serialize();
             var message = '';
@@ -329,27 +305,68 @@
             infoDialog.dialog("close");
             $("#loading").show();
 
+            var url = '';
+            var vehicleInfoId = infoDialog.find('#infoForm').attr('vehicleInfoId');
+
+            if (vehicleInfoId > 0) {
+                // this will be an edit
+                url = '{{ path('vehicle_info_edit', {'id':'PLACEHOLDER'}) }}';
+                url = url.replace('PLACEHOLDER', vehicleInfoId);
+            }
+            else {
+                // id=0 means new record
+                url = '{{ path('vehicle_info_new') }}';
+            }
+            console.log(url);
+            console.log(formSerialize);
+
+            /**
+             * Make a POST call to either the editAction or newAction
+             */
             $.ajax({
                 type: 'POST',
-                url: '{{ path('vehicle_info_add') }}',
+                url: url,
                 data: formSerialize,
                 dataType: 'JSON',
                 statusCode: {
                     404: function () {
-                        message = 'Page not found';
+                        message = 'Page not found.';
+                    },
+                    500: function () {
+                        message = 'Server error.';
                     }
                 },
                 success: function (data) {
-                    console.log(data);
+                    console.log('Success: ' + data);
                     $("#loading").hide();
 
-                    // Add the new info to the list without page reload
-                    $('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
+                    if (data['success'] == true) {
+                        if (vehicleInfoId > 0) {
+                            $('tr[vehicleInfoId=' + vehicleInfoId + '] > td:eq(0)').text(data['infoName']);
+                            $('tr[vehicleInfoId=' + vehicleInfoId + '] > td:eq(1)').text(data['infoValue']);
+                        }
+                        else {
+                            $('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
+
+                        }
+                    }
+                    else {
+                        infoDialog.html('<p>' + data['message'] + '</p>');
+                        infoDialog.dialog({
+                            buttons: {
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
                 },
                 error: function (data) {
+                    console.log('Error:');
+                    console.log(data);
+
                     $("#loading").hide();
 
-                    // Show an error message
                     infoDialog.html('<p>' + data['message'] + '</p>');
                     infoDialog.dialog({
                         buttons: {
@@ -364,11 +381,11 @@
 
         function getInfoTableRow(id, name, value) {
             return '' +
-                '<tr>' +
+                '<tr vehicleInfoId="' + id + '>' +
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
-                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showInfoFormDialog(' + id + ')">' +
+                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="getVehicleInfoForm(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
                 '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle" ng-click="showConfirm($event, {{ vehicle.id }})">' +
                 '   <span class="fa fa-trash"></span></a>' +

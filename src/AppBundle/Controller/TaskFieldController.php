@@ -190,15 +190,21 @@ class TaskFieldController extends Controller
 
                 $response['success'] = true;
                 $response['message'] = 'Task deleted.';
+
+                return new JsonResponse($response, 200);
+
             } else {
                 $response['success'] = false;
                 $response['message'] = 'This Field belongs to a Task that is in use on some Services. Delete its references first.';
+                return new JsonResponse($response, 401);
             }
         } catch (Exception $e) {
             $response['success'] = false;
             $response['message'] = $e->getMessage();
+
+            return new JsonResponse($response, 500);
         }
 
-        return new JsonResponse($response);
+
     }
 }
