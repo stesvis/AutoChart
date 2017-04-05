@@ -1,4 +1,5 @@
 <?php
+
 namespace UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -25,15 +26,16 @@ class RegistrationType extends AbstractType
         return 'FOS\UserBundle\Form\Type\RegistrationFormType';
     }
 
-    public function getBlockPrefix()
-    {
-        return 'masterlube_user_registration';
-    }
-
-    // For Symfony 2.x
     public function getName()
     {
         return $this->getBlockPrefix();
+    }
+
+    // For Symfony 2.x
+
+    public function getBlockPrefix()
+    {
+        return 'masterlube_user_registration';
     }
 
     public function configureOptions(OptionsResolver $resolver)

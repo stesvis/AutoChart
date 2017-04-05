@@ -104,7 +104,7 @@
                     {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                     {#class="fa fa-eye"></span></a>#}
                     <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
-                       vehicleInfoId="{{ thisInfo.id }}" onclick="getVehicleInfoForm({{ thisInfo.id }})"><span
+                       vehicleInfoId="{{ thisInfo.id }}" onclick="showVehicleInfoForm({{ thisInfo.id }})"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ thisInfo.vehicle.id }}"
@@ -200,8 +200,7 @@
 
             // Open the dialog when the button is clicked
             $('#newInfoButton').click(function () {
-                getVehicleInfoForm();
-//                infoFormDialog.dialog("open");
+                showVehicleInfoForm();
             });
 
             $('#deleteVehicleButton').click(function () {
@@ -225,7 +224,7 @@
          * Gets the right form for editing or adding a new VehicleInfo object
          * @param id 0 for newAction, >0 for editAction
          */
-        function getVehicleInfoForm(id) {
+        function showVehicleInfoForm(id) {
 
             $("#loading").show();
 
@@ -385,7 +384,7 @@
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
-                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="getVehicleInfoForm(' + id + ')">' +
+                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showVehicleInfoForm(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
                 '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle" ng-click="showConfirm($event, {{ vehicle.id }})">' +
                 '   <span class="fa fa-trash"></span></a>' +

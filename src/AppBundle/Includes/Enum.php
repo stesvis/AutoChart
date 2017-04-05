@@ -16,16 +16,6 @@ abstract class Enum
         $this->value = $value;
     }
 
-    public function is($value)
-    {
-        return $this->value === $value;
-    }
-
-    public function value()
-    {
-        return $this->value;
-    }
-
     public static function has($value)
     {
         return in_array($value, self::toArray(), true);
@@ -41,5 +31,15 @@ abstract class Enum
         }
 
         return self::$constantsCache[$calledClass];
+    }
+
+    public function is($value)
+    {
+        return $this->value === $value;
+    }
+
+    public function value()
+    {
+        return $this->value;
     }
 }
