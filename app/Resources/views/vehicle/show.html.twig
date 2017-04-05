@@ -104,7 +104,7 @@
                     {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                     {#class="fa fa-eye"></span></a>#}
                     <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
-                       vehicleInfoId="{{ thisInfo.id }}" onclick="onEditInfoClick({{ thisInfo.id }})"><span
+                       vehicleInfoId="{{ thisInfo.id }}" onclick="showInfoFormDialog({{ thisInfo.id }})"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ thisInfo.vehicle.id }}"
@@ -189,6 +189,7 @@
                 }
             });
 
+            // Store the form in a variable for later
             var form = infoDialog.find("form");
 
             form.on("submit", function (event) {
@@ -198,17 +199,16 @@
 
             // Open the dialog when the button is clicked
             $('#newInfoButton').click(function () {
-                onEditInfoClick(0);
+                showInfoFormDialog(0); //0 = new VehicleInfo
 //                infoDialog.dialog("open");
             });
 
             $('#deleteVehicleButton').click(function () {
-
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
-
                 openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + {{ vehicle.id }}, afterDeleteVehicle, {{ vehicle.id }});
             });
 
+            //this .on('click', ...) is to handle those rows dynamically added
             $(document).on('click', '.deleteVehicleInfo', function () {
                 var vehicleInfoId = $(this).attr('vehicleInfoId');
 
@@ -257,7 +257,9 @@
 
         });
 
-        function onEditInfoClick(id) {
+        // This is called whenever you click on the Vehicle Details edit button
+        // (either pre-loaded or added dynamically)
+        function showInfoFormDialog(id) {
 
             $("#loading").show();
             var url = '';
@@ -270,6 +272,7 @@
                 url = '{{ path('vehicle_info_new') }}';
 
             $.ajax({
+                // we need to retrieve the form, so we do a GET to the EDIT or NEW action
                 type: 'GET',
                 url: url,
                 data: id,
@@ -292,7 +295,7 @@
                 error: function (data) {
                     $("#loading").hide();
 
-                    console.log(data.responseText);
+                    console.log(data);
                     alert('error');
 
                     infoDialog.find('#infoForm').html(data.responseText);
@@ -301,6 +304,7 @@
             });
         }
 
+        // Takes care of disabling buttons that depend on the Vehicle status
         function afterDeleteVehicle(id) {
             $('#deleteVehicleButton').addClass('disabled');
             $('#editVehicleButton').addClass('disabled');
@@ -310,11 +314,13 @@
             $('.deleteVehicleInfo').addClass('disabled');
         }
 
+        // Takes care of disabling buttons that depend on the VehicleInfo status
         function afterDeleteInfo(id) {
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').addClass('disabled');
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').prev().addClass('disabled');
         }
 
+        // Called when it's time to save the VehicleInfo
         function onSaveInfo(infoDialog, form) {
 
             var formSerialize = form.serialize();
@@ -336,11 +342,14 @@
                 success: function (data) {
                     console.log(data);
                     $("#loading").hide();
+
+                    // Add the new info to the list without page reload
                     $('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
                 },
                 error: function (data) {
                     $("#loading").hide();
 
+                    // Show an error message
                     infoDialog.html('<p>' + data['message'] + '</p>');
                     infoDialog.dialog({
                         buttons: {
@@ -359,7 +368,7 @@
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
-                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="onEditInfoClick(' + id + ')">' +
+                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showInfoFormDialog(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
                 '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle" ng-click="showConfirm($event, {{ vehicle.id }})">' +
                 '   <span class="fa fa-trash"></span></a>' +

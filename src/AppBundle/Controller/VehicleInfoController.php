@@ -29,20 +29,25 @@ class VehicleInfoController extends Controller
      */
     public function saveInfoAjax(Request $request)
     {
-        try {
+        try
+        {
             $info = $this->insertVehicleInfo($request);
-            if ($info->getId() > 0) {
+            if ($info->getId() > 0)
+            {
                 $response['success'] = true;
                 $response['message'] = 'Info Added.';
                 $response['infoId'] = $info->getId();
                 $response['infoName'] = $info->getName();
                 $response['infoValue'] = $info->getValue();
-            } else {
+            }
+            else
+            {
                 $response['success'] = false;
                 $response['message'] = 'Could not save the info';
                 $response['debug'] = 'Form did not pass validation';
             }
-        } catch (Exception $ex) {
+        } catch (Exception $ex)
+        {
             $response['success'] = false;
             $response['message'] = 'Info added.';
             $response['debug'] = $ex->getMessage();
@@ -67,7 +72,8 @@ class VehicleInfoController extends Controller
                 'createdBy' => $this->getUser(),
             ]);
 
-        if (!$info) {
+        if (!$info)
+        {
             throw $this->createNotFoundException(
                 'No info found for id ' . $id
             );
@@ -80,7 +86,8 @@ class VehicleInfoController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
 
             $info = $form->getData();
@@ -117,12 +124,14 @@ class VehicleInfoController extends Controller
     {
         $info = new VehicleInfo();
         $form = $this->createForm(VehicleInfoFormType::class, $info, [
+            'hideVehicle' => true,
             'hideSubmit' => true,
         ]);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
 
             $info = $form->getData();
@@ -153,7 +162,8 @@ class VehicleInfoController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        try {
+        try
+        {
             $em = $this->getDoctrine()->getManager();
             $info = $em->getRepository('AppBundle:VehicleInfo')
                 ->findOneBy([
@@ -162,7 +172,8 @@ class VehicleInfoController extends Controller
                     'createdBy' => $this->getUser(),
                 ]);
 
-            if (!$info) {
+            if (!$info)
+            {
                 throw $this->createNotFoundException(
                     'No info found for id ' . $id
                 );
@@ -175,7 +186,8 @@ class VehicleInfoController extends Controller
 
             $response['success'] = true;
             $response['message'] = 'Info deleted.';
-        } catch (Exception $e) {
+        } catch (Exception $e)
+        {
             $response['success'] = false;
             $response['message'] = $e->getMessage();
         }
@@ -190,7 +202,8 @@ class VehicleInfoController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
 
             $info = $form->getData();
