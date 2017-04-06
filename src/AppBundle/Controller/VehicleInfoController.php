@@ -100,7 +100,19 @@ class VehicleInfoController extends Controller
     {
         try {
             $info = new VehicleInfo();
+            $em = $this->getDoctrine()->getManager();
+
+            if (null !== $request->query->get('vehicle')) {
+                $vehicle = $em->getRepository('AppBundle:Vehicle')
+                    ->findOneBy([
+                        'id' => $request->query->get('vehicle'),
+                        'createdBy' => $this->getUser(),
+                    ]);
+                $info->setVehicle($vehicle);
+            }
+
             $form = $this->createForm(VehicleInfoFormType::class, $info, [
+                'hideVehicle' => true,
                 'hideSubmit' => true,
             ]);
 
@@ -108,7 +120,6 @@ class VehicleInfoController extends Controller
 
             if ($form->isSubmitted()) {
                 if ($form->isValid()) {
-                    $em = $this->getDoctrine()->getManager();
 
                     $info = $form->getData();
 
@@ -147,49 +158,50 @@ class VehicleInfoController extends Controller
 
             return new JsonResponse($response, 500);
         }
-    }
+}
 
-    /**
-     * @Route("/{id}", name="vehicle_info_delete")
-     * @param $request
-     * @param $id
-     * @Method("DELETE")
-     * @return JsonResponse
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $info = $em->getRepository('AppBundle:VehicleInfo')
-                ->findOneBy([
-                    'id' => $id,
-                    'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
-                ]);
+/**
+ * @Route("/{id}", name="vehicle_info_delete")
+ * @param $request
+ * @param $id
+ * @Method("DELETE")
+ * @return JsonResponse
+ */
+public
+function deleteAction(Request $request, $id)
+{
+    try {
+        $em = $this->getDoctrine()->getManager();
+        $info = $em->getRepository('AppBundle:VehicleInfo')
+            ->findOneBy([
+                'id' => $id,
+                'status' => StatusEnums::Active,
+                'createdBy' => $this->getUser(),
+            ]);
 
-            if (!$info) {
-                throw $this->createNotFoundException(
-                    'No info found for id ' . $id
-                );
-            }
-
-            // Safe to remove
-            $info->setStatus(StatusEnums::Deleted);
-            $em->persist($info);
-            $em->flush();
-
-            $response['success'] = true;
-            $response['message'] = 'Info deleted.';
-
-            return new JsonResponse($response, 200);
-
-        } catch (Exception $e) {
-            $response['success'] = false;
-            $response['message'] = $e->getMessage();
-
-            return new JsonResponse($response, 500);
+        if (!$info) {
+            throw $this->createNotFoundException(
+                'No info found for id ' . $id
+            );
         }
 
+        // Safe to remove
+        $info->setStatus(StatusEnums::Deleted);
+        $em->persist($info);
+        $em->flush();
 
+        $response['success'] = true;
+        $response['message'] = 'Info deleted.';
+
+        return new JsonResponse($response, 200);
+
+    } catch (Exception $e) {
+        $response['success'] = false;
+        $response['message'] = $e->getMessage();
+
+        return new JsonResponse($response, 500);
     }
+
+
+}
 }

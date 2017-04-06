@@ -154,7 +154,7 @@
     <br/>
     <a
             id="newServiceButton"
-            href="{{ path('service_new') }}"
+            href="{{ path('service_new', {'vehicle':vehicle.id}) }}"
             class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">New Service</a>
 {% endblock %}
@@ -237,7 +237,7 @@
             }
             else {
                 // id=0 means new record
-                url = '{{ path('vehicle_info_new') }}';
+                url = '{{ path('vehicle_info_new', {'vehicle':vehicle.id}) }}';
             }
 
             /**
@@ -295,7 +295,11 @@
             $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').prev().addClass('disabled');
         }
 
-
+        /**
+         * Posts the form to the new or edit vehicleInfo action
+         * @param infoDialog The jquery dialog
+         * @param id The VehicleInfo.Id that has been deleted
+         */
         function saveVehicleInfo(infoDialog, form) {
 
             var formSerialize = form.serialize();
@@ -336,17 +340,20 @@
                     }
                 },
                 success: function (data) {
-                    console.log('Success: ' + data);
+                    console.log('Success: ');
+                    console.log(data);
+
                     $("#loading").hide();
 
                     if (data['success'] == true) {
+                        console.log('vehicleInfoId = ' + vehicleInfoId);
                         if (vehicleInfoId > 0) {
                             $('tr[vehicleInfoId=' + vehicleInfoId + '] > td:eq(0)').text(data['infoName']);
                             $('tr[vehicleInfoId=' + vehicleInfoId + '] > td:eq(1)').text(data['infoValue']);
                         }
                         else {
-                            $('#vehicleInfoTable tr:last').after(getInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
-
+                            $('#vehicleInfoTable tbody').append(getNewInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
+                            console.log('New row added');
                         }
                     }
                     else {
@@ -378,9 +385,16 @@
             });
         }
 
-        function getInfoTableRow(id, name, value) {
+        /**
+         * Returns a new row to be appended
+         * @param id
+         * @param name
+         * @param value
+         * @returns {string}
+         */
+        function getNewInfoTableRow(id, name, value) {
             return '' +
-                '<tr vehicleInfoId="' + id + '>' +
+                '<tr vehicleInfoId="' + id + '">' +
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
