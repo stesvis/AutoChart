@@ -35,7 +35,7 @@ class TaskController extends Controller
 
             $tasks = $em->getRepository('AppBundle:Task')
                 ->findBy([
-                    'createdBy' => $this->get('user_service') > getEntitledUsers(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
         } catch (\Exception $ex) {

@@ -20,7 +20,7 @@
             role="button">View</a>
     <a
             {#href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"#}
-            class="btn btn-warning btn-block deleteVehicle {% if vehicle.status == 'D' %}disabled{% endif %}"
+            class="btn btn-danger btn-block deleteVehicle {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
     <br/>
     <a
@@ -28,10 +28,11 @@
             id="newInfoButton"
             class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Add Details</a>
+    <br/>
     <a
             href="{{ path('vehicle_new') }}"
             class="btn btn-success btn-block"
-            role="button">Add Vehicle</a>
+            role="button">Add</a>
     <br/>
     <a
             href="{{ path('service_new') }}"
@@ -89,7 +90,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ path('vehicle_info_add') }}',
+                    url: '{{ path('vehicle_info_new') }}',
                     data: formSerialize,
                     dataType: 'JSON',
                     statusCode: {
