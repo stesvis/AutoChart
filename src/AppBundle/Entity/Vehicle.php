@@ -217,6 +217,14 @@ class Vehicle
     }
 
     /**
+     * @param mixed $mileage
+     */
+    public function setMileage($mileage)
+    {
+        $this->mileage = $mileage;
+    }
+
+    /**
      * @return mixed
      */
     public function getTrim()
@@ -294,14 +302,6 @@ class Vehicle
     public function setPassengers($passengers)
     {
         $this->passengers = $passengers;
-    }
-
-    /**
-     * @param mixed $mileage
-     */
-    public function setMileage($mileage)
-    {
-        $this->mileage = $mileage;
     }
 
     /**

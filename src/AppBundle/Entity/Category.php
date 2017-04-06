@@ -153,6 +153,14 @@ class Category
     }
 
     /**
+     * @param \DateTime $modifiedAt
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modifiedAt = $modifiedAt;
+    }
+
+    /**
      * @return User
      */
     public function getCreatedBy()
@@ -166,14 +174,6 @@ class Category
     public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @param \DateTime $modifiedAt
-     */
-    public function setModifiedAt($modifiedAt)
-    {
-        $this->modifiedAt = $modifiedAt;
     }
 
     /**
