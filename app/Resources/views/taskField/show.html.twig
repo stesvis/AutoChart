@@ -65,11 +65,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $('.deleteField').click(function () {
+            $('#deleteFieldButton').click(function () {
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Field will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + {{ field.id }}, afterDelete, {{ field.id }});
+                openDeleteDialog("#dialog", "Delete the Field?", '{{ path('taskfield_delete', {'id':field.id}) }}', afterDelete, {{ field.id }});
             });
         });
 

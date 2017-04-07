@@ -16,7 +16,7 @@
 
 
 {% block body %}
-    <h1>Service Details</h1>
+    <h2>Service Details</h2>
 
     <table class="table table-hover thisTable">
         <tbody>
@@ -27,8 +27,16 @@
             </td>
         </tr>
         <tr>
+            <th>Task</th>
+            <td><a href="{{ path('task_show', {'id':service.task.id}) }}">{{ service.task.name }}</a></td>
+        </tr>
+        <tr>
             <th>Mileage</th>
             <td>{{ service.mileage }} {{ service.vehicle.mileageType }}</td>
+        </tr>
+        <tr>
+            <th>Notes</th>
+            <td>{{ service.notes }}</td>
         </tr>
         <tr>
             <th>Completed</th>
@@ -48,7 +56,7 @@
 
 {% block rightSidebar %}
     <a
-            id="editobButton"
+            id="editServiceButton"
             href="{{ path('service_edit', {'id':service.id}) }}"
             class="btn btn-warning btn-block {% if service.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
@@ -57,7 +65,6 @@
             {#href="{{ path('service_delete', {'id':service.id}) }}"#}
             class="btn btn-danger btn-block {% if service.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
-    <br>
     <a
             href="{{ path('service_new') }}"
             class="btn btn-success btn-block"
@@ -68,11 +75,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.deleteService').click(function () {
-
+            $('#deleteServiceButton').click(function () {
+                console.log('clicked delete');
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Service?", "/services/" + {{ service.id }}, afterDelete);
+                openDeleteDialog("#dialog", "Delete the Service?", '{{ path('service_delete', {'id':service.id}) }}', afterDelete);
             });
         });
 

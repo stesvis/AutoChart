@@ -124,14 +124,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.deleteTask').click(function () {
-                var deleteButton = $(this);
+            $('#deleteTaskButton').click(function () {
 
                 $("#dialog").find("p").html('' +
                     '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
                     'This Task will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + {{ task.id }}, afterDeleteTask,{{ task.id }});
+                openDeleteDialog("#dialog", "Delete the Task?", '{{ path('task_delete', {'id':task.id}) }}', afterDeleteTask,{{ task.id }});
             });
 
             $('.deleteField').click(function () {
@@ -141,7 +140,10 @@
                     '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
                     'This Field will be permanently removed from the Task and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + fieldId, afterDeleteField, fieldId);
+                var deleteFieldUrl = '{{ path('taskfield_delete', {'id':'PLACEHOLDER'}) }}';
+                deleteFieldUrl = deleteFieldUrl.replace('PLACEHOLDER', fieldId);
+
+                openDeleteDialog("#dialog", "Delete the Field?", deleteFieldUrl, afterDeleteField, fieldId);
             });
         });
 

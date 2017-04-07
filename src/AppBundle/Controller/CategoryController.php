@@ -53,34 +53,37 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        try {
-            $category = $em->getRepository('AppBundle:Category')
-                ->findBy([
-                    'id' => $id,
-                    'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
-                ]);
+        $category = $em->getRepository('AppBundle:Category')
+            ->findOneBy([
+                'id' => $id,
+                'status' => StatusEnums::Active,
+                'createdBy' => $this->getUser(),
+            ]);
 
-            $form = $this->createForm(CategoryFormType::class, $category);
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'No Category found for id ' . $id
+            );
+        }
 
-            // only handles data on POST
-            $form->handleRequest($request);
+        $form = $this->createForm(CategoryFormType::class, $category);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $category = $form->getData();
-                $category->setModifiedAt(new \DateTime('now'));
+        // only handles data on POST
+        $form->handleRequest($request);
 
-                $em->persist($category);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+            $category->setModifiedAt(new \DateTime('now'));
 
-                return $this->redirectToRoute('category_list');
-            }
-        } catch (\Exception $ex) {
-            die($ex->getMessage());
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('category_list');
         }
 
         return $this->render('category/edit.html.twig', [
-            'categoryForm' => $form->createView()
+            'categoryForm' => $form->createView(),
+            'category' => $category,
         ]);
     }
 

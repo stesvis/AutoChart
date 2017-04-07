@@ -29,9 +29,7 @@
                     {#{% if (task.status == 'A' and task.type == 'Custom') %}#}
                     <a class="btn btn-xs btn-danger deleteField {% if field.status != 'A' %}disabled{% endif %}"
                        taskfieldId="{{ field.id }}"
-                       title="Delete this Task Field"
-                       ng-click="showConfirm($event, {{ field.id }})"><span
-                                class="fa fa-trash"></span></a>
+                       title="Delete this Task Field"><span class="fa fa-trash"></span></a>
                 </td>
             </tr>
         {% endfor %}
@@ -53,7 +51,10 @@
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task Field will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Field?", "/taskfields/" + taskfieldId, afterDelete, taskfieldId);
+                var deleteFieldUrl = '{{ path('taskfield_delete', {'id':'PLACEHOLDER'}) }}';
+                deleteFieldUrl = deleteFieldUrl.replace('PLACEHOLDER', taskfieldId);
+
+                openDeleteDialog("#dialog", "Delete the Field?", deleteFieldUrl, afterDelete, taskfieldId);
             });
         });
 

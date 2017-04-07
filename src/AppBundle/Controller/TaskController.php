@@ -69,6 +69,7 @@ class TaskController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $task = $form->getData();
             $task->setModifiedAt(new \DateTime('now'));
             $task->setModifiedBy($this->getUser());
@@ -81,7 +82,8 @@ class TaskController extends Controller
         }
 
         return $this->render('task/edit.html.twig', [
-            'taskForm' => $form->createView()
+            'taskForm' => $form->createView(),
+            'task' => $task,
         ]);
     }
 

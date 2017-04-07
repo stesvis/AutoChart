@@ -5,3 +5,11 @@
 
     {{ form(serviceForm) }}
 {% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('service_show', {'id':service.id}) }}"
+            class="btn btn-info btn-block"
+            role="button">View</a>
+
+{% endblock %}

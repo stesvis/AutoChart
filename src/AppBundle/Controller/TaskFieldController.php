@@ -31,12 +31,13 @@ class TaskFieldController extends Controller
 
         try {
             $em = $this->getDoctrine()->getManager();
+
             $taskFields = $em->getRepository('AppBundle:TaskField')
                 ->findBy([
-                    $this->get('user_service')->getEntitledUsers(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
         } catch (\Exception $ex) {
-            die($ex->getMessage());
+            die('Exception: ' . $ex->getMessage());
         }
 
         return $this->render('taskField/index.html.twig', [

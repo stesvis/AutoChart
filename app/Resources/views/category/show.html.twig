@@ -47,7 +47,7 @@
             class="btn btn-warning btn-block {% if category.status == 'D' %}disabled{% endif %}"
             role="button">Edit</a>
     <a
-            id="" deleteCategoryButton
+            id="deleteCategoryButton"
             {#href="{{ path('category_delete', {'id':category.id}) }}"#}
             class="btn btn-danger btn-block deleteCategory {% if category.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
@@ -68,11 +68,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $('.deleteCategory').click(function () {
+            $('#deleteCategoryButton').click(function () {
 
                 $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Category?", "/categories/" + {{ category.id }}, afterDelete);
+                openDeleteDialog("#dialog", "Delete the Category?", '{{ path('category_delete', {'id':category.id}) }}', afterDelete);
             });
         });
 

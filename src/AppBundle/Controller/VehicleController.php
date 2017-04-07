@@ -3,9 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Vehicle;
-use AppBundle\Entity\VehicleInfo;
 use AppBundle\Form\VehicleFormType;
-use AppBundle\Form\VehicleInfoFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
@@ -86,12 +84,6 @@ class VehicleController extends Controller
         }
 
         $form = $this->createForm(VehicleFormType::class, $vehicle);
-        $info = new VehicleInfo();
-        $info->setVehicle($vehicle);
-        $infoForm = $this->createForm(VehicleInfoFormType::class, $info, [
-            'hideVehicle' => true,
-            'hideSubmit' => true,
-        ]);
 
         // only handles data on POST
         $form->handleRequest($request);
@@ -112,7 +104,7 @@ class VehicleController extends Controller
         return $this->render('vehicle/edit.html.twig', [
             'vehicle' => $vehicle,
             'vehicleForm' => $form->createView(),
-            'infoForm' => $infoForm->createView(),
+            'id' => $vehicle->getId(),
         ]);
     }
 

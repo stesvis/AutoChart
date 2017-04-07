@@ -97,8 +97,10 @@ class ServiceController extends Controller
     /**
      * Creates a new service entity.
      *
+     * @param $request Request
      * @Route("/new", name="service_new")
      * @Method({"GET", "POST"})
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -140,7 +142,9 @@ class ServiceController extends Controller
             $em->persist($service);
             $em->flush($service);
 
-            return $this->redirectToRoute('service_show', $service->getId());
+            return $this->redirectToRoute('service_show', [
+                'id' => $service->getId()
+            ]);
         }
 
         return $this->render('service/new.html.twig', array(
@@ -167,7 +171,7 @@ class ServiceController extends Controller
 
         if (!$service) {
             throw $this->createNotFoundException(
-                'No service found for id ' . $id
+                'No Service found for id ' . $id
             );
         }
 
@@ -189,7 +193,8 @@ class ServiceController extends Controller
         }
 
         return $this->render('service/edit.html.twig', [
-            'serviceForm' => $form->createView()
+            'serviceForm' => $form->createView(),
+            'service' => $service,
         ]);
     }
 
