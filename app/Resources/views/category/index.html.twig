@@ -42,6 +42,13 @@
 
 {% endblock %}
 
+{% block rightSidebar %}
+    <a
+            href="{{ path('category_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
+{% endblock %}
+
 {% block javascripts %}
     {#<script type="application/javascript" src="{{ asset('assets/javascript/adminCategory.js') }}"></script>#}
 
