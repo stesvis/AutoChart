@@ -6,3 +6,4 @@ Things to do:
     - Add Error page
     - Remove HTML5 validation
     - Delete Category: do you want to delete all children?
+    - Edit Vehicile: implement "Add Details"

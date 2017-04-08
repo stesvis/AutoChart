@@ -21,7 +21,7 @@ $(document).ready(function () {
  */
 function openDeleteDialog(dialogId, title, deleteRoute, callbackFunction, id) {
 
-    return $(dialogId).dialog({
+    var dialog = $(dialogId).dialog({
         resizable: false,
         height: "auto",
         width: 400,
@@ -107,4 +107,6 @@ function openDeleteDialog(dialogId, title, deleteRoute, callbackFunction, id) {
             }
         }
     });
+
+    dialog.dialog('open');
 }

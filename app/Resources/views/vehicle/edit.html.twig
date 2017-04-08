@@ -6,10 +6,9 @@
 
     {{ form(vehicleForm) }}
 
-    <div id="dialog" title="New Vehicle Info" style="display: none;">
+    <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
             etc.)</p><br>
-        {{ form(infoForm) }}
     </div>
 {% endblock %}
 
@@ -19,8 +18,9 @@
             class="btn btn-info btn-block"
             role="button">View</a>
     <a
+            id="deleteVehicleButton"
             {#href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"#}
-            class="btn btn-danger btn-block deleteVehicle {% if vehicle.status == 'D' %}disabled{% endif %}"
+            class="btn btn-danger btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
     <br/>
     <a
@@ -35,6 +35,7 @@
             role="button">Add Details</a>
     <br/>
     <a
+            id="newServiceButton"
             href="{{ path('service_new') }}"
             class="btn btn-default btn-block"
             role="button">New Service</a>
@@ -45,12 +46,20 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            // Click on delete button
+            $('#deleteVehicleButton').click(function () {
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
+                var url = '{{ path('vehicle_delete', {'id':vehicle.id }) }}';
+                openDeleteDialog("#dialog", "Delete the Vehicle?", url, afterDeleteVehicle, {{ vehicle.id }});
+            });
+
+
             var name = $("#app_bundle_vehicle_info_name"),
                 value = $("#app_bundle_vehicle_info_value"),
                 allFields = $([]).add(name).add(value);
 
             // Store the dialog in a variable
-            var infoDialog = $('#dialog').dialog({
+            var infoDialog = $('#vehicleInfoFormDialog').dialog({
                 modal: true,
                 autoOpen: false,
                 width: 400,
@@ -100,14 +109,6 @@
                     },
                     success: function (data) {
                         $("#loading").hide();
-//                        infoDialog.html('<p>' + data['message'] + '</p>');
-//                        infoDialog.dialog({
-//                            buttons: {
-//                                Close: function () {
-//                                    $(this).dialog("close");
-//                                }
-//                            }
-//                        });
                     },
                     error: function (data) {
                         $("#loading").hide();
@@ -125,6 +126,19 @@
             }
 
         });
+
+        /**
+         * Disables other buttons that depend on an active Vehicle
+         * @param id
+         */
+        function afterDeleteVehicle() {
+            $('#deleteVehicleButton').addClass('disabled');
+
+            $('#newInfoButton').addClass('disabled');
+            $('#newServiceButton').addClass('disabled');
+            window.location.href = '{{ path('vehicle_show', { 'id':vehicle.id }) }}';
+        }
+
 
     </script>
 
