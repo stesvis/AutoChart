@@ -4,3 +4,5 @@ Things to do:
 	- Add an "Import System Tasks" feature
     - Add TaskFiled from Task view page (same as add VehicleInfo from Vehicle view page)
     - Add Error page
+    - Remove HTML5 validation
+    - Delete Category: do you want to delete all children?

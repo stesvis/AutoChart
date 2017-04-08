@@ -44,6 +44,13 @@
     </div>
 {% endblock %}
 
+{% block rightSidebar %}
+    <a
+            href="{{ path('task_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
+{% endblock %}
+
 {% block javascripts %}
 
     <script type="text/javascript">
