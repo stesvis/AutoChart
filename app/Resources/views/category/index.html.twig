@@ -3,51 +3,55 @@
 {% block body %}
     <h2>Categories</h2>
 
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Parent</th>
-            <th>Created</th>
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <th>Owner</th>
-            {% endif %}
-            <th>&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
+    {% if vehicles|length == 0 %}
+        <p>You haven't added any category. <a href="{{ path('category_new') }}">Add one</a> now.</p>
+    {% else %}
+        <table class="table table-striped table-hover">
+            <thead>
             <tr>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
-                <td>{{ category.createdAt|date ('F j, Y') }}</td>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Parent</th>
+                <th>Created</th>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <td>{{ category.createdBy }}</td>
+                    <th>Owner</th>
                 {% endif %}
-                <td style="width: 1%; white-space: nowrap;">
-                    <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
-                                class="fa fa-eye"></span></a>
-                    <a href="{{ path('category_edit', {'id':category.id}) }}"
-                       class="btn btn-xs btn-warning editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
-                                class="fa fa-pencil"></span></a>
-
-                    <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
-                       categoryId="{{ category.id }}"
-                       title="Delete this Category"
-                       ng-click="showConfirm($event, {{ category.id }})">
-                        <span class="fa fa-trash"></span></a>
-                </td>
+                <th>&nbsp;</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
+                    <td>{{ category.createdAt|date ('F j, Y') }}</td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td>{{ category.createdBy }}</td>
+                    {% endif %}
+                    <td style="width: 1%; white-space: nowrap;">
+                        <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
+                                    class="fa fa-eye"></span></a>
+                        <a href="{{ path('category_edit', {'id':category.id}) }}"
+                           class="btn btn-xs btn-warning editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
+                                    class="fa fa-pencil"></span></a>
 
-    {#Pagination#}
-    <div class="navigation text-center">
-        {{ knp_pagination_render(categories) }}
-    </div>
+                        <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
+                           categoryId="{{ category.id }}"
+                           title="Delete this Category"
+                           ng-click="showConfirm($event, {{ category.id }})">
+                            <span class="fa fa-trash"></span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {#Pagination#}
+        <div class="navigation text-center">
+            {{ knp_pagination_render(categories) }}
+        </div>
+    {% endif %}
 
 {% endblock %}
 
