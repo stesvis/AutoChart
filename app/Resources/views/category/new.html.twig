@@ -7,3 +7,11 @@
 
     {{ form(categoryForm) }}
 {% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('category_list') }}"
+            class="btn btn-info btn-block"
+            role="button">View All</a>
+
+{% endblock %}

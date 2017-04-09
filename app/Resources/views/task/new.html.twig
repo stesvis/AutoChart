@@ -5,3 +5,11 @@
 
     {{ form(taskForm) }}
 {% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('task_list') }}"
+            class="btn btn-info btn-block"
+            role="button">View All</a>
+
+{% endblock %}
