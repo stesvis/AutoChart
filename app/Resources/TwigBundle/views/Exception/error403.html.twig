@@ -1,0 +1,19 @@
+{% extends 'base-2-col.html.twig' %}
+
+{% block title %}{{ status_code }} - {{ status_text | title }}{% endblock %}
+
+{% block body %}
+    <h2>403 - Forbidden</h2>
+
+    <p>
+        You need to be logged-on or/and do not have the required privileges to access this resource.
+    </p>
+
+    <p>Use the Back button, the navigation menu or click on the Home button to continue.</p>
+
+    <div class="text-center">
+        <a href="{{ path('dashboard_index') }}" class="btn btn-primary btn-sm">Dashboard</a>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends 'base-2-col.html.twig' %}
+
+{% block title %}{{ status_code }} - {{ status_text | title }}{% endblock %}
+
+{% block body %}
+    <h2>404 - Page not found</h2>
+
+    <p>
+        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+    </p>
+
+    <p>Use the Back button, the navigation menu or click on the Dashboard button to continue. </p>
+
+    <div class="text-center">
+        <a href="{{ path('dashboard_index') }}" class="btn btn-primary btn-sm">Dashboard</a>
+    </div>
+
+{% endblock %}

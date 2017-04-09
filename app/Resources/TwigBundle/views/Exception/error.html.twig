@@ -1,0 +1,14 @@
+{% extends 'base-2-col.html.twig' %}
+
+{% block title %}{{ status_code }} - {{ status_text | title }}{% endblock %}
+
+{% block body %}
+    <h2>{{ status_code }} - {{ status_text | title }}</h2>
+
+    <p>Use the Back button, the navigation menu or click on the Dashboard button to continue. </p>
+
+    <div class="text-center">
+        <a href="{{ path('dashboard_index') }}" class="btn btn-primary btn-sm">Dashboard</a>
+    </div>
+
+{% endblock %}
