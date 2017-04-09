@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Services</h2>
 
-    {% if vehicles|length == 0 %}
+    {% if services|length == 0 %}
         <p>You haven't added any service. <a href="{{ path('service_new') }}">Add one</a> now.</p>
     {% else %}
         <table class="table table-striped table-hover">
