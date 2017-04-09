@@ -4,7 +4,7 @@
 {% block body %}
     <h2>Edit Vehicle</h2>
 
-    {{ form(vehicleForm) }}
+    {{ form(vehicleForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
     <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
@@ -42,6 +42,20 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeYear: true,
+                changeMonth: true,
+                changeDay: true,
+                yearRange: '1930:+1',
+//                maxDate: '+1y',
+//                minDate: new Date(1930, 1 - 1, 1),
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

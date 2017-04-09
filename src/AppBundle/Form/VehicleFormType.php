@@ -6,9 +6,9 @@ use AppBundle\Entity\Vehicle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -49,21 +49,25 @@ class VehicleFormType extends AbstractType
                 'empty_data' => null,
                 'placeholder' => '',
             ])
-            ->add('mileage', TextType::class, [
+            ->add('mileage', IntegerType::class, [
                 'label' => 'Current Mileage',
             ])
-            ->add('annualMileage', TextType::class, [
+            ->add('annualMileage', IntegerType::class, [
                 'label' => 'Average Annual Mileage',
             ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),
             ])
-            ->add('price')
-            ->add('purchasedAt', DateType::class)
+            ->add('price', IntegerType::class)
+            ->add('purchasedAt', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+            ])
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'formnovalidate'
+//                    'novalidate' => 'novalidate',
                 ]
             ]);
     }

@@ -77,3 +77,10 @@ th {
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
     opacity: 0.25;
 }
+
+/*---------------------------- jQuery UI ----------------------------*/
+
+.ui-datepicker-month, .ui-datepicker-year {
+    background-color: #4e5d6c;
+    color: #ffffff;
+}
