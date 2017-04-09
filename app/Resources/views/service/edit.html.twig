@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Edit Service</h2>
 
-    {{ form(serviceForm) }}
+    {{ form(serviceForm, {'attr': {'novalidate': 'novalidate'}}) }}
 {% endblock %}
 
 {% block rightSidebar %}

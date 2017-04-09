@@ -5,7 +5,7 @@
 {% block body %}
     <h2>New Category</h2>
 
-    {{ form(categoryForm) }}
+    {{ form(categoryForm, {'attr': {'novalidate': 'novalidate'}}) }}
 {% endblock %}
 
 {% block rightSidebar %}

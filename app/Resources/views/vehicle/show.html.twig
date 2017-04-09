@@ -61,7 +61,7 @@
         </tr>
         <tr>
             <th>Mileage:</th>
-            <td>{{ vehicle.mileage }}</td>
+            <td>{{ vehicle.mileage|number_format }}</td>
         </tr>
         <tr>
             <th>Mileage Type:</th>
@@ -87,7 +87,7 @@
     </table>
 
     <h4>More Vehicle Details</h4>
-    <table id="vehicleInfoTable" class="table table-hover">
+    <table id="vehicleInfoTable" class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Name</th>
@@ -128,6 +128,10 @@
 {% endblock %}
 
 {% block rightSidebar %}
+    <a
+            href="{{ path('vehicle_list') }}"
+            class="btn btn-info btn-block"
+            role="button">View All</a>
     <a
             id="editVehicleButton"
             href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"

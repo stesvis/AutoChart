@@ -62,6 +62,14 @@ th {
     color: #ffc73d;
 }
 
+.table-striped {
+    width: 100%;
+}
+
+/*.table-striped th, .table-striped td {*/
+/*text-align: center;*/
+/*}*/
+
 /*---------------------------- Misc ----------------------------*/
 
 @media screen and (max-width: 767px) {

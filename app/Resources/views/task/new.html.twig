@@ -3,7 +3,7 @@
 {% block body %}
     <h2>New Task</h2>
 
-    {{ form(taskForm) }}
+    {{ form(taskForm, {'attr': {'novalidate': 'novalidate'}}) }}
 {% endblock %}
 
 {% block rightSidebar %}

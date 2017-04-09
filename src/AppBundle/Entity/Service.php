@@ -18,7 +18,7 @@ class Service
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicle")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicle", inversedBy="services")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id", onDelete="set null")
      */
     private $vehicle;

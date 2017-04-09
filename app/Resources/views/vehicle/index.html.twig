@@ -13,7 +13,7 @@
                 <th>Make</th>
                 <th>Model</th>
                 <th>Trim</th>
-                <th>Services</th>
+                <th style="text-align: center">Services</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -24,7 +24,9 @@
                     <td>{{ vehicle.make }}</td>
                     <td>{{ vehicle.model }}</td>
                     <td>{{ vehicle.trim }}</td>
-                    <td><a href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">View</a></td>
+                    <td style="text-align: center">{% if vehicle.services|length > 0 %}<a
+                            href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">{{ vehicle.services|length }}</a>{% endif %}
+                    </td>
                     <td style="width: 1%; white-space: nowrap;">
                         <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>

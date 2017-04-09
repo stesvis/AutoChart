@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <th>Mileage</th>
-            <td>{{ service.mileage }} {{ service.vehicle.mileageType }}</td>
+            <td>{{ service.mileage|number_format }} {{ service.vehicle.mileageType }}</td>
         </tr>
         <tr>
             <th>Notes</th>
@@ -52,6 +52,10 @@
 {% endblock %}
 
 {% block rightSidebar %}
+    <a
+            href="{{ path('service_list') }}"
+            class="btn btn-info btn-block"
+            role="button">View All</a>
     <a
             id="editServiceButton"
             href="{{ path('service_edit', {'id':service.id}) }}"

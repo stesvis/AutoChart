@@ -3,7 +3,7 @@
 {% block body %}
     <h2>New Task Field</h2>
 
-    {{ form(taskfieldForm) }}
+    {{ form(taskfieldForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
 {% endblock %}
 

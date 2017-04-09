@@ -38,15 +38,16 @@ class VehicleController extends Controller
                 $query = $queryBuilder->getQuery();
             } else {
                 $query = $queryBuilder
-                    ->andWhere('v.createdBy = :user_id')
+                    ->Where('v.createdBy = :user_id')
                     ->setParameter('user_id', $this->getUser()->getId())
+                    ->orderBy('v.year', 'DESC')
                     ->getQuery();
             }
 
             $paginator = $this->get('knp_paginator');
 
             $vehicles = $paginator->paginate(
-                $query, /* query NOT result */
+                $query,
                 $request->query->getInt('page', 1), //page number
                 Constants::ROWS_PER_PAGE //limit per page
             );

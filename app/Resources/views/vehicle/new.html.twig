@@ -3,7 +3,7 @@
 {% block body %}
     <h2>New Vehicle</h2>
 
-    {{ form(vehicleForm) }}
+    {{ form(vehicleForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
 {% endblock %}
 

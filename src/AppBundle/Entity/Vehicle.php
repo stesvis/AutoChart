@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Vehicle
 {
+    public function __construct()
+    {
+        $this->services = new ArrayCollection();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -127,6 +133,11 @@ class Vehicle
      * @ORM\Column(type="string")
      */
     private $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="vehicle")
+     */
+    private $services;
 
     /**
      * @return mixed
@@ -478,6 +489,14 @@ class Vehicle
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getServices()
+    {
+        return $this->services;
     }
 
 }

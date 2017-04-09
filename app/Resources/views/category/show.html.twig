@@ -39,6 +39,10 @@
 
 {% block rightSidebar %}
     <a
+            href="{{ path('category_list') }}"
+            class="btn btn-info btn-block"
+            role="button">View All</a>
+    <a
             id="editCategoryButton"
             href="{{ path('category_edit', {'id':category.id}) }}"
             class="btn btn-warning btn-block {% if category.status == 'D' %}disabled{% endif %}"
