@@ -11,7 +11,6 @@ var app = angular.module('AdminCategoryApp', ['ngMaterial'])
 function AdminCategoryController($scope, $mdDialog, $http) {
     $scope.status = '  ';
     $scope.showConfirm = function (ev, categoryId) {
-        console.log("showConfirm");
 
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()

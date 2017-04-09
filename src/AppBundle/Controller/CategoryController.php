@@ -124,7 +124,7 @@ class CategoryController extends Controller
             $category->setModifiedAt(new \DateTime('now'));
             $category->setCreatedBy($this->getUser());
             $category->setModifiedBy($this->getUser());
-            $category->setStatus('A');
+            $category->setStatus(StatusEnums::Active);
 
             $em->persist($category);
             $em->flush();
@@ -135,6 +135,66 @@ class CategoryController extends Controller
         return $this->render('category/new.html.twig', [
             'categoryForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/newAjax", name="category_new_ajax")
+     *
+     * @param $request Request
+     *
+     * @return Response
+     */
+    public function newAjaxAction(Request $request)
+    {
+        try {
+            $form = $this->createForm(CategoryFormType::class, new Category(), [
+                'hideSubmit' => true,
+            ]);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+
+                    $category = $form->getData();
+
+                    $category->setCreatedAt(new \DateTime('now'));
+                    $category->setModifiedAt(new \DateTime('now'));
+                    $category->setCreatedBy($this->getUser());
+                    $category->setModifiedBy($this->getUser());
+                    $category->setStatus(StatusEnums::Active);
+
+                    $em->persist($category);
+                    $em->flush();
+
+                    //all good, category saved
+                    $response['success'] = true;
+                    $response['message'] = 'Category added.';
+                    $response['categoryId'] = $category->getId();
+                    $response['categoryName'] = $category->getName();
+
+                    return new JsonResponse($response, 200);
+
+                } else {
+                    //invalid form
+                    $response['success'] = false;
+                    $response['message'] = 'Form not valid.';
+
+                    return new JsonResponse($response, 400);
+                }
+            }
+
+            //return value of the GET request
+            return $this->render('category/_form.html.twig', [
+                'categoryForm' => $form->createView()
+            ]);
+
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+
+            return new JsonResponse($response, 500);
+        }
     }
 
     /**

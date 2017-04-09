@@ -23,7 +23,7 @@ body {
         padding-right: 15px;
     }
 
-    .jumbotron .col-sm-10 {
+    .jumbotron .col-sm-10, .form-group .col-sm-10 {
         padding-left: 15px;
         padding-right: 15px;
     }
@@ -102,6 +102,14 @@ th {
 /*.table-striped th, .table-striped td {*/
 /*text-align: center;*/
 /*}*/
+
+table.customTable {
+    width: auto;
+}
+
+table.customTable > tbody > tr > th {
+    padding-right: 50px !important;
+}
 
 /*---------------------------- Misc ----------------------------*/
 

@@ -1,21 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}{% endblock %}
-
-{% block stylesheets %}
-    <style type="text/css">
-        table.customTable {
-            width: auto;
-        }
-
-        table.customTable > tbody > tr > th {
-            padding-right: 50px !important;
-        }
-    </style>
-{% endblock %}
+{% block title %}{{ vehicle.name }}{% endblock %}
 
 {% block body %}
-    <h2>Vehicle: {{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h2>
+    <h2>Vehicle: {{ vehicle.name }}</h2>
 
     <table class="table table-hover customTable">
         <tbody>
@@ -87,7 +75,8 @@
     </table>
 
     <h4>More Vehicle Details</h4>
-    <table id="vehicleInfoTable" class="table table-striped table-hover">
+
+    <table id="vehicleInfoTable" class="table table-striped table-hover {% if info|length == 0 %}hidden{% endif %}">
         <thead>
         <tr>
             <th>Name</th>
@@ -100,7 +89,7 @@
             <tr vehicleInfoId="{{ thisInfo.id }}">
                 <td>{{ thisInfo.name }}</td>
                 <td>{{ thisInfo.value }}</td>
-                <td>
+                <td style="text-align: right; width: 1%; white-space: nowrap;">
                     {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                     {#class="fa fa-eye"></span></a>#}
                     <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
@@ -109,14 +98,17 @@
                     <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                        vehicleId="{{ thisInfo.vehicle.id }}"
                        vehicleInfoId="{{ thisInfo.id }}"
-                       title="Delete this Vehicle"
-                       ng-click="showConfirm($event, {{ vehicle.id }})">
-                        <span class="fa fa-trash"></span></a>
+                       title="Delete this Vehicle"> <span class="fa fa-trash"></span>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <p id="vehicleInfoText" class="{% if info|length > 0 %}hidden{% endif %}">
+        No details for this Vehicle yet. Want to <a href="" class="newInfoButton">add one</a>?
+    </p>
 
     <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
@@ -148,9 +140,7 @@
             role="button">New</a>
     <br/>
     <a
-            {#href="{{ path('') }}"#}
-            id="newInfoButton"
-            class="btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
+            class="newInfoButton btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Add Details</a>
     <br/>
     <a
@@ -163,14 +153,15 @@
 {% block javascripts %}
 
     <script type="text/javascript">
+
         var infoFormDialog = null;
+        var form = null;
 
         $(document).ready(function () {
 
             var name = $("#app_bundle_vehicle_info_name"),
                 value = $("#app_bundle_vehicle_info_value"),
                 allFields = $([]).add(name).add(value);
-            var form = null;
 
             // Store the dialog in a variable
             infoFormDialog = $('#vehicleInfoFormDialog').dialog({
@@ -200,7 +191,8 @@
             });
 
             // Open the dialog when the button is clicked
-            $('#newInfoButton').click(function () {
+            $('.newInfoButton').click(function (event) {
+                event.preventDefault();
                 showVehicleInfoForm();
             });
 
@@ -283,7 +275,7 @@
             $('#deleteVehicleButton').addClass('disabled');
             $('#editVehicleButton').addClass('disabled');
 
-            $('#newInfoButton').addClass('disabled');
+            $('.newInfoButton').addClass('disabled');
             $('#newServiceButton').addClass('disabled');
             $('.deleteVehicleInfo').addClass('disabled');
         }
@@ -300,7 +292,7 @@
         /**
          * Posts the form to the new or edit vehicleInfo action
          * @param infoDialog The jquery dialog
-         * @param id The VehicleInfo.Id that has been deleted
+         * @param form The VehicleInfo form
          */
         function saveVehicleInfo(infoDialog, form) {
 
@@ -322,8 +314,8 @@
                 // id=0 means new record
                 url = '{{ path('vehicle_info_new') }}';
             }
-            console.log(url);
-            console.log(formSerialize);
+//            console.log(url);
+//            console.log(formSerialize);
 
             /**
              * Make a POST call to either the editAction or newAction
@@ -342,8 +334,8 @@
                     }
                 },
                 success: function (data) {
-                    console.log('Success: ');
-                    console.log(data);
+//                    console.log('Success: ');
+//                    console.log(data);
 
                     $("#loading").hide();
 
@@ -354,6 +346,8 @@
                             $('tr[vehicleInfoId=' + vehicleInfoId + '] > td:eq(1)').text(data['infoValue']);
                         }
                         else {
+                            $('#vehicleInfoTable').removeClass('hidden');
+                            $('#vehicleInfoText').addClass('hidden');
                             $('#vehicleInfoTable tbody').append(getNewInfoTableRow(data['infoId'], data['infoName'], data['infoValue']));
                             console.log('New row added');
                         }
@@ -370,8 +364,8 @@
                     }
                 },
                 error: function (data) {
-                    console.log('Error:');
-                    console.log(data);
+//                    console.log('Error:');
+//                    console.log(data);
 
                     $("#loading").hide();
 
@@ -402,7 +396,7 @@
                 '<td>' +
                 '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showVehicleInfoForm(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
-                '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle" ng-click="showConfirm($event, {{ vehicle.id }})">' +
+                '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle">' +
                 '   <span class="fa fa-trash"></span></a>' +
                 '</td>' +
                 '</tr>';

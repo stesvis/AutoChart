@@ -29,7 +29,7 @@
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>{{ field.createdBy }}</td>
                     {% endif %}
-                    <td style="width: 1%; white-space: nowrap;">
+                    <td style="text-align: right; width: 1%; white-space: nowrap;">
                         <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('taskfield_edit', {'id':field.id}) }}"

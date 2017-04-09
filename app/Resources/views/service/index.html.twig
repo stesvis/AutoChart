@@ -30,16 +30,17 @@
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>{{ service.createdBy }}</td>
                     {% endif %}
-                    <td style="width: 1%; white-space: nowrap;">
-                        <a href="{{ path('service_show', {'id':service.id}) }}" class="btn btn-xs btn-info"><span
-                                    class="fa fa-eye"></span></a>
+                    <td style="text-align: right; width: 1%; white-space: nowrap;">
+                        <a href="{{ path('service_show', {'id':service.id}) }}" class="btn btn-xs btn-info">
+                            <span class="fa fa-eye"></span>
+                        </a>
                         <a href="{{ path('service_edit', {'id':service.id}) }}"
-                           class="btn btn-xs btn-warning editService {% if service.status != 'A' %}disabled{% endif %}"><span
-                                    class="fa fa-pencil"></span></a>
+                           class="btn btn-xs btn-warning editService {% if service.status != 'A' %}disabled{% endif %}">
+                            <span class="fa fa-pencil"></span>
+                        </a>
                         <a class="btn btn-xs btn-danger deleteService {% if service.status != 'A' %}disabled{% endif %}"
-                           serviceId="{{ service.id }}"
-                           ng-click="showConfirm($event, {{ service.id }})">
-                            <span class="fa fa-trash"></span></a>
+                           serviceId="{{ service.id }}"> <span class="fa fa-trash"></span>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

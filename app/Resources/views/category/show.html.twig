@@ -2,22 +2,10 @@
 
 {% block title %}Category: {{ category.name }}{% endblock %}
 
-{% block stylesheets %}
-    <style type="text/css">
-        table.customTable {
-            width: auto;
-        }
-
-        table.customTable > tbody > tr > th {
-            padding-right: 50px !important;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
     <h2>Category: {{ category.name }}</h2>
 
-    <table class="table table-hover thisTable">
+    <table class="table table-hover customTable">
         <tr>
             <th>Name:</th>
             <td>{{ category.name }}</td>

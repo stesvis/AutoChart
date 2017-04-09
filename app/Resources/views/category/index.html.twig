@@ -29,18 +29,18 @@
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>{{ category.createdBy }}</td>
                     {% endif %}
-                    <td style="width: 1%; white-space: nowrap;">
+                    <td style="text-align: right; width: 1%; white-space: nowrap;">
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
-                                    class="fa fa-eye"></span></a>
+                                    class="fa fa-eye"></span>
+                        </a>
                         <a href="{{ path('category_edit', {'id':category.id}) }}"
                            class="btn btn-xs btn-warning editCategory {% if category.status != 'A' %}disabled{% endif %}"><span
-                                    class="fa fa-pencil"></span></a>
-
+                                    class="fa fa-pencil"></span>
+                        </a>
                         <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' %}disabled{% endif %}"
                            categoryId="{{ category.id }}"
-                           title="Delete this Category"
-                           ng-click="showConfirm($event, {{ category.id }})">
-                            <span class="fa fa-trash"></span></a>
+                           title="Delete this Category"> <span class="fa fa-trash"></span>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

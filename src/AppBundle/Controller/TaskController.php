@@ -138,10 +138,6 @@ class TaskController extends Controller
             $task->setStatus(StatusEnums::Active);
             $task->setType('Custom');
 
-            $task->setCategory($em->getRepository('AppBundle:Category')->findOneBy([
-                'name' => 'Brakes',
-            ]));
-
             $em->persist($task);
             $em->flush();
 

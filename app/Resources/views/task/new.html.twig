@@ -4,6 +4,11 @@
     <h2>New Task</h2>
 
     {{ form(taskForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div id="categoryFormDialog" title="New Category" style="display: none;">
+        <div id="categoryForm">
+        </div>
+    </div>
 {% endblock %}
 
 {% block rightSidebar %}
@@ -11,5 +16,179 @@
             href="{{ path('task_list') }}"
             class="btn btn-info btn-block"
             role="button">View All</a>
+    <br>
+    <a
+            id="newCategoryButton"
+            {#href="{{ path('category_list') }}"#}
+            class="btn btn-success btn-block"
+            role="button">Add Category</a>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        var categoryFormDialog = null;
+        var form = null;
+
+        $(document).ready(function () {
+
+            var name = $("#app_bundle_category_form_type_name"),
+                desc = $("#app_bundle_category_form_type_description"),
+                parent = $("#app_bundle_category_form_type_parentCategory"),
+                allFields = $([]).add(name).add(desc).add(parent);
+
+            //click on the Add Category button
+            $('#newCategoryButton').click(function () {
+                showCategoryForm();
+            });
+
+            // Store the dialog in a variable
+            categoryFormDialog = $('#categoryFormDialog').dialog({
+                modal: true,
+                autoOpen: false,
+                width: 500,
+                open: function (event, ui) {
+                    form = categoryFormDialog.find("form");
+
+                    form.on("submit", function (event) {
+                        event.preventDefault();
+                        saveCategory(categoryFormDialog, form);
+                    });
+                },
+                buttons: {
+                    Save: function () {
+                        saveCategory(categoryFormDialog, form);
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+//                    form[0].reset();
+                    allFields.removeClass("ui-state-error");
+                }
+            });
+        });
+
+        /**
+         * Gets the right form for adding a new Category object
+         */
+        function showCategoryForm() {
+
+            $("#loading").show();
+
+            /**
+             * Make a GET call to the newFormAction
+             */
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('category_new_ajax') }}',
+                statusCode: {
+                    404: function () {
+                        message = 'Page not found.';
+                    }
+                },
+                success: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    // add the form to the dialog
+                    categoryFormDialog.find('#categoryForm').html(data);
+                    categoryFormDialog.dialog("open");
+                },
+                error: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    categoryFormDialog.find('#categoryForm').html(data['message']);
+                    categoryFormDialog.dialog("open");
+                },
+            });
+        }
+
+        /**
+         * Posts the form to the newCategoryAction
+         * @param categoryDialog The jquery dialog
+         * @param form The category form
+         */
+        function saveCategory(categoryDialog, form) {
+
+            var formSerialize = form.serialize();
+            var message = '';
+
+            categoryDialog.dialog("close");
+            $("#loading").show();
+
+            console.log(formSerialize);
+
+            /**
+             * Make a POST call to either the editAction or newAction
+             */
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('category_new_ajax') }}',
+                data: formSerialize,
+                dataType: 'JSON',
+                statusCode: {
+                    404: function () {
+                        message = 'Page not found.';
+                    },
+                    500: function () {
+                        message = 'Server error.';
+                    }
+                },
+                success: function (data) {
+                    console.log('Success: ');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    if (data['success'] == true) {
+                        //add the new category to the dropdown and select it
+                        $('#app_bundle_task_form_type_category')
+                            .append($('<option selected="selected"></option>')
+                                .attr("value", data['categoryId'])
+                                .text(data['categoryName']));
+//                            .append($('<option selected="selected">', {
+//                              value: data['categoryId'],
+//                              text: data['categoryName']
+//                            });
+
+                        console.log('New category added');
+                    }
+                    else {
+                        categoryDialog.html('<p>' + data['message'] + '</p>');
+                        categoryDialog.dialog({
+                            buttons: {
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log('Error:');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    categoryDialog.html('<p>' + data['message'] + '</p>');
+                    categoryDialog.dialog({
+                        buttons: {
+                            Close: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+                ,
+            })
+            ;
+        }
+
+    </script>
 {% endblock %}

@@ -38,7 +38,7 @@ class CategoryFormType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn btn-primary ' . ($options['hideSubmit'] == true ? 'hidden' : '')
                 ]
             ]);
     }
@@ -47,6 +47,7 @@ class CategoryFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
+            'hideSubmit' => false,
         ]);
     }
 

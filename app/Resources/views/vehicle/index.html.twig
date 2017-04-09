@@ -33,7 +33,7 @@
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>{{ vehicle.createdBy }}</td>
                     {% endif %}
-                    <td style="width: 1%; white-space: nowrap;">
+                    <td style="text-align: right; width: 1%; white-space: nowrap;">
                         <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>
                         <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
@@ -42,8 +42,7 @@
                         <a class="btn btn-xs btn-danger deleteVehicle {% if vehicle.status != 'A' %}disabled{% endif %}"
                            vehicleId="{{ vehicle.id }}"
                            title="Delete this Vehicle"
-                           ng-click="showConfirm($event, {{ vehicle.id }})"><span
-                                    class="fa fa-trash"></span></a>
+                        ><span class="fa fa-trash"></span></a>
                     </td>
                 </tr>
             {% endfor %}

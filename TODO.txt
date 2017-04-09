@@ -6,4 +6,6 @@ Things to do:
     X Add Error page
     X Remove HTML5 validation
     - Delete Category: do you want to delete all children?
-    - Edit Vehicile: implement "Add Details"
+    - Edit Vehicle: implement "Add Details"
+    X New Task: implement "Add Category"
+    - New Vehicle: implement "Add Task"

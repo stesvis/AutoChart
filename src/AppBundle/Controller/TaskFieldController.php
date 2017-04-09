@@ -70,13 +70,24 @@ class TaskFieldController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $field = new TaskField();
+
+        // Check if we need to pre-populate with a Task
+        if (null !== $request->query->get('task')) {
+            $task = $em->getRepository('AppBundle:Task')
+                ->findOneBy([
+                    'id' => $request->query->get('task'),
+                    'createdBy' => $this->getUser(),
+                ]);
+            $field->setTask($task);
+        }
+
         $form = $this->createForm(TaskFieldFormType::class, $field);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             $field = $form->getData();
 
