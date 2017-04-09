@@ -11,6 +11,9 @@
                 <th>Description</th>
                 <th>Parent</th>
                 <th>Created</th>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <th>Owner</th>
+                {% endif %}
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -21,6 +24,9 @@
                     <td>{{ category.description }}</td>
                     <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
                     <td>{{ category.createdAt|date ('F j, Y') }}</td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td>{{ category.createdBy }}</td>
+                    {% endif %}
                     <td style="width: 1%; white-space: nowrap;">
                         <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>

@@ -10,6 +10,9 @@
             <th>Task</th>
             <th>Default</th>
             <th>Created</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <th>Owner</th>
+            {% endif %}
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -20,6 +23,9 @@
                 <td><a href="{{ path('task_show', {'id':field.task.id}) }}">{{ field.task.name }}</a></td>
                 <td>{{ field.defaultValue }}</td>
                 <td>{{ field.createdAt|date("F j, Y") }} by {{ field.createdBy.username }}</td>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <td>{{ field.createdBy }}</td>
+                {% endif %}
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('taskfield_show', {'id':field.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>

@@ -10,6 +10,9 @@
             <th>Description</th>
             <th>Category</th>
             <th>Created</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <th>Owner</th>
+            {% endif %}
             <th>Type</th>
             <th>&nbsp;</th>
         </tr>
@@ -21,6 +24,9 @@
                 <td>{{ task.description }}</td>
                 <td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>
                 <td>{{ task.createdAt|date("F j, Y") }}</td>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <td>{{ task.createdBy }}</td>
+                {% endif %}
                 <td>{{ task.type }}</td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('task_show', {'id':task.id}) }}" class="btn btn-xs btn-info"><span

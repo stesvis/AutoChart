@@ -20,8 +20,12 @@
     padding-bottom: 0;
 }
 
+.navbar #welcomeLabel {
+    margin-top: 10px;
+}
+
 @media screen and (max-width: 767px) {
-	.navbar #searchButton {
-		width: 100%;
-	}
+    .navbar #searchButton {
+        width: 100%;
+    }
 }

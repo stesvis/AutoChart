@@ -14,6 +14,9 @@
                 <th>Model</th>
                 <th>Trim</th>
                 <th style="text-align: center">Services</th>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <th>Owner</th>
+                {% endif %}
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -27,6 +30,9 @@
                     <td style="text-align: center">{% if vehicle.services|length > 0 %}<a
                             href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">{{ vehicle.services|length }}</a>{% endif %}
                     </td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td>{{ vehicle.createdBy }}</td>
+                    {% endif %}
                     <td style="width: 1%; white-space: nowrap;">
                         <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"><span
                                     class="fa fa-eye"></span></a>

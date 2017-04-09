@@ -10,6 +10,9 @@
             <th>Task</th>
             <th>Mileage</th>
             <th>Completed On</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <th>Owner</th>
+            {% endif %}
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -20,6 +23,9 @@
                 <td>{{ service.task.name }}</td>
                 <td>{{ service.mileage|number_format }} {{ service.vehicle.mileageType }}</td>
                 <td>{{ service.createdAt|date('F j, Y') }}</td>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <td>{{ service.createdBy }}</td>
+                {% endif %}
                 <td style="width: 1%; white-space: nowrap;">
                     <a href="{{ path('service_show', {'id':service.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span></a>
