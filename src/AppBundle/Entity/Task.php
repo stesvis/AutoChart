@@ -27,7 +27,7 @@ class Task
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Please a task name")
+     * @Assert\NotBlank(message="Please enter a task name")
      */
     private $name;
 

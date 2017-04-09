@@ -22,7 +22,7 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Please a category name")
+     * @Assert\NotBlank(message="Please enter a category name")
      */
     private $name;
 

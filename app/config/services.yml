@@ -28,6 +28,13 @@ services:
         class: UserBundle\Service\UserService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", '@fos_user.user_manager']
 
+    app.category.form.type:
+        class: AppBundle\Form\CategoryFormType
+        arguments:
+            - '@category_service'
+        tags:
+            - { name: form.type }
+
     app.service.form.type:
         class: AppBundle\Form\ServiceFormType
         arguments:

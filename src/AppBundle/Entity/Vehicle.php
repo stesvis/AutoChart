@@ -12,132 +12,110 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Vehicle
 {
-    public function __construct()
-    {
-        $this->services = new ArrayCollection();
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string")
      */
     private $name;
-
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Please enter the year")
      */
     private $year;
-
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Please the make")
+     * @Assert\NotBlank(message="Please enter the make")
      */
     private $make;
-
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Please the model")
+     * @Assert\NotBlank(message="Please enter the model")
      */
     private $model;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $trim;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $transmissionType;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $fuelType;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $engineSize;
-
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $passengers;
-
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $mileage;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $mileageType;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $color;
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $description;
-
     /**
      * @ORM\Column(type="float", nullable=true)
      */
     private $price;
-
     /**
      * @ORM\Column(type="datetime")
      */
     private $purchasedAt;
-
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $annualMileage;
-
     /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
-
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by_user_id", referencedColumnName="id")
      */
     private $createdBy;
-
     /**
      * @ORM\Column(type="datetime")
      */
     private $modifiedAt;
-
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(name="modified_by_user_id", referencedColumnName="id")
      */
     private $modifiedBy;
-
     /**
      * @ORM\Column(type="string")
      */
     private $status;
-
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="vehicle")
      */
     private $services;
+
+    public function __construct()
+    {
+        $this->services = new ArrayCollection();
+    }
 
     /**
      * @return mixed
