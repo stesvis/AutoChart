@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskFormType;
+use AppBundle\Includes\Constants;
+use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,26 +23,39 @@ class TaskController extends Controller
 {
     /**
      * @Route("/", name="task_list")
+     *
+     * @param $request Request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $tasks = null;
+        $em = $this->getDoctrine()->getManager();
 
-//        $userManager = $this->get('fos_user.user_manager');
-//        $users = $userManager->findUsers();
+//        $tasks = $em->getRepository('AppBundle:Task')
+//            ->findBy([
+//                'createdBy' => $this->get('user_service')->getEntitledUsers(),
+//            ]);
 
-        try {
-            $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->getRepository('AppBundle:Task')->createQueryBuilder('t');
 
-            $tasks = $em->getRepository('AppBundle:Task')
-                ->findBy([
-                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
-                ]);
-
-        } catch (\Exception $ex) {
-            die($ex->getMessage());
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $query = $queryBuilder->getQuery();
+        } else {
+            $query = $queryBuilder
+                ->Where('t.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->orderBy('t.name')
+                ->getQuery();
         }
+
+        $paginator = $this->get('knp_paginator');
+
+        $tasks = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), //page number
+            Constants::ROWS_PER_PAGE //limit per page
+        );
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks

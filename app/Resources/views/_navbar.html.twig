@@ -27,16 +27,15 @@
         {% endblock %}
         <div class="navbar-form navbar-right">
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {#<div id="welcomeLabel">Welcome {{ app.user.username }},#}
-                {#<a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out"#}
-                {#aria-hidden="true"></i></a>&nbsp;&nbsp;#}
-                {#</div>&nbsp;#}
+                <div id="welcomeLabel">
+                    Welcome {{ app.user.username }}
+                </div>&nbsp;
                 {#<a href="#"><span class="glyphicon glyphicon-user"#}
                 {#aria-hidden="true"></span></a>#}
                 {#<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>#}
 
-                <a href="{{ path('fos_user_security_logout') }}" role="button"
-                   class="btn btn-default">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                <a href="{{ path('fos_user_security_logout') }}" role="button" class="btn btn-danger">
+                    {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
             {% else %}
 

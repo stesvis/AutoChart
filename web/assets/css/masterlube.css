@@ -3,7 +3,7 @@ body {
 }
 
 .jumbotron p {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /*---------------------------- Layout ----------------------------*/
@@ -73,6 +73,10 @@ h1, h2, h3, h4, h5 {
 }
 
 /*---------------------------- Tables ----------------------------*/
+
+table, .table {
+    font-size: 13px;
+}
 
 table {
     margin-bottom: 45px !important;

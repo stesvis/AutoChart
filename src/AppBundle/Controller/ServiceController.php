@@ -26,6 +26,7 @@ class ServiceController extends Controller
      *
      * @Route("/", name="service_list")
      * @Method("GET")
+     *
      * @param Request $request
      *
      * @return Response
@@ -48,7 +49,7 @@ class ServiceController extends Controller
         $paginator = $this->get('knp_paginator');
 
         $services = $paginator->paginate(
-            $query, /* query NOT result */
+            $query,
             $request->query->getInt('page', 1), //page number
             Constants::ROWS_PER_PAGE //limit per page
         );

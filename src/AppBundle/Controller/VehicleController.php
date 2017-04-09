@@ -24,37 +24,34 @@ class VehicleController extends Controller
 {
     /**
      * @Route("/", name="vehicle_list")
+     *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
-        try {
-//            $vehicles = $this->get('vehicle_service')->getMyVehicles();
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-            $queryBuilder = $em->getRepository('AppBundle:Vehicle')->createQueryBuilder('v');
+        $queryBuilder = $em->getRepository('AppBundle:Vehicle')->createQueryBuilder('v');
 
-            if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-                $query = $queryBuilder->getQuery();
-            } else {
-                $query = $queryBuilder
-                    ->Where('v.createdBy = :user_id')
-                    ->setParameter('user_id', $this->getUser()->getId())
-                    ->orderBy('v.year', 'DESC')
-                    ->getQuery();
-            }
-
-            $paginator = $this->get('knp_paginator');
-
-            $vehicles = $paginator->paginate(
-                $query,
-                $request->query->getInt('page', 1), //page number
-                Constants::ROWS_PER_PAGE //limit per page
-            );
-
-        } catch (\Exception $ex) {
-            $vehicles = null;
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $query = $queryBuilder->getQuery();
+        } else {
+            $query = $queryBuilder
+                ->Where('v.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->orderBy('v.year', 'DESC')
+                ->getQuery();
         }
+
+        $paginator = $this->get('knp_paginator');
+
+        $vehicles = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), //page number
+            Constants::ROWS_PER_PAGE //limit per page
+        );
 
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicles

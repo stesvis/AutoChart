@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\TaskField;
 use AppBundle\Form\TaskFieldFormType;
+use AppBundle\Includes\Constants;
+use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,22 +25,38 @@ class TaskFieldController extends Controller
     /**
      * @Route("/", name="taskfield_list")
      *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $taskFields = null;
+        $em = $this->getDoctrine()->getManager();
 
-        try {
-            $em = $this->getDoctrine()->getManager();
+//        $taskFields = $em->getRepository('AppBundle:TaskField')
+//            ->findBy([
+//                'createdBy' => $this->get('user_service')->getEntitledUsers(),
+//            ]);
 
-            $taskFields = $em->getRepository('AppBundle:TaskField')
-                ->findBy([
-                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
-                ]);
-        } catch (\Exception $ex) {
-            die('Exception: ' . $ex->getMessage());
+        $queryBuilder = $em->getRepository('AppBundle:Task')->createQueryBuilder('t');
+
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $query = $queryBuilder->getQuery();
+        } else {
+            $query = $queryBuilder
+                ->Where('t.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->orderBy('t.name')
+                ->getQuery();
         }
+
+        $paginator = $this->get('knp_paginator');
+
+        $taskFields = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), //page number
+            Constants::ROWS_PER_PAGE //limit per page
+        );
 
         return $this->render('taskField/index.html.twig', [
             'taskFields' => $taskFields

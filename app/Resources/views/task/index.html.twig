@@ -45,6 +45,11 @@
         </tbody>
     </table>
 
+    {#Pagination#}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(tasks) }}
+    </div>
+
 {% endblock %}
 
 {% block rightSidebar %}

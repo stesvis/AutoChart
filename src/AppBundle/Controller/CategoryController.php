@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Form\CategoryFormType;
+use AppBundle\Includes\Constants;
+use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,21 +23,34 @@ class CategoryController extends Controller
 {
     /**
      * @Route("/", name="category_list")
+     *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $categories = null;
+        $em = $this->getDoctrine()->getManager();
 
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $categories = $em->getRepository('AppBundle:Category')
-                ->findBy([
-                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
-                ]);
-        } catch (\Exception $ex) {
+        $queryBuilder = $em->getRepository('AppBundle:Category')->createQueryBuilder('c');
 
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $query = $queryBuilder->getQuery();
+        } else {
+            $query = $queryBuilder
+                ->Where('c.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->orderBy('c.name')
+                ->getQuery();
         }
+
+        $paginator = $this->get('knp_paginator');
+
+        $categories = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), //page number
+            Constants::ROWS_PER_PAGE //limit per page
+        );
 
         return $this->render('category/index.html.twig', [
             'categories' => $categories
