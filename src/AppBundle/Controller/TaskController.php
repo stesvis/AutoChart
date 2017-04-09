@@ -40,7 +40,9 @@ class TaskController extends Controller
         $queryBuilder = $em->getRepository('AppBundle:Task')->createQueryBuilder('t');
 
         if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-            $query = $queryBuilder->getQuery();
+            $query = $queryBuilder
+                ->orderBy('t.createdBy')
+                ->getQuery();
         } else {
             $query = $queryBuilder
                 ->Where('t.createdBy = :user_id')

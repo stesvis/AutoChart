@@ -35,7 +35,9 @@ class CategoryController extends Controller
         $queryBuilder = $em->getRepository('AppBundle:Category')->createQueryBuilder('c');
 
         if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-            $query = $queryBuilder->getQuery();
+            $query = $queryBuilder
+                ->orderBy('c.createdBy')
+                ->getQuery();
         } else {
             $query = $queryBuilder
                 ->Where('c.createdBy = :user_id')

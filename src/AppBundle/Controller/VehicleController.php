@@ -36,7 +36,9 @@ class VehicleController extends Controller
         $queryBuilder = $em->getRepository('AppBundle:Vehicle')->createQueryBuilder('v');
 
         if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-            $query = $queryBuilder->getQuery();
+            $query = $queryBuilder
+                ->orderBy('v.createdBy')
+                ->getQuery();
         } else {
             $query = $queryBuilder
                 ->Where('v.createdBy = :user_id')

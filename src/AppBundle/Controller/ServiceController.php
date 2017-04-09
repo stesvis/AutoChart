@@ -38,7 +38,9 @@ class ServiceController extends Controller
         $queryBuilder = $em->getRepository('AppBundle:Service')->createQueryBuilder('s');
 
         if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-            $query = $queryBuilder->getQuery();
+            $query = $queryBuilder
+                ->orderBy('s.createdBy')
+                ->getQuery();
         } else {
             $query = $queryBuilder
                 ->andWhere('s.createdBy = :user_id')
