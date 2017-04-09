@@ -171,20 +171,6 @@
     }
 }
 
-@media (min-width: 767px) {
-    .col-sm-2 {
-        padding-right: 0;
-    }
-
-    .col-sm-8 {
-        padding-left: 0;
-    }
-}
-
-@media (min-width: 767px) {
-
-}
-
 /************************************ RIGHT SIDEBAR **********************************/
 .sidebar-right {
     background: #2e353d;
@@ -192,10 +178,4 @@
     color: #ffffff;
     padding: 15px;
     text-align: center;
-}
-
-@media (min-width: 767px) {
-    .sidebar-right {
-        margin-left: -15px;
-    }
 }

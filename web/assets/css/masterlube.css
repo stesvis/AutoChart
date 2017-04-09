@@ -6,6 +6,30 @@ body {
     font-size: 12px;
 }
 
+/*---------------------------- Layout ----------------------------*/
+
+@media (min-width: 767px) {
+    .col-sm-2 {
+        padding-right: 0;
+    }
+
+    .col-sm-8 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .col-sm-10 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .container .jumbotron, .container-fluid .jumbotron {
+        padding: 15px 30px;
+    }
+}
+
 /*---------------------------- Headings ----------------------------*/
 
 h1, h2, h3, h4, h5 {
