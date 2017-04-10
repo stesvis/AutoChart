@@ -20,6 +20,10 @@ services:
         class: AppBundle\Service\CategoryService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
 
+    service_service:
+        class: AppBundle\Service\ServiceService
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@user_service"]
+
     task_service:
         class: AppBundle\Service\TaskService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@user_service"]

@@ -47,6 +47,14 @@ h1, h2, h3, h4, h5 {
     text-decoration: solid;
 }
 
+h2 {
+    text-align: center;
+}
+
+h4 {
+    margin-top: 60px;
+}
+
 /*---------------------------- Spinning wheel ----------------------------*/
 
 .ui-widget-overlay {
@@ -119,7 +127,11 @@ table.customTable > tbody > tr > th {
     }
 }
 
-.active > .badge {
+.nav-side-menu .active > .badge {
+    background-color: #df691a;
+}
+
+.nav-tabs .badge {
     background-color: #df691a;
 }
 

@@ -3,4 +3,103 @@
 {% block body %}
     <h2>Dashboard</h2>
 
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#vehiclesTab" data-toggle="tab"
+                              aria-expanded="true">Vehicles{% if vehicles|length == 0 %}
+                <span class="badge">1</span>{% endif %}</a></li>
+        <li class=""><a href="#servicesTab" data-toggle="tab"
+                        aria-expanded="false">Services{% if services|length == 0 %}
+                <span class="badge">1</span>{% endif %}</a></li>
+        <li class=""><a href="#tasksTab" data-toggle="tab" aria-expanded="false">Tasks{% if tasks|length == 0 %}
+                <span class="badge">1</span>{% endif %}</a></li>
+        <li class=""><a href="#categoriesTab" data-toggle="tab"
+                        aria-expanded="false">Categories{% if categories|length == 0 %}
+                <span class="badge">1</span>{% endif %}</a></li>
+    </ul>
+    <br>
+    <div id="myTabContent2" class="tab-content">
+        <div class="tab-pane fade active in" id="vehiclesTab">
+            {% if vehicles|length == 0 %}
+                {#<div class="alert alert-dismissible alert-info">#}
+                {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+                {#<strong>Hey!</strong> You haven't added any vehicle yet.#}
+                {#</div>#}
+                <p class="text-warning"><strong>Hey!</strong> You haven't added any vehicle yet.</p>
+            {% else %}
+                {% include 'vehicle/_list.html.twig' %}
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="servicesTab">
+            {% if services|length == 0 %}
+                {#<div class="alert alert-dismissible alert-info">#}
+                {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+                {#<strong>Hey!</strong> You haven't done any service on your vehicle(s) yet.#}
+                {#</div>#}
+                <p class="text-warning"><strong>Hey!</strong> You haven't done any service on your vehicle(s) yet.</p>
+            {% else %}
+                {% include 'service/_list.html.twig' %}
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="tasksTab">
+            {% if tasks|length == 0 %}
+                {#<div class="alert alert-dismissible alert-info">#}
+                {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+                {#<strong>Hey!</strong> You haven't added any task yet.#}
+                {#</div>#}
+                <p class="text-warning"><strong>Hey!</strong> You haven't added any task yet.</p>
+            {% else %}
+                {% include 'task/_list.html.twig' %}
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="categoriesTab">
+            {% if categories|length == 0 %}
+                {#<div class="alert alert-dismissible alert-info">#}
+                {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+                {#<strong>Hey!</strong> You haven't added any category yet.#}
+                {#</div>#}
+                <p class="text-warning"><strong>Hey!</strong> You haven't added any category yet.</p>
+            {% else %}
+                {% include 'category/_list.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+
+    {#{% if vehicles|length == 0 %}#}
+    {#<div class="alert alert-dismissible alert-info">#}
+    {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+    {#<strong>Hey!</strong> You haven't added any vehicle yet.#}
+    {#</div>#}
+    {#{% endif %}#}
+
+    {#{% if services|length == 0 %}#}
+    {#<div class="alert alert-dismissible alert-info">#}
+    {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+    {#<strong>Hey!</strong> You haven't done any service on your vehicle(s) yet.#}
+    {#</div>#}
+    {#{% endif %}#}
+
+    {#{% if tasks|length == 0 %}#}
+    {#<div class="alert alert-dismissible alert-info">#}
+    {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+    {#<strong>Hey!</strong> You haven't added any task yet.#}
+    {#</div>#}
+    {#{% endif %}#}
+
+    {#{% if categories|length == 0 %}#}
+    {#<div class="alert alert-dismissible alert-info">#}
+    {#<button type="button" class="close" data-dismiss="alert">&times;</button>#}
+    {#<strong>Hey!</strong> You haven't added any category yet.#}
+    {#</div>#}
+    {#{% endif %}#}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#tabs").tabs({
+                event: "mouseover"
+            });
+        });
+    </script>
 {% endblock %}
