@@ -6,7 +6,7 @@
     {% if vehicles|length == 0 %}
         <p>You haven't added any vehicle. <a href="{{ path('vehicle_new') }}">Add one</a> now.</p>
     {% else %}
-        {% include 'vehicle/_vehicle-list.html.twig' %}
+        {% include 'vehicle/_list.html.twig' %}
 
         {#Pagination#}
         <div class="navigation text-center">
