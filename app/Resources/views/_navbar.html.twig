@@ -16,13 +16,13 @@
         {#</ul>#}
         {% block navbarBody %}
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search for a Vehicle"
-                               width="300px">
-                    </div>
-                    <button id="searchButton" type="submit" class="btn btn-default"> Search</button>
-                </form>
+                {#<form class="navbar-form navbar-left" role="search">#}
+                {#<div class="form-group">#}
+                {#<input type="text" class="form-control" placeholder="Search for a Vehicle"#}
+                {#width="300px">#}
+                {#</div>#}
+                {#<button id="searchButton" type="submit" class="btn btn-default"> Search</button>#}
+                {#</form>#}
             {% endif %}
         {% endblock %}
         <div class="navbar-form navbar-right">

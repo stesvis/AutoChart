@@ -1,3 +1,4 @@
+{#{% extends 'base-2-col.html.twig' %}#}
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -91,6 +92,26 @@
     {#<strong>Hey!</strong> You haven't added any category yet.#}
     {#</div>#}
     {#{% endif %}#}
+
+{% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('vehicle_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New Vehicle</a>
+    <a
+            href="{{ path('service_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New Service</a>
+    <a
+            href="{{ path('task_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New Task</a>
+    <a
+            href="{{ path('category_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New Category</a>
 
 {% endblock %}
 
