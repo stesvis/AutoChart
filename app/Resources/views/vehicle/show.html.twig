@@ -76,35 +76,37 @@
 
     <h4>More Vehicle Details</h4>
 
-    <table id="vehicleInfoTable" class="table table-striped table-hover {% if info|length == 0 %}hidden{% endif %}">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Value</th>
-            <th>&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for thisInfo in info %}
-            <tr vehicleInfoId="{{ thisInfo.id }}">
-                <td>{{ thisInfo.name }}</td>
-                <td>{{ thisInfo.value }}</td>
-                <td style="text-align: right; width: 1%; white-space: nowrap;">
-                    {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
-                    {#class="fa fa-eye"></span></a>#}
-                    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
-                       vehicleInfoId="{{ thisInfo.id }}" onclick="showVehicleInfoForm({{ thisInfo.id }})"><span
-                                class="fa fa-pencil"></span></a>
-                    <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
-                       vehicleId="{{ thisInfo.vehicle.id }}"
-                       vehicleInfoId="{{ thisInfo.id }}"
-                       title="Delete this Vehicle"> <span class="fa fa-trash"></span>
-                    </a>
-                </td>
+    <div class="table-responsive">
+        <table id="vehicleInfoTable" class="table table-striped table-hover {% if info|length == 0 %}hidden{% endif %}">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>&nbsp;</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for thisInfo in info %}
+                <tr vehicleInfoId="{{ thisInfo.id }}">
+                    <td>{{ thisInfo.name }}</td>
+                    <td>{{ thisInfo.value }}</td>
+                    <td style="text-align: right; width: 1%; white-space: nowrap;">
+                        {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
+                        {#class="fa fa-eye"></span></a>#}
+                        <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
+                           vehicleInfoId="{{ thisInfo.id }}" onclick="showVehicleInfoForm({{ thisInfo.id }})"><span
+                                    class="fa fa-pencil"></span></a>
+                        <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
+                           vehicleId="{{ thisInfo.vehicle.id }}"
+                           vehicleInfoId="{{ thisInfo.id }}"
+                           title="Delete this Vehicle"> <span class="fa fa-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <p id="vehicleInfoText" class="{% if info|length > 0 %}hidden{% endif %}">
         No details for this Vehicle yet. Want to <a href="" class="newInfoButton">add one</a>?

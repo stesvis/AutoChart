@@ -38,7 +38,7 @@ class TaskFieldController extends Controller
 //                'createdBy' => $this->get('user_service')->getEntitledUsers(),
 //            ]);
 
-        $queryBuilder = $em->getRepository('AppBundle:Task')->createQueryBuilder('t');
+        $queryBuilder = $em->getRepository('AppBundle:TaskField')->createQueryBuilder('t');
 
         if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
             $query = $queryBuilder
