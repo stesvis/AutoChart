@@ -188,7 +188,6 @@ class ServiceController extends Controller
             $service->setModifiedAt(new \DateTime('now'));
             $service->setModifiedBy($this->getUser());
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($service);
             $em->flush();
 

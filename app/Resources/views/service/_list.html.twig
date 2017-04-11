@@ -5,6 +5,7 @@
             <th>Vehicle</th>
             <th>Task</th>
             <th>Mileage</th>
+            <th>Reminder</th>
             <th>Completed</th>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <th>Owner</th>
@@ -19,6 +20,7 @@
                 </td>
                 <td>{{ service.task.name }}</td>
                 <td>{{ service.mileage|number_format }} {{ service.vehicle.mileageType }}</td>
+                <td>{% if service.intervalMonths > 0 %}{{ service.intervalMonths }} months{% endif %}</td>
                 <td>{{ service.createdAt|date('F j, Y') }}</td>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <td>{{ service.createdBy }}</td>

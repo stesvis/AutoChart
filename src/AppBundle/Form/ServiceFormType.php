@@ -8,6 +8,7 @@ use AppBundle\Service\TaskService;
 use AppBundle\Service\VehicleService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,6 +48,9 @@ class ServiceFormType extends AbstractType
                 'required' => true,
             ])
             ->add('mileage')
+            ->add('intervalMonths', IntegerType::class, [
+                'label' => 'Remind me very N months',
+            ])
             ->add('notes', TextareaType::class, [
                 "attr" => [
                     "rows" => 7

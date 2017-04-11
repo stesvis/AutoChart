@@ -40,6 +40,11 @@ class Service
     private $notes;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $intervalMonths;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -144,6 +149,22 @@ class Service
     public function setNotes($notes)
     {
         $this->notes = $notes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIntervalMonths()
+    {
+        return $this->intervalMonths;
+    }
+
+    /**
+     * @param mixed $intervalMonths
+     */
+    public function setIntervalMonths($intervalMonths)
+    {
+        $this->intervalMonths = $intervalMonths;
     }
 
     /**

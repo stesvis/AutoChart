@@ -22,6 +22,10 @@
             <td>{{ service.mileage|number_format }} {{ service.vehicle.mileageType }}</td>
         </tr>
         <tr>
+            <th>Reminder</th>
+            <td>{% if service.intervalMonths > 0 %}{{ service.intervalMonths }} months{% endif %}</td>
+        </tr>
+        <tr>
             <th>Notes</th>
             <td>{{ service.notes }}</td>
         </tr>
