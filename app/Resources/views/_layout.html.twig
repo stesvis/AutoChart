@@ -5,6 +5,7 @@
     <meta charset="UTF-8"/>
     <title>{% block title %}Master Lube{% endblock %}</title>
 
+    {#------------------------------------ STYLESHEETS ------------------------------------#}
     {% set theme = 'superhero' %}
     {#default: https://bootswatch.com/default/#}
     {#superhero: https://bootswatch.com/superhero#}
@@ -64,6 +65,8 @@
     {#>-----------------<#}
 </div>
 
+{#------------------------------------ SCRIPTS ------------------------------------#}
+
 <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -75,6 +78,9 @@
         crossorigin="anonymous"></script>
 
 <script src="https://use.fontawesome.com/4b364bfeb8.js"></script>
+
+{#jQuery Form Validator plugin#}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 
 {#<!-- Angular JS -->#}
 {#<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>#}
