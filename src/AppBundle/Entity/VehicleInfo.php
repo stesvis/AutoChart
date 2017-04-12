@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -20,16 +21,19 @@ class VehicleInfo
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicle")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id", onDelete="set null")
+     * @Assert\NotBlank(message="Please select a vehicle")
      */
     private $vehicle;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Please enter the name")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Please enter the value")
      */
     private $value;
 

@@ -21,6 +21,7 @@ class TaskField
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Task")
      * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Please select a task")
      */
     private $task;
 

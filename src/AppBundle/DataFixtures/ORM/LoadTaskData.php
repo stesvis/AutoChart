@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Task;
+use AppBundle\Includes\StatusEnums;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -102,7 +103,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         $task->setModifiedBy($this->getReference($userReference));
         $task->setName($name);
         $task->setDescription('This is a test task');
-        $task->setStatus('A');
+        $task->setStatus(StatusEnums::Active);
         $task->setType('System');
 
         $manager->persist($task);

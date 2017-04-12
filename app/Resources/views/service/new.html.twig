@@ -4,6 +4,11 @@
     <h2>New Service</h2>
 
     {{ form(serviceForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div id="taskFormDialog" title="New Task" style="display: none;">
+        <div id="taskForm">
+        </div>
+    </div>
 {% endblock %}
 
 {% block rightSidebar %}
@@ -11,5 +16,179 @@
             href="{{ path('service_list') }}"
             class="btn btn-info btn-block"
             role="button">View All</a>
+    <br>
+    <a
+            id="newTaskButton"
+            {#href="{{ path('task_new') }}"#}
+            class="btn btn-success btn-block"
+            role="button">Add Task</a>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        var taskFormDialog = null;
+        var form = null;
+
+        $(document).ready(function () {
+
+            var name = $("#app_bundle_task_form_type_name"),
+                desc = $("#app_bundle_task_form_type_description"),
+                parent = $("#app_bundle_task_form_type_parentTask"),
+                allFields = $([]).add(name).add(desc).add(parent);
+
+            //click on the Add Task button
+            $('#newTaskButton').click(function () {
+                showTaskForm();
+            });
+
+            // Store the dialog in a variable
+            taskFormDialog = $('#taskFormDialog').dialog({
+                modal: true,
+                autoOpen: false,
+                width: 500,
+                open: function (event, ui) {
+                    form = taskFormDialog.find("form");
+
+                    form.on("submit", function (event) {
+                        event.preventDefault();
+                        saveTask(taskFormDialog, form);
+                    });
+                },
+                buttons: {
+                    Save: function () {
+                        saveTask(taskFormDialog, form);
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+//                    form[0].reset();
+                    allFields.removeClass("ui-state-error");
+                }
+            });
+        });
+
+        /**
+         * Gets the right form for adding a new Task object
+         */
+        function showTaskForm() {
+
+            $("#loading").show();
+
+            /**
+             * Make a GET call to the newFormAction
+             */
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('task_new_ajax') }}',
+                statusCode: {
+                    404: function () {
+                        message = 'Page not found.';
+                    }
+                },
+                success: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    // add the form to the dialog
+                    taskFormDialog.find('#taskForm').html(data);
+                    taskFormDialog.dialog("open");
+                },
+                error: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    taskFormDialog.find('#taskForm').html(data['message']);
+                    taskFormDialog.dialog("open");
+                },
+            });
+        }
+
+        /**
+         * Posts the form to the newTaskAction
+         * @param taskDialog The jquery dialog
+         * @param form The task form
+         */
+        function saveTask(taskDialog, form) {
+
+            var formSerialize = form.serialize();
+            var message = '';
+
+            taskDialog.dialog("close");
+            $("#loading").show();
+
+            console.log(formSerialize);
+
+            /**
+             * Make a POST call to either the editAction or newAction
+             */
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('task_new_ajax') }}',
+                data: formSerialize,
+                dataType: 'JSON',
+                statusCode: {
+                    404: function () {
+                        message = 'Page not found.';
+                    },
+                    500: function () {
+                        message = 'Server error.';
+                    }
+                },
+                success: function (data) {
+                    console.log('Success: ');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    if (data['success'] === true) {
+                        //add the new task to the dropdown and select it
+                        $('#app_bundle_task_form_type_task')
+                            .append($('<option selected="selected"></option>')
+                                .attr("value", data['taskId'])
+                                .text(data['taskName']));
+//                            .append($('<option selected="selected">', {
+//                              value: data['taskId'],
+//                              text: data['taskName']
+//                            });
+
+                        console.log('New task added');
+                    }
+                    else {
+                        taskDialog.html('<p>' + data['message'] + '</p>');
+                        taskDialog.dialog({
+                            buttons: {
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log('Error:');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    taskDialog.html('<p>' + data['message'] + '</p>');
+                    taskDialog.dialog({
+                        buttons: {
+                            Close: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+                ,
+            })
+            ;
+        }
+
+    </script>
 {% endblock %}

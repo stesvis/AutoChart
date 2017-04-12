@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,20 +25,21 @@ class TaskFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class)
             ->add('category', EntityType::class, [
                 'class' => 'AppBundle\Entity\Category',
                 'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
+                'required' => true,
             ])
             ->add('description', TextareaType::class, [
                 'attr' => array('rows' => 2),
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn btn-primary ' . ($options['hideSubmit'] == true ? 'hidden' : '')
                 ]
             ]);
     }
@@ -46,6 +48,7 @@ class TaskFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Task::class,
+            'hideSubmit' => false,
         ]);
     }
 

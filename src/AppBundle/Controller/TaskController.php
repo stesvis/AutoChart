@@ -7,10 +7,12 @@ use AppBundle\Form\TaskFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
+use AppBundle\Includes\TaskTypeEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -149,6 +151,67 @@ class TaskController extends Controller
         return $this->render('task/new.html.twig', [
             'taskForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/newAjax", name="task_new_ajax")
+     *
+     * @param $request Request
+     *
+     * @return Response
+     */
+    public function newAjaxAction(Request $request)
+    {
+        try {
+            $form = $this->createForm(TaskFormType::class, new Task(), [
+                'hideSubmit' => true,
+            ]);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+
+                    $task = $form->getData();
+
+                    $task->setCreatedAt(new \DateTime('now'));
+                    $task->setModifiedAt(new \DateTime('now'));
+                    $task->setCreatedBy($this->getUser());
+                    $task->setModifiedBy($this->getUser());
+                    $task->setType(TaskTypeEnums::Custom);
+                    $task->setStatus(StatusEnums::Active);
+
+                    $em->persist($task);
+                    $em->flush();
+
+                    //all good, category saved
+                    $response['success'] = true;
+                    $response['message'] = 'Task added.';
+                    $response['taskId'] = $task->getId();
+                    $response['taskName'] = $task->getName();
+
+                    return new JsonResponse($response, 200);
+
+                } else {
+                    //invalid form
+                    $response['success'] = false;
+                    $response['message'] = 'Form not valid.';
+
+                    return new JsonResponse($response, 400);
+                }
+            }
+
+            //return value of the GET request
+            return $this->render('task/_form.html.twig', [
+                'taskForm' => $form->createView()
+            ]);
+
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+
+            return new JsonResponse($response, 500);
+        }
     }
 
     /**

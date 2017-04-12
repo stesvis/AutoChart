@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Vehicle;
+use AppBundle\Includes\StatusEnums;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -87,7 +88,7 @@ class LoadVehicleData extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setPrice($price);
         $vehicle->setModifiedAt(new \DateTime('now'));
         $vehicle->setModifiedBy($this->getReference($userReference));
-        $vehicle->setStatus('A');
+        $vehicle->setStatus(StatusEnums::Active);
 
         $manager->persist($vehicle);
         $manager->flush();

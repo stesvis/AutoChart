@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Category;
+use AppBundle\Includes\StatusEnums;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -44,7 +45,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setModifiedBy($this->getReference($username));
         $category->setName($name);
         $category->setDescription('This is a test category');
-        $category->setStatus('A');
+        $category->setStatus(StatusEnums::Active);
 
         if (null !== $parentCategory) {
             $category->setParentCategory($this->getReference($parentCategory));
