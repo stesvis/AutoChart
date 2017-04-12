@@ -37,7 +37,9 @@ class ServiceFormType extends AbstractType
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'required' => true,
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
             ])
             ->add('vehicle', EntityType::class, [
                 'class' => 'AppBundle\Entity\Vehicle',
@@ -45,7 +47,9 @@ class ServiceFormType extends AbstractType
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'required' => true,
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
             ])
             ->add('mileage')
             ->add('intervalMonths', IntegerType::class, [

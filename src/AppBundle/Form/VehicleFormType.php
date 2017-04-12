@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,9 +18,21 @@ class VehicleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('year')
-            ->add('make')
-            ->add('model')
+            ->add('year', IntegerType::class, [
+                'attr' => [
+                    'data-validation' => 'number'
+                ],
+            ])
+            ->add('make', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
+            ])
+            ->add('model', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
+            ])
             ->add('trim')
             ->add('color')
             ->add('transmissionType', ChoiceType::class, [

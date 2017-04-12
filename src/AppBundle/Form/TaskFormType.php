@@ -25,17 +25,25 @@ class TaskFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ]
+            ])
             ->add('category', EntityType::class, [
                 'class' => 'AppBundle\Entity\Category',
                 'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'required' => true,
+                'attr' => [
+                    'data-validation' => 'required'
+                ]
             ])
             ->add('description', TextareaType::class, [
-                'attr' => array('rows' => 2),
+                'attr' => [
+                    'rows' => 2
+                ],
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

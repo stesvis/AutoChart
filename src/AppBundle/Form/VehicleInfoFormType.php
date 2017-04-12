@@ -7,6 +7,7 @@ use AppBundle\Service\VehicleService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,17 +29,24 @@ class VehicleInfoFormType extends AbstractType
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'required' => true,
-//                'disabled' => $options['disableVehicle'],
                 'attr' => [
-                    'class' => 'form-control ' . ($options['hideVehicle'] == true ? 'hidden' : '')
+                    'class' => 'form-control ' . ($options['hideVehicle'] == true ? 'hidden' : ''),
+                    'data-validation' => 'required',
                 ],
                 'label_attr' => [
                     'class' => 'form-control ' . ($options['hideVehicle'] == true ? 'hidden' : '')
                 ],
             ])
-            ->add('name')
-            ->add('value')
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
+            ])
+            ->add('value', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
+            ])
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary ' . ($options['hideSubmit'] == true ? 'hidden' : '')

@@ -257,6 +257,7 @@
                     infoFormDialog.find('#infoForm').html(data);
                     infoFormDialog.find('#infoForm').attr('vehicleInfoId', id);
                     infoFormDialog.dialog("open");
+                    $.validate({modules: 'sanitize'});
                 },
                 error: function (data) {
                     $("#loading").hide();

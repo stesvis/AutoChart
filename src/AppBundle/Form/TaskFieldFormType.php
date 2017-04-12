@@ -8,6 +8,7 @@ use AppBundle\Service\TaskService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,11 @@ class TaskFieldFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
+            ])
 //            ->add('defaultValue')
             ->add('task', EntityType::class, [
                 'class' => 'AppBundle\Entity\Task',
@@ -31,7 +36,9 @@ class TaskFieldFormType extends AbstractType
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'required' => true,
+                'attr' => [
+                    'data-validation' => 'required'
+                ],
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

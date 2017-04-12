@@ -13,3 +13,11 @@
             role="button">View</a>
 
 {% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $.validate({modules: 'sanitize'});
+    </script>
+
+{% endblock %}

@@ -97,6 +97,7 @@
                     // add the form to the dialog
                     taskFormDialog.find('#taskForm').html(data);
                     taskFormDialog.dialog("open");
+                    $.validate({modules: 'sanitize'});
                 },
                 error: function (data) {
                     $("#loading").hide();
@@ -191,4 +192,9 @@
         }
 
     </script>
+
+    <script>
+        $.validate({});
+    </script>
+
 {% endblock %}
