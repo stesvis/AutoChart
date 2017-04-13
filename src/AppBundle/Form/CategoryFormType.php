@@ -41,9 +41,6 @@ class CategoryFormType extends AbstractType
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
-                'attr' => [
-                    'data-validation' => 'required'
-                ],
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

@@ -53,13 +53,15 @@
 
                     form.on("submit", function (event) {
                         event.preventDefault();
-                        saveCategory(categoryFormDialog, form);
+                        if (validateForm())
+                            saveCategory(categoryFormDialog, form);
                     });
                     $.validate({modules: 'sanitize'});
                 },
                 buttons: {
                     Save: function () {
-                        saveCategory(categoryFormDialog, form);
+                        if (validateForm())
+                            saveCategory(categoryFormDialog, form);
                     },
                     Cancel: function () {
                         $(this).dialog("close");
@@ -181,6 +183,16 @@
                 ,
             })
             ;
+        }
+
+        function validateForm() {
+            var isFormValid = true;
+            //validator dowsn't work when loading the form dynamically via ajax
+            $("#app_bundle_category_form_type_name").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+
+            return isFormValid;
         }
 
     </script>

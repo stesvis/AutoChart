@@ -53,23 +53,14 @@
 
                     form.on("submit", function (event) {
                         event.preventDefault();
-                        saveTask(taskFormDialog, form);
+                        if (validateForm())
+                            saveTask(taskFormDialog, form);
                     });
                     $.validate({modules: 'sanitize'});
                 },
                 buttons: {
                     Save: function () {
-                        var isFormValid = true;
-                        //validator dowsn't work when loading the form dynamically via ajax
-                        $("#app_bundle_task_form_type_name").validate(function (valid, elem) {
-                            isFormValid &= valid;
-                        });
-                        $("#app_bundle_task_form_type_category").validate(function (valid, elem) {
-                            isFormValid &= valid;
-                            console.log('category = ' + valid);
-                        });
-
-                        if (isFormValid)
+                        if (validateForm())
                             saveTask(taskFormDialog, form);
                     },
                     Cancel: function () {
@@ -194,6 +185,19 @@
             ;
         }
 
+        function validateForm() {
+            var isFormValid = true;
+            //validator dowsn't work when loading the form dynamically via ajax
+            $("#app_bundle_task_form_type_name").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+            $("#app_bundle_task_form_type_category").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+
+            return isFormValid;
+
+        }
     </script>
 
     <script>
