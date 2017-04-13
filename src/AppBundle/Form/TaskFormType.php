@@ -44,6 +44,7 @@ class TaskFormType extends AbstractType
                 'attr' => [
                     'rows' => 2
                 ],
+                'required' => false,
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

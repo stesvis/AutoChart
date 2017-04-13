@@ -3,7 +3,7 @@
 {% block body %}
     <h2>New Task</h2>
 
-    {{ form(taskForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {% include 'task/_form.html.twig' %}
 
     <div id="categoryFormDialog" title="New Category" style="display: none;">
         <div id="categoryForm">
@@ -55,6 +55,7 @@
                         event.preventDefault();
                         saveCategory(categoryFormDialog, form);
                     });
+                    $.validate({modules: 'sanitize'});
                 },
                 buttons: {
                     Save: function () {
@@ -132,14 +133,6 @@
                 url: '{{ path('category_new_ajax') }}',
                 data: formSerialize,
                 dataType: 'JSON',
-                statusCode: {
-                    404: function () {
-                        message = 'Page not found.';
-                    },
-                    500: function () {
-                        message = 'Server error.';
-                    }
-                },
                 success: function (data) {
                     console.log('Success: ');
                     console.log(data);
@@ -160,8 +153,8 @@
                         console.log('New category added');
                     }
                     else {
-                        categoryDialog.html('<p>' + data['message'] + '</p>');
-                        categoryDialog.dialog({
+                        $('#dialog').html('<p>' + data['message'] + '</p>');
+                        $('#dialog').dialog({
                             buttons: {
                                 Close: function () {
                                     $(this).dialog("close");
@@ -176,8 +169,8 @@
 
                     $("#loading").hide();
 
-                    categoryDialog.html('<p>' + data['message'] + '</p>');
-                    categoryDialog.dialog({
+                    $('#dialog').html('<p>' + data['message'] + '</p>');
+                    $('#dialog').dialog({
                         buttons: {
                             Close: function () {
                                 $(this).dialog("close");
@@ -193,6 +186,6 @@
     </script>
 
     <script>
-        $.validate({});
+        $.validate({modules: 'sanitize'});
     </script>
 {% endblock %}

@@ -35,8 +35,8 @@
 
             var name = $("#app_bundle_task_form_type_name"),
                 desc = $("#app_bundle_task_form_type_description"),
-                parent = $("#app_bundle_task_form_type_parentTask"),
-                allFields = $([]).add(name).add(desc).add(parent);
+                category = $("#app_bundle_task_form_type_category"),
+                allFields = $([]).add(name).add(desc).add(category);
 
             //click on the Add Task button
             $('#newTaskButton').click(function () {
@@ -55,10 +55,22 @@
                         event.preventDefault();
                         saveTask(taskFormDialog, form);
                     });
+                    $.validate({modules: 'sanitize'});
                 },
                 buttons: {
                     Save: function () {
-                        saveTask(taskFormDialog, form);
+                        var isFormValid = true;
+                        //validator dowsn't work when loading the form dynamically via ajax
+                        $("#app_bundle_task_form_type_name").validate(function (valid, elem) {
+                            isFormValid &= valid;
+                        });
+                        $("#app_bundle_task_form_type_category").validate(function (valid, elem) {
+                            isFormValid &= valid;
+                            console.log('category = ' + valid);
+                        });
+
+                        if (isFormValid)
+                            saveTask(taskFormDialog, form);
                     },
                     Cancel: function () {
                         $(this).dialog("close");
@@ -97,7 +109,6 @@
                     // add the form to the dialog
                     taskFormDialog.find('#taskForm').html(data);
                     taskFormDialog.dialog("open");
-                    $.validate({modules: 'sanitize'});
                 },
                 error: function (data) {
                     $("#loading").hide();
@@ -133,14 +144,6 @@
                 url: '{{ path('task_new_ajax') }}',
                 data: formSerialize,
                 dataType: 'JSON',
-                statusCode: {
-                    404: function () {
-                        message = 'Page not found.';
-                    },
-                    500: function () {
-                        message = 'Server error.';
-                    }
-                },
                 success: function (data) {
                     console.log('Success: ');
                     console.log(data);
@@ -149,7 +152,7 @@
 
                     if (data['success'] === true) {
                         //add the new task to the dropdown and select it
-                        $('#app_bundle_task_form_type_task')
+                        $('#app_bundle_service_form_type_task')
                             .append($('<option selected="selected"></option>')
                                 .attr("value", data['taskId'])
                                 .text(data['taskName']));
@@ -194,7 +197,7 @@
     </script>
 
     <script>
-        $.validate({});
+        $.validate({modules: 'sanitize'});
     </script>
 
 {% endblock %}
