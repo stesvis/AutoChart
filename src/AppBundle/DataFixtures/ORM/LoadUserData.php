@@ -21,11 +21,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         // TODO: Implement load() method.
-        $this->addUser($manager, 'superadmin', 'superadmin@masterlube.com', 'dupidurs', 'Cristian', 'Merli',
+        $this->addUser($manager, 'superadmin', 'superadmin@masterlube.com', $this->getParameter('superadmin_password'),
+            'Cristian', 'Merli',
             ['ROLE_SUPER_ADMIN']);
-        $this->addUser($manager, 'admin', 'admin@masterlube.com', 'dupidurs', 'Jack', 'Bauer', ['ROLE_ADMIN']);
+        $this->addUser($manager, 'admin', 'admin@masterlube.com', $this->getParameter('superadmin_password'), 'Jack',
+            'Bauer', ['ROLE_ADMIN']);
         $this->addUser($manager, 'admintest', 'admintest@masterlube.com', 'password', 'Jack', 'Bauer', ['ROLE_ADMIN']);
-        $this->addUser($manager, 'user', 'user@masterlube.com', 'dupidurs', 'Walter', 'White', ['ROLE_USER']);
+        $this->addUser($manager, 'user', 'user@masterlube.com', $this->getParameter('superadmin_password'), 'Walter',
+            'White', ['ROLE_USER']);
     }
 
     /**

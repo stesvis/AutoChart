@@ -3,4 +3,65 @@
 {% block body %}
     <h2>Contact</h2>
 
+    {{ form(contactForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {% if error is defined %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {% if message is defined %}{{ message }}{% endif %}
+        </div>
+    {% endif %}
+    {#{{ form_start(form) }}#}
+    {#<fieldset>#}
+    {#<div class="form-group">#}
+    {#<label for="app_bundle_contact_form_type_subject" class="col-lg-2 control-label">Subject</label>#}
+    {#<div class="col-lg-10">#}
+    {#{{ form_widget(form.subject) }}#}
+    {#{{ form_errors(form.subject) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+    {#<label for="app_bundle_contact_form_type_name" class="col-lg-2 control-label">Name</label>#}
+    {#<div class="col-lg-10">#}
+    {#{{ form_widget(form.name) }}#}
+    {#{{ form_errors(form.name) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+    {#<label for="app_bundle_contact_form_type_email" class="col-lg-2 control-label">Email</label>#}
+    {#<div class="col-lg-10">#}
+    {#{{ form_widget(form.email) }}#}
+    {#{{ form_errors(form.email) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+    {#<label for="app_bundle_contact_form_type_message" class="col-lg-2 control-label">Message</label>#}
+    {#<div class="col-lg-10">#}
+    {#{{ form_widget(form.message) }}#}
+    {#{{ form_errors(form.message) }}#}
+    {#</div>#}
+    {#</div>#}
+
+    {#<div class="form-group">#}
+    {#<div class="col-lg-10 col-lg-offset-2">#}
+    {#<button type="submit" class="btn btn-primary">Send</button>#}
+    {#<button type="reset" class="btn btn-default">Cancel</button>#}
+    {#</div>#}
+    {#</div>#}
+
+    {# Render CSRF token etc .#}
+    {#<div style="display:none">#}
+    {#{{ form_rest(form) }}#}
+    {#</div>#}
+
+    {#</fieldset>#}
+    {#{{ form_end(form) }}#}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $.validate({modules: 'sanitize'});
+    </script>
+
 {% endblock %}

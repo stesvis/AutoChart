@@ -3,17 +3,72 @@
 namespace AppBundle\Controller\NavMenu;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MenuController extends Controller
 {
     /**
      * @Route("/contact", name="contact_index")
+     * @param $request Request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function contactAction()
+    public function contactAction(Request $request)
     {
-        return $this->render('menu/contact.html.twig');
+        try {// Create the form according to the FormType created previously.
+            // And give the proper parameters
+            $form = $this->createForm('AppBundle\Form\ContactFormType', null);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // Send mail
+                if ($this->sendEmail($form->getData())) {
+
+                    // Everything OK, redirect to wherever you want ! :
+                    return $this->render('menu/contact.html.twig', array(
+                        'contactForm' => $form->createView(),
+                        'success' => true,
+                    ));
+                } else {
+                    return $this->render('menu/contact.html.twig', array(
+                        'contactForm' => $form->createView(),
+                        'error' => true,
+                    ));
+                }
+            }
+
+            return $this->render('menu/contact.html.twig', array(
+                'contactForm' => $form->createView()
+            ));
+        } catch (Exception $e) {
+            return $this->render('menu/contact.html.twig', array(
+                'contactForm' => $form->createView(),
+                'error' => true,
+                'message' => $e->getMessage(),
+            ));
+        }
+    }
+
+    /**
+     * @param $data
+     * @return int
+     */
+    private function sendEmail($data)
+    {
+        $mailerEmail = $this->getParameter('mailer_user');
+        $mailerPassword = $this->getParameter('mailer_password');
+
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,
+            'ssl')->setUsername($mailerEmail)->setPassword($mailerPassword);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        $message = \Swift_Message::newInstance('Our Code World Newsletter')
+            ->setFrom(array($data['email'] => $data['name']))
+            ->setTo(array($mailerEmail => $mailerEmail))
+            ->setBody($data['message'], 'text/html');
+
+        return $mailer->send($message);
     }
 
     /**
@@ -24,5 +79,4 @@ class MenuController extends Controller
     {
         return $this->render('menu/about.html.twig');
     }
-
 }
