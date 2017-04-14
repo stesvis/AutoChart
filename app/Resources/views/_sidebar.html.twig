@@ -1,7 +1,7 @@
 {% set route = app.request.attributes.get('_route') %}
 
 <div class="nav-side-menu">
-    <div class="brand">Brand Logo</div>
+    <div class="brand">Start Here</div>
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 
     <div class="menu-list">
@@ -65,7 +65,7 @@
                 <li class="{% if route == 'category_list' %}active{% endif %}"><a
                             href="{{ path('category_list') }}">All Categories</a></li>
                 <li class="{% if route == 'category_new' %}active{% endif %}"><a
-                            href="{{ path('category_new') }}">Add New</a></li>
+                            href="{{ path('category_new') }}">Add New Category</a></li>
             </ul>
 
 

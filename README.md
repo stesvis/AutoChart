@@ -3,7 +3,7 @@ phpMasterLube
 
 A Symfony 3 project that helps you keep track of your vehicle maintenance.
 
-Here you can see the app live: <a href="http://masterlube.stesvis.com">Master Lube</a>.
+Here you can see the app live: <a href="http://lubetrack.stesvis.com">Lube Track</a>.
 Username=admintest, password=password
 
 <h4>Configure FOSUserBundle</h4>
