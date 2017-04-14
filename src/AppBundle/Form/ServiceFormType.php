@@ -33,7 +33,9 @@ class ServiceFormType extends AbstractType
         $builder
             ->add('task', EntityType::class, [
                 'class' => 'AppBundle\Entity\Task',
-                'choices' => $this->taskService->getMyTasks(StatusEnums::Active),
+                'choices' => $this->taskService->getMyTasks([
+                    'name' => 'ASC'
+                ], StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
@@ -43,7 +45,9 @@ class ServiceFormType extends AbstractType
             ])
             ->add('vehicle', EntityType::class, [
                 'class' => 'AppBundle\Entity\Vehicle',
-                'choices' => $this->vehicleService->getMyVehicles(StatusEnums::Active),
+                'choices' => $this->vehicleService->getMyVehicles([
+                    'year' => 'DESC'
+                ], StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',

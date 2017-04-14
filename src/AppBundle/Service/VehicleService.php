@@ -31,7 +31,7 @@ class VehicleService
      * @param $status
      * @return Vehicle[]|array
      */
-    public function getMyVehicles($status = null): array
+    public function getMyVehicles(array $orderBy, $status = null): array
     {
         $filter['createdBy'] = $this->userService->getEntitledUsers();
 
@@ -40,9 +40,7 @@ class VehicleService
         }
 
         $vehicles = $this->em->getRepository('AppBundle:Vehicle')
-            ->findBy($filter, [
-                'year' => 'DESC'
-            ]);
+            ->findBy($filter, $orderBy);
 
         return $vehicles;
     }

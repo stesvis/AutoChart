@@ -23,10 +23,14 @@ class DashboardController extends Controller
     {
 
         //-------------------- Vehicles --------------------//
-        $vehicles = $this->get('vehicle_service')->getMyVehicles();
+        $vehicles = $this->get('vehicle_service')->getMyVehicles([
+            'createdBy' => 'ASC'
+        ]);
 
         //-------------------- Tasks --------------------//
-        $tasks = $this->get('task_service')->getMyTasks();
+        $tasks = $this->get('task_service')->getMyTasks([
+            'createdBy' => 'ASC'
+        ]);
 
         //-------------------- Services --------------------//
         $em = $this->getDoctrine()->getManager();
@@ -56,7 +60,9 @@ class DashboardController extends Controller
 //        $services = $this->get('service_service')->getMyServices();
 
         //-------------------- Categories --------------------//
-        $categories = $this->get('category_service')->getMyCategories('createdBy');
+        $categories = $this->get('category_service')->getMyCategories([
+            'createdBy' => 'ASC'
+        ]);
 
         return $this->render('dashboard/index.html.twig', [
             'vehicles' => $vehicles,

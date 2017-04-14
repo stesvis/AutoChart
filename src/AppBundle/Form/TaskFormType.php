@@ -32,7 +32,9 @@ class TaskFormType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => 'AppBundle\Entity\Category',
-                'choices' => $this->categoryService->getMyCategories('name', StatusEnums::Active),
+                'choices' => $this->categoryService->getMyCategories([
+                    'name' => 'ASC'
+                ], StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',

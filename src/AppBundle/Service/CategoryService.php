@@ -32,7 +32,7 @@ class CategoryService
      * @param $status Optional If you want you can filter by a specific status
      * @return Vehicle[]|array
      */
-    public function getMyCategories($orderBy, $status = null): array
+    public function getMyCategories(array $orderBy, $status = null): array
     {
         $filter['createdBy'] = $this->userService->getEntitledUsers();
 
@@ -41,9 +41,7 @@ class CategoryService
         }
 
         $categories = $this->em->getRepository('AppBundle:Category')
-            ->findBy($filter, [
-                $orderBy => 'ASC'
-            ]);
+            ->findBy($filter, $orderBy);
 
         return $categories;
     }

@@ -30,7 +30,7 @@ class TaskService
      * @param $status
      * @return Vehicle[]|array
      */
-    public function getMyTasks($status = null): array
+    public function getMyTasks(array $orderBy, $status = null): array
     {
         $filter['createdBy'] = $this->userService->getEntitledUsers();
 
@@ -39,9 +39,7 @@ class TaskService
         }
 
         $vehicles = $this->em->getRepository('AppBundle:Task')
-            ->findBy($filter, [
-                'name' => 'ASC'
-            ]);
+            ->findBy($filter, $orderBy);
 
         return $vehicles;
     }

@@ -32,7 +32,9 @@ class TaskFieldFormType extends AbstractType
 //            ->add('defaultValue')
             ->add('task', EntityType::class, [
                 'class' => 'AppBundle\Entity\Task',
-                'choices' => $this->taskService->getMyTasks(StatusEnums::Active),
+                'choices' => $this->taskService->getMyTasks([
+                    'name' => 'ASC'
+                ], StatusEnums::Active),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',

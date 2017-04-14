@@ -5,8 +5,11 @@ Things to do:
     X Add TaskFiled from Task view page (same as add VehicleInfo from Vehicle view page)
     X Add Error page
     X Remove HTML5 validation
-    - Delete Category: do you want to delete all children?
+    --- Delete Category: do you want to delete all children?
     --- Edit Vehicle: implement "Add Details"
     X New Task: implement "Add Category"
     X New Service: implement "Add Task"
-    - Order entities by owner in Dashboard (example in Categories tab)
+    X Order entities by owner in Dashboard (example in Categories tab)
+    - Re-implement searchbar
+    - Add footer
+    - Add Contact page

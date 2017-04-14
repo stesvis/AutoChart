@@ -25,7 +25,9 @@ class VehicleInfoFormType extends AbstractType
         $builder
             ->add('vehicle', EntityType::class, [
                 'class' => 'AppBundle\Entity\Vehicle',
-                'choices' => $this->vehicleService->getMyVehicles(),
+                'choices' => $this->vehicleService->getMyVehicles([
+                    'year' => 'DESC'
+                ]),
                 'choice_label' => 'name',
                 'empty_data' => null,
                 'placeholder' => '',
