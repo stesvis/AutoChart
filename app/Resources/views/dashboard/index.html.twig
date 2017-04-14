@@ -4,18 +4,22 @@
 {% block body %}
     <h2>Dashboard</h2>
 
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" style="border-bottom: 2px solid #2b3e50;">
         <li class="active"><a href="#vehiclesTab" data-toggle="tab"
                               aria-expanded="true">Vehicles{% if vehicles|length == 0 %}
-                <span class="badge">1</span>{% endif %}</a></li>
+                <span class="badge"><i class="fa fa-exclamation" aria-hidden="true"></i></span>{% endif %}</a>
+        </li>
         <li class=""><a href="#servicesTab" data-toggle="tab"
                         aria-expanded="false">Services{% if services|length == 0 %}
-                <span class="badge">1</span>{% endif %}</a></li>
+                <span class="badge"><i class="fa fa-exclamation" aria-hidden="true"></i></span>{% endif %}</a>
+        </li>
         <li class=""><a href="#tasksTab" data-toggle="tab" aria-expanded="false">Tasks{% if tasks|length == 0 %}
-                <span class="badge">1</span>{% endif %}</a></li>
+                <span class="badge"><i class="fa fa-exclamation" aria-hidden="true"></i></span>{% endif %}</a>
+        </li>
         <li class=""><a href="#categoriesTab" data-toggle="tab"
                         aria-expanded="false">Categories{% if categories|length == 0 %}
-                <span class="badge">1</span>{% endif %}</a></li>
+                <span class="badge"><i class="fa fa-exclamation" aria-hidden="true"></i></span>{% endif %}</a>
+        </li>
     </ul>
     <br>
     <div id="myTabContent" class="tab-content">
@@ -108,10 +112,10 @@
             href="{{ path('task_new') }}"
             class="btn btn-success btn-block"
             role="button">New Task</a>
-    <a
-            href="{{ path('category_new') }}"
-            class="btn btn-success btn-block"
-            role="button">New Category</a>
+    {#<a#}
+    {#href="{{ path('category_new') }}"#}
+    {#class="btn btn-success btn-block"#}
+    {#role="button">New Category</a>#}
 
 {% endblock %}
 
