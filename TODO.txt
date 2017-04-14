@@ -9,3 +9,4 @@ Things to do:
     --- Edit Vehicle: implement "Add Details"
     X New Task: implement "Add Category"
     X New Service: implement "Add Task"
+    - Order entities by owner in Dashboard (example in Categories tab)
