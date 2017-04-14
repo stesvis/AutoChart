@@ -52,7 +52,7 @@ class ContactFormType extends AbstractType
                     'data-validation-error-msg' => 'Please type a Message',
                 ]
             ))
-            ->add('save', SubmitType::class, [
+            ->add('send', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]

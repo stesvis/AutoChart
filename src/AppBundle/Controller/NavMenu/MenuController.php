@@ -24,10 +24,13 @@ class MenuController extends Controller
                 // Send mail
                 if ($this->sendEmail($form->getData())) {
 
+                    $form = $this->createForm('AppBundle\Form\ContactFormType', null);
+
                     // Everything OK, redirect to wherever you want ! :
                     return $this->render('menu/contact.html.twig', array(
                         'contactForm' => $form->createView(),
                         'success' => true,
+                        'message' => 'Your email was successfully sent. Thank you.'
                     ));
                 } else {
                     return $this->render('menu/contact.html.twig', array(
@@ -58,14 +61,14 @@ class MenuController extends Controller
         $mailerEmail = $this->getParameter('mailer_user');
         $mailerPassword = $this->getParameter('mailer_password');
 
-        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,
-            'ssl')->setUsername($mailerEmail)->setPassword($mailerPassword);
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+            ->setUsername($mailerEmail)->setPassword($mailerPassword);
 
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        $message = \Swift_Message::newInstance('Our Code World Newsletter')
+        $message = \Swift_Message::newInstance($data['subject'])
             ->setFrom(array($data['email'] => $data['name']))
-            ->setTo(array($mailerEmail => $mailerEmail))
+            ->setTo(array($mailerEmail => 'Cristian Merli'))
             ->setBody($data['message'], 'text/html');
 
         return $mailer->send($message);
