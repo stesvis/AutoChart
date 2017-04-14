@@ -11,10 +11,41 @@
             href="{{ path('category_show', {'id':category.id}) }}"
             class="btn btn-info btn-block"
             role="button">View</a>
+    <a
+            id="deleteCategoryButton"
+            class="btn btn-danger btn-block {% if category.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('category_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
 
 {% endblock %}
 
 {% block javascripts %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Click on delete button
+            $('#deleteCategoryButton').click(function () {
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Category will be permanently deleted and cannot be recovered. Are you sure?');
+                var url = '{{ path('category_delete', {'id':category.id }) }}';
+                openDeleteDialog("#dialog", "Delete the Category?", url, afterDeleteCategory, {{ category.id }});
+            });
+        });
+
+        /**
+         * Disables other buttons that depend on an active Category
+         * @param id
+         */
+        function afterDeleteCategory() {
+            $('#deleteCategoryButton').addClass('disabled');
+            window.location.href = '{{ path('category_show', { 'id':category.id }) }}';
+        }
+
+    </script>
 
     <script>
         $.validate({modules: 'sanitize'});

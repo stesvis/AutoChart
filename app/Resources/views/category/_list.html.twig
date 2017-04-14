@@ -4,7 +4,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Parent</th>
+            {#<th>Parent</th>#}
             <th>Created</th>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <th>Owner</th>
@@ -17,7 +17,7 @@
             <tr>
                 <td>{{ category.name }}</td>
                 <td>{{ category.description }}</td>
-                <td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>
+                {#<td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>#}
                 <td>{{ category.createdAt|date ('F j, Y') }}</td>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <td>{{ category.createdBy }}</td>

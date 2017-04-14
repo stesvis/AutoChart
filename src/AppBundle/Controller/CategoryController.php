@@ -10,6 +10,7 @@ use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -231,38 +232,52 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $category = $em->getRepository('AppBundle:Category')
-            ->findOneBy([
-                'id' => $id,
-                'status' => StatusEnums::Active,
-                'createdBy' => $this->getUser(),
-            ]);
+        try {
+            $em = $this->getDoctrine()->getManager();
 
-        if (!$category) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
+            $category = $em->getRepository('AppBundle:Category')
+                ->findOneBy([
+                    'id' => $id,
+                    'status' => StatusEnums::Active,
+                    'createdBy' => $this->getUser(),
+                ]);
 
-        // Check if the category is in use on any task
-        $tasksByCategory = $em->getRepository('AppBundle:Task')
-            ->findBy([
-                'category' => $category
-            ]);
+            if (!$category) {
+                throw $this->createNotFoundException('Unable to find Category entity.');
+            }
 
-        if (count($tasksByCategory) == 0) {
-            // Safe to remove
-            $category->setStatus(StatusEnums::Deleted);
-            $em->persist($category);
-            $em->flush();
+            $children = $em->getRepository('AppBundle:Category')
+                ->findByParentCategory($id);
+            if ($children != null) {
+                throw new Exception('This category has children. What to do?');
+            }
 
-            $response['success'] = true;
-            $response['message'] = 'Category deleted.';
-        } else {
+            // Check if the category is in use on any task
+            $tasksByCategory = $em->getRepository('AppBundle:Task')
+                ->findBy([
+                    'category' => $category
+                ]);
+
+            if (count($tasksByCategory) == 0) {
+                // Safe to remove
+                $category->setStatus(StatusEnums::Deleted);
+                $em->persist($category);
+                $em->flush();
+
+                $response['success'] = true;
+                $response['message'] = 'Category deleted.';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'This Category is in use on some Tasks. Delete its references first.';
+            }
+
+            return new JsonResponse($response);
+        } catch (Exception $e) {
             $response['success'] = false;
-            $response['message'] = 'This Category is in use on some Tasks. Delete its references first.';
-        }
+            $response['message'] = $e->getMessage();
 
-        return new JsonResponse($response);
+            return new JsonResponse($response, 500);
+        }
     }
 
 }

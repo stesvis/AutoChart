@@ -14,13 +14,13 @@
             <th>Description:</th>
             <td>{{ category.description }}</td>
         </tr>
-        <tr>
-            <th>Parent Category:</th>
-            <td>{% if category.parentCategory != null %}
-                    <a href="{{ path('category_show', {'id':category.parentCategory.id}) }}">{{ category.parentCategory.name }}</a>
-                {% endif %}
-            </td>
-        </tr>
+        {#<tr>#}
+        {#<th>Parent Category:</th>#}
+        {#<td>{% if category.parentCategory != null %}#}
+        {#<a href="{{ path('category_show', {'id':category.parentCategory.id}) }}">{{ category.parentCategory.name }}</a>#}
+        {#{% endif %}#}
+        {#</td>#}
+        {#</tr>#}
     </table>
 
 {% endblock %}

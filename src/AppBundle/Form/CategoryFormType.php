@@ -3,9 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Category;
-use AppBundle\Includes\StatusEnums;
 use AppBundle\Service\CategoryService;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,13 +33,13 @@ class CategoryFormType extends AbstractType
                     'rows' => 2
                 ],
             ])
-            ->add('parentCategory', EntityType::class, [
-                'class' => 'AppBundle\Entity\Category',
-                'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
-                'choice_label' => 'name',
-                'empty_data' => null,
-                'placeholder' => '',
-            ])
+//            ->add('parentCategory', EntityType::class, [
+//                'class' => 'AppBundle\Entity\Category',
+//                'choices' => $this->categoryService->getMyCategories(StatusEnums::Active),
+//                'choice_label' => 'name',
+//                'empty_data' => null,
+//                'placeholder' => '',
+//            ])
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary ' . ($options['hideSubmit'] == true ? 'hidden' : '')
