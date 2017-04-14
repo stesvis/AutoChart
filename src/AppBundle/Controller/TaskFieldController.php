@@ -66,51 +66,6 @@ class TaskFieldController extends Controller
     }
 
     /**
-     * @Route("/new", name="taskfield_new")
-     * @param Request $request
-     * @return Response
-     */
-    public function newAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $field = new TaskField();
-
-        // Check if we need to pre-populate with a Task
-        if (null !== $request->query->get('task')) {
-            $task = $em->getRepository('AppBundle:Task')
-                ->findOneBy([
-                    'id' => $request->query->get('task'),
-                    'createdBy' => $this->getUser(),
-                ]);
-            $field->setTask($task);
-        }
-
-        $form = $this->createForm(TaskFieldFormType::class, $field);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $field = $form->getData();
-
-            $field->setCreatedAt(new \DateTime('now'));
-            $field->setModifiedAt(new \DateTime('now'));
-            $field->setCreatedBy($this->getUser());
-            $field->setModifiedBy($this->getUser());
-            $field->setStatus(StatusEnums::Active);
-
-            $em->persist($field);
-            $em->flush();
-
-            return $this->redirectToRoute('taskfield_list');
-        }
-
-        return $this->render('taskField/new.html.twig', [
-            'taskfieldForm' => $form->createView()
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="taskfield_edit")
      * @param Request $request
      * @param $id
@@ -138,6 +93,52 @@ class TaskFieldController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $field = $form->getData();
+
+            $field->setCreatedAt(new \DateTime('now'));
+            $field->setModifiedAt(new \DateTime('now'));
+            $field->setCreatedBy($this->getUser());
+            $field->setModifiedBy($this->getUser());
+            $field->setStatus(StatusEnums::Active);
+
+            $em->persist($field);
+            $em->flush();
+
+            return $this->redirectToRoute('taskfield_list');
+        }
+
+        return $this->render('taskField/edit.html.twig', [
+            'fieldForm' => $form->createView(),
+            'field' => $field,
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="taskfield_new")
+     * @param Request $request
+     * @return Response
+     */
+    public function newAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $field = new TaskField();
+
+        // Check if we need to pre-populate with a Task
+        if (null !== $request->query->get('task')) {
+            $task = $em->getRepository('AppBundle:Task')
+                ->findOneBy([
+                    'id' => $request->query->get('task'),
+                    'createdBy' => $this->getUser(),
+                ]);
+            $field->setTask($task);
+        }
+
+        $form = $this->createForm(TaskFieldFormType::class, $field);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $field = $form->getData();
 

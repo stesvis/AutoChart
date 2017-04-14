@@ -13,10 +13,8 @@
             role="button">View</a>
     <a
             id="deleteServiceButton"
-            {#href="{{ path('service_delete', {'id':service.id}) }}"#}
             class="btn btn-danger btn-block {% if service.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
-    <br/>
     <a
             href="{{ path('service_new') }}"
             class="btn btn-success btn-block"
@@ -26,6 +24,7 @@
 {% block javascripts %}
 
     <script type="text/javascript">
+
         $(document).ready(function () {
 
             // Click on delete button
@@ -42,10 +41,8 @@
          */
         function afterDeleteService() {
             $('#deleteServiceButton').addClass('disabled');
-            $('#newServiceButton').addClass('disabled');
             window.location.href = '{{ path('service_show', { 'id':service.id }) }}';
         }
-
 
     </script>
 

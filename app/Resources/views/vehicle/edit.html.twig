@@ -22,7 +22,6 @@
             {#href="{{ path('vehicle_delete', {'id':vehicle.id}) }}"#}
             class="btn btn-danger btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
             role="button">Delete</a>
-    <br/>
     <a
             href="{{ path('vehicle_new') }}"
             class="btn btn-success btn-block"

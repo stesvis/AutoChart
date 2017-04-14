@@ -1,12 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Edit Task Field: {{ }}</h2>
+    <h2>Edit Task Field</h2>
 
-    {{ form(taskForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {% include 'taskField/_form.html.twig' %}
+{% endblock %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('taskfield_show', {'id':field.id}) }}"
+            class="btn btn-info btn-block"
+            role="button">View</a>
+    <a
+            id="deleteFieldButton"
+            class="btn btn-danger btn-block {% if field.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('taskfield_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
 {% endblock %}
 
 {% block javascripts %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Click on delete button
+            $('#deleteFieldButton').click(function () {
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Field will be permanently deleted and cannot be recovered. Are you sure?');
+                var url = '{{ path('taskfield_delete', {'id':field.id }) }}';
+                openDeleteDialog("#dialog", "Delete the Field?", url, afterDeleteField, {{ field.id }});
+            });
+        });
+
+        /**
+         * Disables other buttons that depend on an active Field
+         * @param id
+         */
+        function afterDeleteField() {
+            $('#deleteFieldButton').addClass('disabled');
+            window.location.href = '{{ path('taskfield_show', { 'id':field.id }) }}';
+        }
+
+    </script>
 
     <script>
         $.validate({modules: 'sanitize'});

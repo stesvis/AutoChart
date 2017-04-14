@@ -11,10 +11,40 @@
             href="{{ path('task_show', {'id':task.id}) }}"
             class="btn btn-info btn-block"
             role="button">View</a>
-
+    <a
+            id="deleteTaskButton"
+            class="btn btn-danger btn-block {% if task.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <a
+            href="{{ path('task_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
 {% endblock %}
 
 {% block javascripts %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Click on delete button
+            $('#deleteTaskButton').click(function () {
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
+                var url = '{{ path('task_delete', {'id':task.id }) }}';
+                openDeleteDialog("#dialog", "Delete the Task?", url, afterDeleteTask, {{ task.id }});
+            });
+        });
+
+        /**
+         * Disables other buttons that depend on an active Task
+         * @param id
+         */
+        function afterDeleteTask() {
+            $('#deleteTaskButton').addClass('disabled');
+            window.location.href = '{{ path('task_show', { 'id':task.id }) }}';
+        }
+
+    </script>
 
     <script>
         $.validate({modules: 'sanitize'});
