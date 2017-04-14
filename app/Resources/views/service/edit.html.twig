@@ -11,10 +11,43 @@
             href="{{ path('service_show', {'id':service.id}) }}"
             class="btn btn-info btn-block"
             role="button">View</a>
-
+    <a
+            id="deleteServiceButton"
+            {#href="{{ path('service_delete', {'id':service.id}) }}"#}
+            class="btn btn-danger btn-block {% if service.status == 'D' %}disabled{% endif %}"
+            role="button">Delete</a>
+    <br/>
+    <a
+            href="{{ path('service_new') }}"
+            class="btn btn-success btn-block"
+            role="button">New</a>
 {% endblock %}
 
 {% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Click on delete button
+            $('#deleteServiceButton').click(function () {
+                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
+                var url = '{{ path('service_delete', {'id':service.id }) }}';
+                openDeleteDialog("#dialog", "Delete the Service?", url, afterDeleteService, {{ service.id }});
+            });
+        });
+
+        /**
+         * Disables other buttons that depend on an active Service
+         * @param id
+         */
+        function afterDeleteService() {
+            $('#deleteServiceButton').addClass('disabled');
+            $('#newServiceButton').addClass('disabled');
+            window.location.href = '{{ path('service_show', { 'id':service.id }) }}';
+        }
+
+
+    </script>
 
     <script>
         $.validate({modules: 'sanitize'});
