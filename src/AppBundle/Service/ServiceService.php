@@ -33,8 +33,8 @@ class ServiceService
      */
     public function getMyServices($status = null): array
     {
-//        $filter['createdBy'] = $this->userService->getEntitledUsers();
-        $filter['createdBy'] = $this->user;
+        $filter['createdBy'] = $this->userService->getEntitledUsers();
+//        $filter['createdBy'] = $this->user;
 
         if (null !== $status) {
             $filter['status'] = $status;

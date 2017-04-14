@@ -116,7 +116,7 @@ class ServiceController extends Controller
             $task = $em->getRepository('AppBundle:Task')
                 ->findOneBy([
                     'id' => $request->query->get('task'),
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
             $service->setTask($task);
         }
@@ -126,7 +126,7 @@ class ServiceController extends Controller
             $vehicle = $em->getRepository('AppBundle:Vehicle')
                 ->findOneBy([
                     'id' => $request->query->get('vehicle'),
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
             $service->setVehicle($vehicle);
         }
@@ -168,7 +168,7 @@ class ServiceController extends Controller
         $service = $em->getRepository('AppBundle:Service')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
 
@@ -216,7 +216,7 @@ class ServiceController extends Controller
         $service = $em->getRepository('AppBundle:Service')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$service) {
@@ -247,7 +247,7 @@ class ServiceController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$service) {
@@ -256,6 +256,8 @@ class ServiceController extends Controller
 
             // Safe to remove
             $service->setStatus(StatusEnums::Deleted);
+            $service->setModifiedBy($this->getUser());
+
             $em->persist($service);
             $em->flush();
 

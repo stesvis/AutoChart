@@ -79,7 +79,7 @@ class TaskController extends Controller
         $task = $em->getRepository('AppBundle:Task')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         $form = $this->createForm(TaskFormType::class, $task);
@@ -122,7 +122,7 @@ class TaskController extends Controller
             $category = $em->getRepository('AppBundle:Category')
                 ->findOneBy([
                     'id' => $request->query->get('category'),
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
             $task->setCategory($category);
         }
@@ -229,7 +229,7 @@ class TaskController extends Controller
         $task = $em->getRepository('AppBundle:Task')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$task) {
@@ -262,7 +262,7 @@ class TaskController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$task) {
@@ -278,6 +278,8 @@ class TaskController extends Controller
             if (count($servicesByTask) == 0) {
                 // Safe to remove
                 $task->setStatus(StatusEnums::Deleted);
+                $task->setModifiedBy($this->getUser());
+
                 $em->persist($task);
                 $em->flush();
 

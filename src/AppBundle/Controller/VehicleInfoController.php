@@ -35,7 +35,7 @@ class VehicleInfoController extends Controller
             $info = $em->getRepository('AppBundle:VehicleInfo')
                 ->findOneBy([
                     'id' => $id,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$info) {
@@ -106,7 +106,7 @@ class VehicleInfoController extends Controller
                 $vehicle = $em->getRepository('AppBundle:Vehicle')
                     ->findOneBy([
                         'id' => $request->query->get('vehicle'),
-                        'createdBy' => $this->getUser(),
+                        'createdBy' => $this->get('user_service')->getEntitledUsers(),
                     ]);
                 $info->setVehicle($vehicle);
             }
@@ -175,7 +175,7 @@ class VehicleInfoController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$info) {
@@ -186,6 +186,7 @@ class VehicleInfoController extends Controller
 
             // Safe to remove
             $info->setStatus(StatusEnums::Deleted);
+            $info->setModifiedBy($this->getUser());
             $em->persist($info);
             $em->flush();
 

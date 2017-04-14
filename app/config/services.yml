@@ -18,7 +18,7 @@ services:
 
     category_service:
         class: AppBundle\Service\CategoryService
-        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@user_service"]
 
     service_service:
         class: AppBundle\Service\ServiceService

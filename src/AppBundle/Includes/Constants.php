@@ -5,5 +5,5 @@ namespace AppBundle\Includes;
 
 class Constants
 {
-    public const ROWS_PER_PAGE = 15;
+    public const ROWS_PER_PAGE = 1;
 }

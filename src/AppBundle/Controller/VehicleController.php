@@ -74,7 +74,7 @@ class VehicleController extends Controller
             ->findOneBy([
                 'id' => $id,
                 'status' => StatusEnums::Active, // it's editable only if active, otherwise they are cheating
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$vehicle) {
@@ -158,7 +158,7 @@ class VehicleController extends Controller
         $vehicle = $em->getRepository('AppBundle:Vehicle')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         // Check if it exists
@@ -193,7 +193,7 @@ class VehicleController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$vehicle) {
@@ -204,6 +204,8 @@ class VehicleController extends Controller
 
             // Safe to remove
             $vehicle->setStatus(StatusEnums::Deleted);
+            $vehicle->setModifiedBy($this->getUser());
+
             $em->persist($vehicle);
             $em->flush();
 

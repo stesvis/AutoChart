@@ -75,7 +75,7 @@ class CategoryController extends Controller
             ->findOneBy([
                 'id' => $id,
                 'status' => StatusEnums::Active,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$category) {
@@ -215,7 +215,7 @@ class CategoryController extends Controller
         $category = $em->getRepository('AppBundle:Category')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         return $this->render('category/show.html.twig', [
@@ -239,7 +239,7 @@ class CategoryController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$category) {
@@ -261,6 +261,8 @@ class CategoryController extends Controller
             if (count($tasksByCategory) == 0) {
                 // Safe to remove
                 $category->setStatus(StatusEnums::Deleted);
+                $category->setModifiedBy($this->getUser());
+
                 $em->persist($category);
                 $em->flush();
 

@@ -2,9 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Includes\StatusEnums;
+use AppBundle\Includes\RoleEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 
 /**
@@ -18,29 +19,44 @@ class DashboardController extends Controller
      * @Route("/", name="dashboard_index")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+
         //-------------------- Vehicles --------------------//
-        $vehicles = $this->get('vehicle_service')->getMyVehicles(StatusEnums::Active);
+        $vehicles = $this->get('vehicle_service')->getMyVehicles();
 
         //-------------------- Tasks --------------------//
-        $tasks = $this->get('task_service')->getMyTasks(StatusEnums::Active);
+        $tasks = $this->get('task_service')->getMyTasks();
 
         //-------------------- Services --------------------//
         $em = $this->getDoctrine()->getManager();
-
         $queryBuilder = $em->getRepository('AppBundle:Service')->createQueryBuilder('s');
 
-        $services = $queryBuilder
-            ->andWhere('s.createdBy = :user_id')
-            ->setParameter('user_id', $this->getUser()->getId())
-            ->getQuery()
-            ->getResult();
+        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+            $services = $queryBuilder
+                ->orderBy('s.createdBy')
+                ->getQuery()
+                ->getResult();
+        } else {
+            $services = $queryBuilder
+                ->andWhere('s.createdBy = :user_id')
+                ->setParameter('user_id', $this->getUser()->getId())
+                ->getQuery()
+                ->getResult();
+        }
 
-//        $services = $this->get('service_service')->getMyServices(StatusEnums::Active);
+//        $queryBuilder = $em->getRepository('AppBundle:Service')->createQueryBuilder('s');
+//
+//        $services = $queryBuilder
+//            ->andWhere('s.createdBy = :user_id')
+//            ->setParameter('user_id', $this->getUser()->getId())
+//            ->getQuery()
+//            ->getResult();
+
+//        $services = $this->get('service_service')->getMyServices();
 
         //-------------------- Categories --------------------//
-        $categories = $this->get('category_service')->getMyCategories(StatusEnums::Active);
+        $categories = $this->get('category_service')->getMyCategories('createdBy');
 
         return $this->render('dashboard/index.html.twig', [
             'vehicles' => $vehicles,

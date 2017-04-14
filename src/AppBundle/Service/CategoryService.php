@@ -6,6 +6,7 @@ use AppBundle\Entity\Vehicle;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\Optional;
+use UserBundle\Service\UserService;
 
 class CategoryService
 {
@@ -16,21 +17,24 @@ class CategoryService
      */
     protected $em;
     protected $user;
+    protected $userService;
 
-    public function __construct(EntityManager $em, TokenStorage $tokenStorage)
+    public function __construct(EntityManager $em, TokenStorage $tokenStorage, UserService $userService)
     {
         $this->em = $em;
         $this->user = $tokenStorage->getToken()->getUser();
+        $this->userService = $userService;
     }
 
     /**
      * Returns the list of categories that belong to the logged in user
+     * @param $orderBy
      * @param $status Optional If you want you can filter by a specific status
      * @return Vehicle[]|array
      */
-    public function getMyCategories($status = null): array
+    public function getMyCategories($orderBy, $status = null): array
     {
-        $filter['createdBy'] = $this->user;
+        $filter['createdBy'] = $this->userService->getEntitledUsers();
 
         if (null !== $status) {
             $filter['status'] = $status;
@@ -38,7 +42,7 @@ class CategoryService
 
         $categories = $this->em->getRepository('AppBundle:Category')
             ->findBy($filter, [
-                'name' => 'ASC'
+                $orderBy => 'ASC'
             ]);
 
         return $categories;

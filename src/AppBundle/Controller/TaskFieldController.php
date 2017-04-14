@@ -78,7 +78,7 @@ class TaskFieldController extends Controller
         $field = $em->getRepository('AppBundle:TaskField')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$field) {
@@ -129,7 +129,7 @@ class TaskFieldController extends Controller
             $task = $em->getRepository('AppBundle:Task')
                 ->findOneBy([
                     'id' => $request->query->get('task'),
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
             $field->setTask($task);
         }
@@ -173,7 +173,7 @@ class TaskFieldController extends Controller
         $field = $em->getRepository('AppBundle:TaskField')
             ->findOneBy([
                 'id' => $id,
-                'createdBy' => $this->getUser(),
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
             ]);
 
         if (!$field) {
@@ -202,7 +202,7 @@ class TaskFieldController extends Controller
                 ->findOneBy([
                     'id' => $id,
                     'status' => StatusEnums::Active,
-                    'createdBy' => $this->getUser(),
+                    'createdBy' => $this->get('user_service')->getEntitledUsers(),
                 ]);
 
             if (!$field) {
@@ -218,6 +218,8 @@ class TaskFieldController extends Controller
             if (count($servicesByTask) == 0) {
                 // Safe to remove
                 $field->setStatus(StatusEnums::Deleted);
+                $field->setModifiedBy($this->getUser());
+
                 $em->persist($field);
                 $em->flush();
 
