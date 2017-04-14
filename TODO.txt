@@ -2,10 +2,10 @@ Things to do:
 
 	X Add paginator in each index view
 	- Add an "Import System Tasks" feature
-    - Add TaskFiled from Task view page (same as add VehicleInfo from Vehicle view page)
+    X Add TaskFiled from Task view page (same as add VehicleInfo from Vehicle view page)
     X Add Error page
     X Remove HTML5 validation
     - Delete Category: do you want to delete all children?
-    - Edit Vehicle: implement "Add Details"
+    --- Edit Vehicle: implement "Add Details"
     X New Task: implement "Add Category"
-    - New Vehicle: implement "Add Task"
+    X New Service: implement "Add Task"
