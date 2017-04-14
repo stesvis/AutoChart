@@ -238,12 +238,12 @@ class TaskController extends Controller
             );
         }
 
-        $fields = $em->getRepository('AppBundle:TaskField')
-            ->findByTask($id);
+//        $fields = $em->getRepository('AppBundle:TaskField')
+//            ->findByTask($id);
 
         return $this->render('task/show.html.twig', [
             'task' => $task,
-            'fields' => $fields,
+//            'fields' => $fields,
         ]);
     }
 
