@@ -3,55 +3,62 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">Auto Chart</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="{% if route == 'dashboard_index' %}active{% endif %}"><a href="{{ path('dashboard_index') }}">Home</a>
-            </li>
-            <li class="{% if route == 'about_index' %}active{% endif %}"><a href="{{ path('about_index') }}">About</a>
-            </li>
-            <li class="{% if route == 'contact_index' %}active{% endif %}"><a
-                        href="{{ path('contact_index') }}">Contact</a></li>
-        </ul>
-        {% block navbarBody %}
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {#<form class="navbar-form navbar-left" role="search">#}
-                {#<div class="form-group">#}
-                {#<input type="text" class="form-control" placeholder="Search for a Vehicle"#}
-                {#width="300px">#}
-                {#</div>#}
-                {#<button id="searchButton" type="submit" class="btn btn-default"> Search</button>#}
-                {#</form>#}
-            {% endif %}
-        {% endblock %}
-        <div class="navbar-form navbar-right">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                <div id="welcomeLabel">
-                    Welcome {{ app.user.username }}
-                </div>&nbsp;
-                {#<a href="#"><span class="glyphicon glyphicon-user"#}
-                {#aria-hidden="true"></span></a>#}
-                {#<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>#}
 
-                <a href="{{ path('fos_user_security_logout') }}" role="button" class="btn btn-danger">
-                    {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
-                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-            {% else %}
+        <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-2" aria-expanded="false"
+             style="height: 1px;">
+            <ul class="nav navbar-nav">
+                <li class="{% if route == 'dashboard_index' %}active{% endif %}"><a
+                            href="{{ path('dashboard_index') }}">Home</a>
+                </li>
+                <li class="{% if route == 'about_index' %}active{% endif %}"><a
+                            href="{{ path('about_index') }}">About</a>
+                </li>
+                <li class="{% if route == 'contact_index' %}active{% endif %}"><a
+                            href="{{ path('contact_index') }}">Contact</a></li>
+            </ul>
+            {% block navbarBody %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {#<form class="navbar-form navbar-left" role="search">#}
+                    {#<div class="form-group">#}
+                    {#<input type="text" class="form-control" placeholder="Search for a Vehicle"#}
+                    {#width="300px">#}
+                    {#</div>#}
+                    {#<button id="searchButton" type="submit" class="btn btn-default"> Search</button>#}
+                    {#</form>#}
+                {% endif %}
+            {% endblock %}
+            <div class="navbar-form navbar-right">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <div id="welcomeLabel">
+                        Welcome {{ app.user.username }}
+                    </div>&nbsp;
+                    {#<a href="#"><span class="glyphicon glyphicon-user"#}
+                    {#aria-hidden="true"></span></a>#}
+                    {#<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>#}
 
-                <a href="{{ path('fos_user_security_login') }}" role="button"
-                   class="btn btn-primary"><span class="glyphicon glyphicon-log-in"
-                                                 aria-hidden="true"></span>
-                    {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-                <a href="{{ path('fos_user_registration_register') }}" role="button"
-                   class="btn btn-default">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+                    <a href="{{ path('fos_user_security_logout') }}" role="button" class="btn btn-danger">
+                        {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
+                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                {% else %}
 
-            {% endif %}
+                    <a href="{{ path('fos_user_security_login') }}" role="button"
+                       class="btn btn-primary"><span class="glyphicon glyphicon-log-in"
+                                                     aria-hidden="true"></span>
+                        {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    <a href="{{ path('fos_user_registration_register') }}" role="button"
+                       class="btn btn-default">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+
+                {% endif %}
+            </div>
         </div>
-
     </div>
 </nav>
