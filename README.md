@@ -1,9 +1,9 @@
-phpMasterLube
+AutoChart
 =============
 
 A Symfony 3 project that helps you keep track of your vehicle maintenance.
 
-Here you can see the app live: <a href="http://lubetrack.stesvis.com">Lube Track</a>.
+Here you can see the app live: <a href="http://autochart.stesvis.com">Auto Chart</a>.
 Username=admintest, password=password
 
 <h4>Configure FOSUserBundle</h4>
