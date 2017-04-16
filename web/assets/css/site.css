@@ -99,7 +99,7 @@ table a:not(.btn), .table a:not(.btn) {
     color: #df691a;
 }
 
-th {
+th, .control-label {
     color: #ffc73d;
 }
 

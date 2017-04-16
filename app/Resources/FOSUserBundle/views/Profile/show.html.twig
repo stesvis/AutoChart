@@ -1,0 +1,18 @@
+{#{% extends "@FOSUser/layout.html.twig" %}#}
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% include "@FOSUser/Profile/show_content.html.twig" %}
+{% endblock fos_user_content %}
+
+{% block rightSidebar %}
+    <a
+            href="{{ path('fos_user_profile_edit') }}"
+            class="btn btn-warning btn-block"
+            role="button">Edit</a>
+    <br>
+    <a
+            href="{{ path('fos_user_change_password') }}"
+            class="btn btn-default btn-block"
+            role="button">Change Password</a>
+{% endblock %}

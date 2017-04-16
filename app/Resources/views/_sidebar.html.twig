@@ -82,12 +82,32 @@
 
 
             {#---------------------------------- PROFILE ----------------------------------#}
-            <li>
-                <a href="{{ path('fos_user_profile_show') }}">
-                    <i class="fa fa-user fa-lg fa-fw"></i> Profile
-                </a>
+            {#<li>#}
+            {#<a href="{{ path('fos_user_profile_show') }}">#}
+            {#<i class="fa fa-user fa-lg fa-fw"></i> Profile#}
+            {#</a>#}
+            {#</li>#}
+            <li data-toggle="collapse" data-target="#profile"
+                class="collapsed {% if 'profile' in app.request.uri %}active{% endif %}">
+                <a href="#"><i class="fa fa-user fa-lg fa-fw"></i> Profile <span
+                            class="arrow"></span></a>
             </li>
-
+            <ul class="sub-menu collapse" id="profile">
+                <li class="{% if route == 'fos_user_profile_show' %}active{% endif %}"><a
+                            href="{{ path('fos_user_profile_show') }}">My Profile</a></li>
+                <li class="{% if route == 'fos_user_profile_edit' %}active{% endif %}"><a
+                            href="{{ path('fos_user_profile_edit') }}">Edit Profile</a></li>
+                <li class="{% if route == 'fos_user_change_password' %}active{% endif %}"><a
+                            href="{{ path('fos_user_change_password') }}">Change Password</a></li>
+                {#<li class="{% if route == 'taskfield_list' %}active{% endif %}"><a#}
+                {#href="{{ path('taskfield_list') }}">All Task Fields</a></li>#}
+                {#<li class="{% if route == 'taskfield_new' %}active{% endif %}"><a#}
+                {#href="{{ path('taskfield_new') }}">Add New Task Field</a></li>#}
+                {#<li class="{% if route == 'category_list' %}active{% endif %}"><a#}
+                {#href="{{ path('category_list') }}">All Categories</a></li>#}
+                {#<li class="{% if route == 'category_new' %}active{% endif %}"><a#}
+                {#href="{{ path('category_new') }}">Add New Category</a></li>#}
+            </ul>
             {#---------------------------------- CONTACTS ----------------------------------#}
             {#<li>#}
             {#<a href="#">#}
