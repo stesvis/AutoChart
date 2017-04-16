@@ -2,3 +2,4 @@ AppBundle\Entity\Category:
     type: entity
     table: categories
     repositoryClass: AppBundle\Repository\CategoryRepository
+    arguments: ['@user_service']

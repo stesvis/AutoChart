@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170411020944 extends AbstractMigration
+class Version20170415231118 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -19,7 +19,7 @@ class Version20170411020944 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE services CHANGE `interval` interval_months INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE categories ADD type VARCHAR(255) DEFAULT NULL');
     }
 
     /**
@@ -31,6 +31,6 @@ class Version20170411020944 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE services CHANGE interval_months `interval` INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE categories DROP type');
     }
 }

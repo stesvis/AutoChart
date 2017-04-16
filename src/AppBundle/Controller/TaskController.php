@@ -7,7 +7,7 @@ use AppBundle\Form\TaskFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
-use AppBundle\Includes\TaskTypeEnums;
+use AppBundle\Includes\TypeEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -178,7 +178,7 @@ class TaskController extends Controller
                     $task->setModifiedAt(new \DateTime('now'));
                     $task->setCreatedBy($this->getUser());
                     $task->setModifiedBy($this->getUser());
-                    $task->setType(TaskTypeEnums::Custom);
+                    $task->setType(TypeEnums::Custom);
                     $task->setStatus(StatusEnums::Active);
 
                     $em->persist($task);

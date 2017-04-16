@@ -36,7 +36,7 @@
             });
         });
 
-        function afterDelete() {
+        function afterDelete(id) {
             $('.deleteTask[taskId=' + id + ']').addClass('disabled');
             $('.deleteCategory[taskId=' + id + ']').prev().addClass('disabled');
         }

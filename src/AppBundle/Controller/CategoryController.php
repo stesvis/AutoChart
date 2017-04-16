@@ -7,6 +7,7 @@ use AppBundle\Form\CategoryFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\RoleEnums;
 use AppBundle\Includes\StatusEnums;
+use AppBundle\Includes\TypeEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,6 +44,8 @@ class CategoryController extends Controller
             $query = $queryBuilder
                 ->Where('c.createdBy = :user_id')
                 ->setParameter('user_id', $this->getUser()->getId())
+                ->orWhere('c.type = :type')
+                ->setParameter('type', TypeEnums::System)
                 ->orderBy('c.name')
                 ->getQuery();
         }
@@ -71,12 +74,15 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+//        $category = $em->getRepository('AppBundle:Category')
+//            ->findOneBy([
+//                'id' => $id,
+//                'status' => StatusEnums::Active,
+//                'createdBy' => $this->get('user_service')->getEntitledUsers(),
+//            ]);
+
         $category = $em->getRepository('AppBundle:Category')
-            ->findOneBy([
-                'id' => $id,
-                'status' => StatusEnums::Active,
-                'createdBy' => $this->get('user_service')->getEntitledUsers(),
-            ]);
+            ->findOneById($id);
 
         if (!$category) {
             throw $this->createNotFoundException(
@@ -91,7 +97,16 @@ class CategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
+
             $category->setModifiedAt(new \DateTime('now'));
+
+            if ($category->getStatus() == StatusEnums::Deleted || $category->getType() === TypeEnums::System) {
+                return $this->render('category/edit.html.twig', [
+                    'categoryForm' => $form->createView(),
+                    'category' => $category,
+                    'message' => 'This category cannot be edited.',
+                ]);
+            }
 
             $em->persist($category);
             $em->flush();
@@ -127,6 +142,7 @@ class CategoryController extends Controller
             $category->setModifiedAt(new \DateTime('now'));
             $category->setCreatedBy($this->getUser());
             $category->setModifiedBy($this->getUser());
+            $category->setType(TypeEnums::Custom);
             $category->setStatus(StatusEnums::Active);
 
             $em->persist($category);
@@ -212,11 +228,20 @@ class CategoryController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+//        $category = $em->getRepository('AppBundle:Category')
+//            ->findOneBy([
+//                'id' => $id,
+////                'createdBy' => $this->get('user_service')->getEntitledUsers(),
+//            ]);
+
         $category = $em->getRepository('AppBundle:Category')
-            ->findOneBy([
-                'id' => $id,
-                'createdBy' => $this->get('user_service')->getEntitledUsers(),
-            ]);
+            ->findOneById($id);
+
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'No Category found for id ' . $id
+            );
+        }
 
         return $this->render('category/show.html.twig', [
             'category' => $category
@@ -244,6 +269,10 @@ class CategoryController extends Controller
 
             if (!$category) {
                 throw $this->createNotFoundException('Unable to find Category entity.');
+            }
+
+            if ($category->getType() == TypeEnums::System) {
+                throw $this->createNotFoundException('This category cannot be deleted.');
             }
 
             $children = $em->getRepository('AppBundle:Category')

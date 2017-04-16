@@ -15,10 +15,10 @@
             <th>Description:</th>
             <td>{{ task.description }}</td>
         </tr>
-        <tr>
-            <th>Category:</th>
-            <td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>
-        </tr>
+        {#<tr>#}
+        {#<th>Category:</th>#}
+        {#<td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>#}
+        {#</tr>#}
         <tr>
             <th>Created:</th>
             <td>{{ task.createdAt|date('F j, Y') }} by {{ task.createdBy }}</td>

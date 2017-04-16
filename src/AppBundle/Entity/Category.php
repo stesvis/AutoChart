@@ -60,6 +60,11 @@ class Category
     private $modifiedBy;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $type;
+
+    /**
      * @ORM\Column(type="string")
      */
     private $status;
@@ -190,6 +195,22 @@ class Category
     public function setModifiedBy($modifiedBy)
     {
         $this->modifiedBy = $modifiedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**

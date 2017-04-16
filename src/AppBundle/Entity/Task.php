@@ -22,7 +22,6 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
-     * @Assert\NotBlank(message="Please select a category")
      */
     private $category;
 

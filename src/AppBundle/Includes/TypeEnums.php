@@ -3,7 +3,7 @@
 namespace AppBundle\Includes;
 
 
-class TaskTypeEnums
+class TypeEnums
 {
     const __default = self::Custom;
 

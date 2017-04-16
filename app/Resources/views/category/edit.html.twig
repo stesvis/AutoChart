@@ -4,6 +4,14 @@
     <h2>Edit Category</h2>
 
     {{ form(categoryForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {% if message is defined %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block rightSidebar %}
