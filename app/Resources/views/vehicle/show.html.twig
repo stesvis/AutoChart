@@ -74,7 +74,7 @@
         </tbody>
     </table>
 
-    <h4>More Vehicle Details</h4>
+    <h4>Vehicle Specs</h4>
 
     <div class="table-responsive">
         <table id="vehicleInfoTable" class="table table-striped table-hover {% if info|length == 0 %}hidden{% endif %}">
@@ -109,11 +109,11 @@
     </div>
 
     <p id="vehicleInfoText" class="{% if info|length > 0 %}hidden{% endif %}">
-        No details for this Vehicle yet. Want to <a href="" class="newInfoButton">add one</a>?
+        No specs for this vehicle yet. Want to <a href="" class="newInfoButton">add one</a>?
     </p>
 
-    <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
-        <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code
+    <div id="vehicleInfoFormDialog" title="New Vehicle Specs" style="display: none;">
+        <p>Please add vehicle specs that you may need in the future (tire size, motor oil type, door lock code
             etc.)</p><br>
         <div id="infoForm">
         </div>
@@ -143,7 +143,7 @@
     <br/>
     <a
             class="newInfoButton btn btn-default btn-block {% if vehicle.status == 'D' %}disabled{% endif %}"
-            role="button">Add Details</a>
+            role="button">Add Specs</a>
     <br/>
     <a
             id="newServiceButton"
