@@ -38,7 +38,7 @@
 
         function afterDelete(id) {
             $('.deleteTask[taskId=' + id + ']').addClass('disabled');
-            $('.deleteCategory[taskId=' + id + ']').prev().addClass('disabled');
+            $('.editTask[taskId=' + id + ']').addClass('disabled');
         }
     </script>
 

@@ -3,7 +3,27 @@
 {% block body %}
     <h2>New Service</h2>
 
+    {% if myTasks|length == 0 %}
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <h4>No Tasks!</h4>
+            <p>It appears you haven't added any task yet. You need to
+                <a href="#" class="alert-link newTaskButton">create a task</a> first.</p>
+        </div>
+    {% endif %}
+
+    {% if myVehicles|length == 0 %}
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <h4>No Vehicles!</h4>
+            <p>It appears you haven't added any vehicle yet. You need to
+                <a href="{{ path('vehicle_new') }}" class="alert-link">create a vehicle</a> first.</p>
+        </div>
+    {% endif %}
+
+    {#{% if myTasks|length > 0 and myVehicles|length > 0 %}#}
     {{ form(serviceForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {#{% endif %}#}
 
     <div id="taskFormDialog" title="New Task" style="display: none;">
         <div id="taskForm">
@@ -23,9 +43,8 @@
             role="button">Add Vehicle</a>
     <br>
     <a
-            id="newTaskButton"
             {#href="{{ path('task_new') }}"#}
-            class="btn btn-success btn-block"
+            class="btn btn-success btn-block newTaskButton"
             role="button">Add Task</a>
 
 {% endblock %}
@@ -44,7 +63,7 @@
                 allFields = $([]).add(name).add(desc).add(category);
 
             //click on the Add Task button
-            $('#newTaskButton').click(function () {
+            $('.newTaskButton').click(function () {
                 showTaskForm();
             });
 

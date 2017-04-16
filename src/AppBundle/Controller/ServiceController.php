@@ -111,6 +111,18 @@ class ServiceController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        // 1. Do we have any tasks yet?
+        $myTasks = $this->get('task_service')
+            ->getMyTasks([
+                'name' => 'ASC'
+            ], StatusEnums::Active);
+
+        // 2. Do we have any vehicles yet?
+        $myVehicles = $this->get('vehicle_service')
+            ->getMyVehicles([
+                'year' => 'ASC'
+            ], StatusEnums::Active);
+
         // Check if we need to pre-populate with a Task
         if (null !== $request->query->get('task')) {
             $task = $em->getRepository('AppBundle:Task')
@@ -152,6 +164,8 @@ class ServiceController extends Controller
 
         return $this->render('service/new.html.twig', array(
             'serviceForm' => $form->createView(),
+            'myTasks' => $myTasks,
+            'myVehicles' => $myVehicles,
         ));
     }
 
