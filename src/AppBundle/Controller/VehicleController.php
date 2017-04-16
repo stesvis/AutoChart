@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -142,6 +143,66 @@ class VehicleController extends Controller
             'vehicleForm' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/newAjax", name="vehicle_new_ajax")
+     *
+     * @param $request Request
+     *
+     * @return Response
+     */
+    public function newAjaxAction(Request $request)
+    {
+        try {
+            $form = $this->createForm(VehicleFormType::class, new Vehicle(), [
+                'popup' => true,
+            ]);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+
+                    $vehicle = $form->getData();
+
+                    $vehicle->setCreatedAt(new \DateTime('now'));
+                    $vehicle->setModifiedAt(new \DateTime('now'));
+                    $vehicle->setCreatedBy($this->getUser());
+                    $vehicle->setModifiedBy($this->getUser());
+                    $vehicle->setStatus(StatusEnums::Active);
+                    $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
+
+                    $em->persist($vehicle);
+                    $em->flush();
+
+                    //all good, category saved
+                    $response['success'] = true;
+                    $response['message'] = 'Vehicle added.';
+                    $response['vehicleId'] = $vehicle->getId();
+                    $response['vehicleName'] = $vehicle->getName();
+
+                    return new JsonResponse($response, 200);
+                } else {
+                    //invalid form
+                    $response['success'] = false;
+                    $response['message'] = 'Form not valid.';
+
+                    return new JsonResponse($response, 400);
+                }
+            }
+
+            return $this->render('vehicle/_form.html.twig', [
+                'vehicleForm' => $form->createView()
+            ]);
+        } catch (Exception $e) {
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+
+            return new JsonResponse($response, 500);
+        }
+    }
+
 
     /**
      * @Route("/{id}", name="vehicle_show")

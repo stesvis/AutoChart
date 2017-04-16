@@ -4,7 +4,7 @@
     <h2>New Service</h2>
 
     {% if myTasks|length == 0 %}
-        <div class="alert alert-dismissible alert-warning">
+        <div id="taskAlert" class="alert alert-dismissible alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <h4>No Tasks!</h4>
             <p>It appears you haven't added any task yet. You need to
@@ -13,7 +13,7 @@
     {% endif %}
 
     {% if myVehicles|length == 0 %}
-        <div class="alert alert-dismissible alert-warning">
+        <div id="vehicleAlert" class="alert alert-dismissible alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <h4>No Vehicles!</h4>
             <p>It appears you haven't added any vehicle yet. You need to
@@ -29,6 +29,10 @@
         <div id="taskForm">
         </div>
     </div>
+    <div id="vehicleFormDialog" title="New Vehicle" style="display: none;">
+        <div id="vehicleForm">
+        </div>
+    </div>
 {% endblock %}
 
 {% block rightSidebar %}
@@ -38,8 +42,8 @@
             role="button">View All</a>
     <br>
     <a
-            href="{{ path('vehicle_new') }}"
-            class="btn btn-success btn-block"
+            {#href="{{ path('vehicle_new') }}"#}
+            class="btn btn-success btn-block newVehicleButton"
             role="button">Add Vehicle</a>
     <br>
     <a
@@ -50,6 +54,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {#Script to handle new Tasks#}
     <script type="text/javascript">
 
         var taskFormDialog = null;
@@ -111,11 +116,6 @@
             $.ajax({
                 type: 'GET',
                 url: '{{ path('task_new_ajax') }}',
-                statusCode: {
-                    404: function () {
-                        message = 'Page not found.';
-                    }
-                },
                 success: function (data) {
                     $("#loading").hide();
 
@@ -175,8 +175,8 @@
 //                              value: data['taskId'],
 //                              text: data['taskName']
 //                            });
-
-                        console.log('New task added');
+                        $('#taskAlert').hide();
+//                        console.log('New task added');
                     }
                     else {
                         taskDialog.html('<p>' + data['message'] + '</p>');
@@ -221,6 +221,176 @@
 
             return isFormValid;
 
+        }
+    </script>
+
+    {#Script to handle new Vehicles#}
+    <script type="text/javascript">
+
+        var vehicleFormDialog = null;
+        var vehicleForm = null;
+
+        $(document).ready(function () {
+
+            var year = $("#app_bundle_vehicle_form_type_year"),
+                make = $("#app_bundle_vehicle_form_type_make"),
+                model = $("#app_bundle_vehicle_form_type_model"),
+                allFields = $([]).add(year).add(make).add(model);
+
+            //click on the Add Vehicle button
+            $('.newVehicleButton').click(function () {
+                showVehicleForm();
+            });
+
+            // Store the dialog in a variable
+            vehicleFormDialog = $('#vehicleFormDialog').dialog({
+                modal: true,
+                autoOpen: false,
+                width: 500,
+                open: function (event, ui) {
+                    vehicleForm = vehicleFormDialog.find("form");
+
+                    vehicleForm.on("submit", function (event) {
+                        event.preventDefault();
+                        if (validateForm())
+                            saveVehicle(vehicleFormDialog, vehicleForm);
+                    });
+                    $.validate({modules: 'sanitize'});
+                },
+                buttons: {
+                    Save: function () {
+                        if (validateForm())
+                            saveVehicle(vehicleFormDialog, vehicleForm);
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+//                    vehicleForm[0].reset();
+                    allFields.removeClass("ui-state-error");
+                }
+            });
+        });
+
+        /**
+         * Gets the right form for adding a new Vehicle object
+         */
+        function showVehicleForm() {
+
+            $("#loading").show();
+
+            /**
+             * Make a GET call to the newFormAction
+             */
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('vehicle_new_ajax') }}',
+                success: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    // add the form to the dialog
+                    vehicleFormDialog.find('#vehicleForm').html(data);
+                    vehicleFormDialog.dialog("open");
+                },
+                error: function (data) {
+                    $("#loading").hide();
+
+//                    console.log(data);
+
+                    vehicleFormDialog.find('#vehicleForm').html(data['message']);
+                    vehicleFormDialog.dialog("open");
+                },
+            });
+        }
+
+        /**
+         * Posts the form to the newVehicleAction
+         * @param vehicleDialog The jquery dialog
+         * @param form The vehicle form
+         */
+        function saveVehicle(vehicleDialog, form) {
+
+            var formSerialize = form.serialize();
+            var message = '';
+
+            vehicleDialog.dialog("close");
+            $("#loading").show();
+
+            console.log(formSerialize);
+
+            /**
+             * Make a POST call to either the editAction or newAction
+             */
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('vehicle_new_ajax') }}',
+                data: formSerialize,
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log('Success: ');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    if (data['success'] === true) {
+                        //add the new vehicle to the dropdown and select it
+                        $('#app_bundle_service_form_type_vehicle')
+                            .append($('<option selected="selected"></option>')
+                                .attr("value", data['vehicleId'])
+                                .text(data['vehicleName']));
+//                            .append($('<option selected="selected">', {
+//                              value: data['vehicleId'],
+//                              text: data['vehicleName']
+//                            });
+
+//                        console.log('New vehicle added');
+                    }
+                    else {
+                        vehicleDialog.html('<p>' + data['message'] + '</p>');
+                        vehicleDialog.dialog({
+                            buttons: {
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log('Error:');
+                    console.log(data);
+
+                    $("#loading").hide();
+
+                    vehicleDialog.html('<p>' + data['message'] + '</p>');
+                    vehicleDialog.dialog({
+                        buttons: {
+                            Close: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function validateForm() {
+            var isFormValid = true;
+            //validator dowsn't work when loading the form dynamically via ajax
+            $("#app_bundle_vehicle_form_type_year").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+            $("#app_bundle_vehicle_form_type_make").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+            $("#app_bundle_vehicle_form_type_model").validate(function (valid, elem) {
+                isFormValid &= valid;
+            });
+
+            return isFormValid;
         }
     </script>
 

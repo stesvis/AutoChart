@@ -4,7 +4,7 @@
 {% block body %}
     <h2>Edit Vehicle</h2>
 
-    {{ form(vehicleForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {% include 'vehicle/_form.html.twig' %}
 
     <div id="vehicleInfoFormDialog" title="New Vehicle Info" style="display: none;">
         <p>Please add vehicle details that you may need in the future (tire size, motor oil type, door lock code

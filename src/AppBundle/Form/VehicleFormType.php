@@ -32,63 +32,69 @@ class VehicleFormType extends AbstractType
                 'attr' => [
                     'data-validation' => 'required'
                 ],
-            ])
-            ->add('trim')
-            ->add('color')
-            ->add('transmissionType', ChoiceType::class, [
-                'choices' => [
-                    'Auto' => 'Auto',
-                    'Manual' => 'Manual'
-                ],
-                'empty_data' => null,
-                'placeholder' => '',
-            ])
-            ->add('fuelType', ChoiceType::class, [
-                'choices' => [
-                    'Gas' => 'Gas',
-                    'Diesel' => 'Diesel',
-                    'Propane' => 'Propane',
-                ],
-                'empty_data' => null,
-                'placeholder' => '',
-            ])
-            ->add('engineSize')
-            ->add('passengers')
-            ->add('mileageType', ChoiceType::class, [
-                'choices' => [
-                    'Km' => 'Km',
-                    'Miles' => 'Miles',
-                ],
-                'empty_data' => null,
-                'placeholder' => '',
-            ])
-            ->add('mileage', IntegerType::class, [
-                'label' => 'Current Mileage',
-            ])
-            ->add('annualMileage', IntegerType::class, [
-                'label' => 'Average Annual Mileage',
-            ])
-            ->add('description', TextareaType::class, [
-                'attr' => array('rows' => 2),
-            ])
-            ->add('price', IntegerType::class)
-            ->add('purchasedAt', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => false,
-                'attr' => ['class' => 'js-datepicker'],
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary',
-//                    'novalidate' => 'novalidate',
-                ]
             ]);
+
+        if ($options['popup'] === false) {
+
+            $builder
+                ->add('trim')
+                ->add('color')
+                ->add('transmissionType', ChoiceType::class, [
+                    'choices' => [
+                        'Auto' => 'Auto',
+                        'Manual' => 'Manual'
+                    ],
+                    'empty_data' => null,
+                    'placeholder' => '',
+                ])
+                ->add('fuelType', ChoiceType::class, [
+                    'choices' => [
+                        'Gas' => 'Gas',
+                        'Diesel' => 'Diesel',
+                        'Propane' => 'Propane',
+                    ],
+                    'empty_data' => null,
+                    'placeholder' => '',
+                ])
+                ->add('engineSize')
+                ->add('passengers')
+                ->add('mileageType', ChoiceType::class, [
+                    'choices' => [
+                        'Km' => 'Km',
+                        'Miles' => 'Miles',
+                    ],
+                    'empty_data' => null,
+                    'placeholder' => '',
+                ])
+                ->add('mileage', IntegerType::class, [
+                    'label' => 'Current Mileage',
+                ])
+                ->add('annualMileage', IntegerType::class, [
+                    'label' => 'Average Annual Mileage',
+                ])
+                ->add('description', TextareaType::class, [
+                    'attr' => array('rows' => 2),
+                ])
+                ->add('price', IntegerType::class)
+                ->add('purchasedAt', DateType::class, [
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'attr' => ['class' => 'js-datepicker'],
+                ])
+                ->add('save', SubmitType::class, [
+                    'attr' => [
+                        'class' => 'btn btn-primary',
+//                    'novalidate' => 'novalidate',
+                    ]
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Vehicle::class,
+            'popup' => false,
         ]);
     }
 
