@@ -3,7 +3,11 @@
 {% block content %}
     <div class="row">
         {#------------------------------------ LEFT SIDEBAR ------------------------------------#}
-        <div class="col-sm-2">{% include '_sidebar.html.twig' %}</div>
+        <div class="col-sm-2">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% include '_sidebar.html.twig' %}
+            {% endif %}
+        </div>
         {#------------------------------------ CONTENT ------------------------------------#}
         <div class="col-sm-8">
             <div class="jumbotron">
@@ -11,7 +15,12 @@
             </div>
         </div>
         {#------------------------------------ RIGHT SIDEBAR ------------------------------------#}
-        <div class="col-sm-2 sidebar-right">{% block rightSidebar %}{% endblock %}</div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% set class='sidebar-right' %}
+        {% else %}
+            {% set class='' %}
+        {% endif %}
+        <div class="col-sm-2  {{ class }}">{% block rightSidebar %}{% endblock %}</div>
     </div>
 
     <div id="dialog" title="" style="display: none;">
