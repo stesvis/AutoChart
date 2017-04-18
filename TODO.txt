@@ -12,4 +12,7 @@ Things to do:
     X Order entities by owner in Dashboard (example in Categories tab)
     - Re-implement searchbar
     - Add footer
-    - Add Contact page
+    X Add Contact page
+	- Add Settings page
+		- Hide deleted records?
+	- Cross off deleted items

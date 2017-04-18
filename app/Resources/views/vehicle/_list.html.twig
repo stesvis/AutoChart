@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         {% for vehicle in vehicles %}
-            <tr>
+            <tr class="{% if vehicle.status != 'A' %}disabled{% endif %}">
                 <td>{{ vehicle.year }}</td>
                 <td>{{ vehicle.make }}</td>
                 <td>{{ vehicle.model }}</td>
@@ -27,12 +27,13 @@
                     <td>{{ vehicle.createdBy }}</td>
                 {% endif %}
                 <td style="text-align: right; width: 1%; white-space: nowrap;">
-                    <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"><span
+                    <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"
+                       style="opacity: 1;"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"
-                       class="btn btn-xs btn-warning {% if vehicle.status != 'A' %}disabled{% endif %}"><span
+                    <a href="{% if vehicle.status != 'A' %}#{% else %}{{ path('vehicle_edit', {'id':vehicle.id}) }}{% endif %}"
+                       class="btn btn-xs btn-warning"><span
                                 class="fa fa-pencil"></span></a>
-                    <a class="btn btn-xs btn-danger deleteVehicle {% if vehicle.status != 'A' %}disabled{% endif %}"
+                    <a class="btn btn-xs btn-danger deleteVehicle"
                        vehicleId="{{ vehicle.id }}"
                        title="Delete this Vehicle"
                     ><span class="fa fa-trash"></span></a>

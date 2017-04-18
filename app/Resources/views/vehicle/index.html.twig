@@ -29,17 +29,20 @@
         $(document).ready(function () {
 
             $('.deleteVehicle').click(function () {
-                var vehicleId = $(this).attr("vehicleId");
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var vehicleId = $(this).attr("vehicleId");
 
-                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, afterDelete, vehicleId);
+                    openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, afterDelete, vehicleId);
+                }
             });
         });
 
         function afterDelete(id) {
-            $('.deleteVehicle[vehicleId=' + id + ']').addClass('disabled');
-            $('.deleteVehicle[vehicleId=' + id + ']').prev().addClass('disabled');
+            $('.deleteVehicle[vehicleId=' + id + ']').closest('tr').addClass('disabled');
+//            $('.deleteVehicle[vehicleId=' + id + ']').addClass('disabled');
+//            $('.deleteVehicle[vehicleId=' + id + ']').prev().addClass('disabled');
         }
     </script>
 

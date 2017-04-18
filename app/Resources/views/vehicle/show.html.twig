@@ -87,16 +87,18 @@
             </thead>
             <tbody>
             {% for thisInfo in info %}
-                <tr vehicleInfoId="{{ thisInfo.id }}">
+                <tr vehicleInfoId="{{ thisInfo.id }}"
+                    class="{% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}">
                     <td>{{ thisInfo.name }}</td>
                     <td>{{ thisInfo.value }}</td>
                     <td style="text-align: right; width: 1%; white-space: nowrap;">
                         {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                         {#class="fa fa-eye"></span></a>#}
-                        <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
-                           vehicleInfoId="{{ thisInfo.id }}" onclick="showVehicleInfoForm({{ thisInfo.id }})"><span
+                        <a class="btn btn-xs btn-warning editInfoButton"
+                           vehicleInfoId="{{ thisInfo.id }}"
+                           onclick="{% if vehicle.status == 'A' and thisInfo.status == 'A' %}showVehicleInfoForm({{ thisInfo.id }});{% endif %}"><span
                                     class="fa fa-pencil"></span></a>
-                        <a class="btn btn-xs btn-danger deleteInfoButton {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
+                        <a class="btn btn-xs btn-danger deleteInfoButton"
                            vehicleId="{{ thisInfo.vehicle.id }}"
                            vehicleInfoId="{{ thisInfo.id }}"
                            title="Delete this Vehicle"> <span class="fa fa-trash"></span>
@@ -205,13 +207,15 @@
             });
 
             $(document).on('click', '.deleteInfoButton', function () {
-                var vehicleInfoId = $(this).attr('vehicleInfoId');
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var vehicleInfoId = $(this).attr('vehicleInfoId');
 
-                $("#dialog").find("p").html('' +
-                    '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
-                    'This Detail will be permanently removed from the Vehicle and cannot be recovered. Are you sure?');
+                    $("#dialog").find("p").html('' +
+                        '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
+                        'This Detail will be permanently removed from the Vehicle and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Detail?", "/vehicle_info/" + vehicleInfoId, afterDeleteInfo, vehicleInfoId);
+                    openDeleteDialog("#dialog", "Delete the Detail?", "/vehicle_info/" + vehicleInfoId, afterDeleteInfo, vehicleInfoId);
+                }
             });
 
         });
@@ -280,8 +284,9 @@
             $('#newServiceButton').addClass('disabled');
 
             $('.newInfoButton').addClass('disabled');
-            $('.deleteInfoButton').addClass('disabled');
-            $('.editInfoButton').addClass('disabled');
+            $('#vehicleInfoTable').addClass('disabled');
+//            $('.deleteInfoButton').addClass('disabled');
+//            $('.editInfoButton').addClass('disabled');
         }
 
         /**
@@ -289,8 +294,9 @@
          * @param id The VehicleInfo.Id that has been deleted
          */
         function afterDeleteInfo(id) {
-            $('.deleteInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
-            $('.editInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
+            $('.deleteInfoButton[vehicleInfoId=' + id + ']').closest('tr').addClass('disabled');
+//            $('.deleteInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
+//            $('.editInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
         }
 
         /**
@@ -394,13 +400,13 @@
          */
         function getNewInfoTableRow(id, name, value) {
             return '' +
-                '<tr vehicleInfoId="' + id + '">' +
+                '<tr vehicleInfoId="' + id + '" class="{% if vehicle.status != 'A' %}disabled{% endif %}">' +
                 '<td>' + name + '</td>' +
                 '<td>' + value + '</td>' +
                 '<td>' +
-                '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showVehicleInfoForm(' + id + ')">' +
+                '    <a class="btn btn-xs btn-warning editInfoButton" vehicleInfoId="' + id + '" onclick="showVehicleInfoForm(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
-                '   <a class="btn btn-xs btn-danger deleteInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle">' +
+                '   <a class="btn btn-xs btn-danger deleteInfoButton" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this spec">' +
                 '   <span class="fa fa-trash"></span></a>' +
                 '</td>' +
                 '</tr>';

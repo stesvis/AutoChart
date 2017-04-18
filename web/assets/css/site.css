@@ -119,6 +119,10 @@ table.customTable > tbody > tr > th {
     padding-right: 50px !important;
 }
 
+tr.disabled {
+    opacity: 0.25;
+}
+
 /*---------------------------- Misc ----------------------------*/
 
 @media screen and (max-width: 767px) {
