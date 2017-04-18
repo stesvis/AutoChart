@@ -79,7 +79,7 @@ class VehicleInfoController extends Controller
                 }
             }
 
-            return $this->render('_form.html.twig', [
+            return $this->render('vehicleInfo/_form.html.twig', [
                 'infoForm' => $form->createView()
             ]);
 

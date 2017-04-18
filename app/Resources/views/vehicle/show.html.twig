@@ -93,10 +93,10 @@
                     <td style="text-align: right; width: 1%; white-space: nowrap;">
                         {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
                         {#class="fa fa-eye"></span></a>#}
-                        <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}"
+                        <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                            vehicleInfoId="{{ thisInfo.id }}" onclick="showVehicleInfoForm({{ thisInfo.id }})"><span
                                     class="fa fa-pencil"></span></a>
-                        <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
+                        <a class="btn btn-xs btn-danger deleteInfoButton {% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}"
                            vehicleId="{{ thisInfo.vehicle.id }}"
                            vehicleInfoId="{{ thisInfo.id }}"
                            title="Delete this Vehicle"> <span class="fa fa-trash"></span>
@@ -204,7 +204,7 @@
                 openDeleteDialog("#dialog", "Delete the Vehicle?", url, afterDeleteVehicle, {{ vehicle.id }});
             });
 
-            $(document).on('click', '.deleteVehicleInfo', function () {
+            $(document).on('click', '.deleteInfoButton', function () {
                 var vehicleInfoId = $(this).attr('vehicleInfoId');
 
                 $("#dialog").find("p").html('' +
@@ -277,10 +277,11 @@
         function afterDeleteVehicle() {
             $('#deleteVehicleButton').addClass('disabled');
             $('#editVehicleButton').addClass('disabled');
+            $('#newServiceButton').addClass('disabled');
 
             $('.newInfoButton').addClass('disabled');
-            $('#newServiceButton').addClass('disabled');
-            $('.deleteVehicleInfo').addClass('disabled');
+            $('.deleteInfoButton').addClass('disabled');
+            $('.editInfoButton').addClass('disabled');
         }
 
         /**
@@ -288,8 +289,8 @@
          * @param id The VehicleInfo.Id that has been deleted
          */
         function afterDeleteInfo(id) {
-            $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').addClass('disabled');
-            $('.deleteVehicleInfo[vehicleInfoId=' + id + ']').prev().addClass('disabled');
+            $('.deleteInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
+            $('.editInfoButton[vehicleInfoId=' + id + ']').addClass('disabled');
         }
 
         /**
@@ -399,7 +400,7 @@
                 '<td>' +
                 '    <a class="btn btn-xs btn-warning editInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" onclick="showVehicleInfoForm(' + id + ')">' +
                 '   <span class="fa fa-pencil"></span></a>' +
-                '   <a class="btn btn-xs btn-danger deleteVehicleInfo {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle">' +
+                '   <a class="btn btn-xs btn-danger deleteInfoButton {% if vehicle.status != 'A' %}disabled{% endif %}" vehicleInfoId="' + id + '" vehicleId="{{ vehicle.id }}" title="Delete this Vehicle">' +
                 '   <span class="fa fa-trash"></span></a>' +
                 '</td>' +
                 '</tr>';
