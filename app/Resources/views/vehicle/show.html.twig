@@ -9,7 +9,14 @@
         <tbody>
         <tr>
             <th>Maintenance History:</th>
-            <td><a href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">Click here to view</a></td>
+            <td>
+                {% if services|length > 0 %}
+                    <a href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">Click here to view</a>
+                {% else %}
+                    You haven't done any service. <a href="{{ path('service_new', {'vehicle':vehicle.id}) }}">Add
+                    one</a> now.
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Year:</th>
