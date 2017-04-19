@@ -14,7 +14,7 @@
         </thead>
         <tbody>
         {% for category in categories %}
-            <tr>
+            <tr class="{% if category.status != 'A' %}disabled{% endif %}">
                 <td>{{ category.name }}</td>
                 <td>{{ category.description }}</td>
                 {#<td>{% if category.parentCategory != null %}{{ category.parentCategory.name }} {% endif %}</td>#}
@@ -26,11 +26,11 @@
                     <a href="{{ path('category_show', {'id':category.id}) }}" class="btn btn-xs btn-info"><span
                                 class="fa fa-eye"></span>
                     </a>
-                    <a href="{{ path('category_edit', {'id':category.id}) }}"
-                       class="btn btn-xs btn-warning editCategory {% if category.status != 'A' or category.type == 'System' %}disabled{% endif %}"><span
+                    <a {% if category.status == 'A' %}href="{{ path('category_edit', {'id':category.id}) }}"{% endif %}
+                       class="btn btn-xs btn-warning editCategory"><span
                                 class="fa fa-pencil"></span>
                     </a>
-                    <a class="btn btn-xs btn-danger deleteCategory {% if category.status != 'A' or category.type == 'System' %}disabled{% endif %}"
+                    <a class="btn btn-xs btn-danger deleteCategory"
                        categoryId="{{ category.id }}"
                        title="Delete this Category"> <span class="fa fa-trash"></span>
                     </a>

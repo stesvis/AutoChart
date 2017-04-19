@@ -17,10 +17,9 @@
 {% endblock %}
 
 {% block rightSidebar %}
-    <a
-            href="{{ path('vehicle_new') }}"
-            class="btn btn-success btn-block"
-            role="button">New</a>
+    <a href="{{ path('vehicle_new') }}"
+       class="btn btn-success btn-block"
+       role="button">New</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -31,9 +30,7 @@
             $('.deleteVehicle').click(function () {
                 if (!$(this).closest('tr').hasClass('disabled')) {
                     var vehicleId = $(this).attr("vehicleId");
-
                     $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
-
                     openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, afterDelete, vehicleId);
                 }
             });

@@ -29,16 +29,19 @@
         $(document).ready(function () {
 
             $('.deleteTask').click(function () {
-                var taskId = $(this).attr("taskId");
-                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var taskId = $(this).attr("taskId");
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
 
-                openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + taskId, afterDelete, taskId);
+                    openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + taskId, afterDelete, taskId);
+                }
             });
         });
 
         function afterDelete(id) {
-            $('.deleteTask[taskId=' + id + ']').addClass('disabled');
-            $('.editTask[taskId=' + id + ']').addClass('disabled');
+            $('.deleteTask[taskId=' + id + ']').closest('tr').addClass('disabled');
+//            $('.deleteTask[taskId=' + id + ']').addClass('disabled');
+//            $('.editTask[taskId=' + id + ']').addClass('disabled');
         }
     </script>
 

@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         {% for service in services %}
-            <tr>
+            <tr class="{% if service.status != 'A' %}disabled{% endif %}">
                 <td><a href="{{ path('vehicle_show', {'id':service.vehicle.id}) }}">{{ service.vehicle.name }}</a>
                 </td>
                 <td>{{ service.task.name }}</td>
@@ -29,11 +29,11 @@
                     <a href="{{ path('service_show', {'id':service.id}) }}" class="btn btn-xs btn-info">
                         <span class="fa fa-eye"></span>
                     </a>
-                    <a href="{{ path('service_edit', {'id':service.id}) }}"
-                       class="btn btn-xs btn-warning editService {% if service.status != 'A' %}disabled{% endif %}">
+                    <a {% if service.status == 'A' %}href="{{ path('service_edit', {'id':service.id}) }}"{% endif %}
+                       class="btn btn-xs btn-warning editService">
                         <span class="fa fa-pencil"></span>
                     </a>
-                    <a class="btn btn-xs btn-danger deleteService {% if service.status != 'A' %}disabled{% endif %}"
+                    <a class="btn btn-xs btn-danger deleteService"
                        serviceId="{{ service.id }}"> <span class="fa fa-trash"></span>
                     </a>
                 </td>

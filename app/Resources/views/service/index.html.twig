@@ -28,19 +28,20 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.deleteService').click(function () {
-
-                var serviceId = $(this).attr("serviceId");
-
-                $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
-
-                openDeleteDialog("#dialog", "Delete the Service?", "/services/" + serviceId, afterDelete, serviceId);
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var serviceId = $(this).attr("serviceId");
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
+                    openDeleteDialog("#dialog", "Delete the Service?", "/services/" + serviceId, afterDelete, serviceId);
+                }
             });
         });
 
         function afterDelete(id) {
-            $('.deleteService[serviceId=' + id + ']').addClass('disabled');
-            $('.deleteService[serviceId=' + id + ']').prev().addClass('disabled');
+            $('.deleteService[serviceId=' + id + ']').closest('tr').addClass('disabled');
+//            $('.deleteService[serviceId=' + id + ']').addClass('disabled');
+//            $('.editService[serviceId=' + id + ']').addClass('disabled');
         }
     </script>
 

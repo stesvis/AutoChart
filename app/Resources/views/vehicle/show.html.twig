@@ -207,13 +207,12 @@
             });
 
             $(document).on('click', '.deleteInfoButton', function () {
+
                 if (!$(this).closest('tr').hasClass('disabled')) {
                     var vehicleInfoId = $(this).attr('vehicleInfoId');
-
                     $("#dialog").find("p").html('' +
                         '<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' +
                         'This Detail will be permanently removed from the Vehicle and cannot be recovered. Are you sure?');
-
                     openDeleteDialog("#dialog", "Delete the Detail?", "/vehicle_info/" + vehicleInfoId, afterDeleteInfo, vehicleInfoId);
                 }
             });
