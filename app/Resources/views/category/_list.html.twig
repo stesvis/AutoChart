@@ -27,6 +27,7 @@
                                 class="fa fa-eye"></span>
                     </a>
                     <a {% if category.status == 'A' %}href="{{ path('category_edit', {'id':category.id}) }}"{% endif %}
+                       categoryId="{{ category.id }}"
                        class="btn btn-xs btn-warning editCategory"><span
                                 class="fa fa-pencil"></span>
                     </a>

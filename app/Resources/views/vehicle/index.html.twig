@@ -38,8 +38,7 @@
 
         function afterDelete(id) {
             $('.deleteVehicle[vehicleId=' + id + ']').closest('tr').addClass('disabled');
-//            $('.deleteVehicle[vehicleId=' + id + ']').addClass('disabled');
-//            $('.deleteVehicle[vehicleId=' + id + ']').prev().addClass('disabled');
+            $('.editVehicle[vehicleId=' + id + ']').removeAttr('href');
         }
     </script>
 

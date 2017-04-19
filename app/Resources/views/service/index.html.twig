@@ -40,8 +40,7 @@
 
         function afterDelete(id) {
             $('.deleteService[serviceId=' + id + ']').closest('tr').addClass('disabled');
-//            $('.deleteService[serviceId=' + id + ']').addClass('disabled');
-//            $('.editService[serviceId=' + id + ']').addClass('disabled');
+            $('.editService[serviceId=' + id + ']').removeAttr('href');
         }
     </script>
 

@@ -29,7 +29,8 @@
                         <span class="fa fa-eye"></span>
                     </a>
                     <a {% if task.status == 'A' %}href="{{ path('task_edit', {'id':task.id}) }}"{% endif %}
-                       class="btn btn-xs btn-warning editTask">
+                       class="btn btn-xs btn-warning editTask"
+                       taskId="{{ task.id }}">
                         <span class="fa fa-pencil"></span>
                     </a>
                     <a class="btn btn-xs btn-danger deleteTask"

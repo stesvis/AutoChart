@@ -30,6 +30,7 @@
                         <span class="fa fa-eye"></span>
                     </a>
                     <a {% if service.status == 'A' %}href="{{ path('service_edit', {'id':service.id}) }}"{% endif %}
+                       serviceId="{{ service.id }}"
                        class="btn btn-xs btn-warning editService">
                         <span class="fa fa-pencil"></span>
                     </a>
