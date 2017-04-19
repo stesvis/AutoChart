@@ -233,9 +233,13 @@ class VehicleController extends Controller
         $vehicleInfo = $em->getRepository('AppBundle:VehicleInfo')
             ->findByVehicle($id);
 
+        $services = $em->getRepository('AppBundle:Service')
+            ->findByVehicle($id);
+
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
             'info' => $vehicleInfo,
+            'services' => $services,
         ]);
     }
 
