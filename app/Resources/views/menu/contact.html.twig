@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Contact</h2>
 
-    {{ form(contactForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    <p>For any issues, or if you just want to drop a line, please fill the form below:</p>
 
     {% if success is defined and success == true %}
         <div class="alert alert-dismissible alert-success">
@@ -22,6 +22,9 @@
             {% endif %}
         </div>
     {% endif %}
+
+    {{ form(contactForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
     {#{{ form_start(form) }}#}
     {#<fieldset>#}
     {#<div class="form-group">#}
