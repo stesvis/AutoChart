@@ -92,7 +92,7 @@ table, .table {
 }
 
 table {
-    margin-bottom: 45px !important;
+    /*margin-bottom: 45px !important;*/
 }
 
 table a:not(.btn), .table a:not(.btn) {
@@ -141,6 +141,17 @@ tr.disabled {
 
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
     opacity: 0.25;
+}
+
+#myTabContent {
+    border: 1px solid #2b3e50;
+    padding: 10px;
+    background-color: #2b3e50;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border-color: #2b3e50;
+    border-bottom-color: transparent;
 }
 
 /*---------------------------- jQuery UI ----------------------------*/
