@@ -30,8 +30,9 @@
                     <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-info"
                        style="opacity: 1;"><span
                                 class="fa fa-eye"></span></a>
-                    <a href="{% if vehicle.status != 'A' %}#{% else %}{{ path('vehicle_edit', {'id':vehicle.id}) }}{% endif %}"
-                       class="btn btn-xs btn-warning"><span
+                    <a {% if vehicle.status == 'A' %}href="{{ path('vehicle_edit', {'id':vehicle.id}) }}"{% endif %}
+                       vehicleId="{{ vehicle.id }}"
+                       class="btn btn-xs btn-warning editVehicle"><span
                                 class="fa fa-pencil"></span></a>
                     <a class="btn btn-xs btn-danger deleteVehicle"
                        vehicleId="{{ vehicle.id }}"

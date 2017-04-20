@@ -127,4 +127,62 @@
             });
         });
     </script>
+
+    {#Delete vehicle script#}
+    <script>
+        $(document).ready(function () {
+
+            $('.deleteVehicle').click(function () {
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var vehicleId = $(this).attr("vehicleId");
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Vehicle will be permanently deleted and cannot be recovered. Are you sure?');
+                    openDeleteDialog("#dialog", "Delete the Vehicle?", "/vehicles/" + vehicleId, afterDeleteVehicle, vehicleId);
+                }
+            });
+        });
+
+        function afterDeleteVehicle(id) {
+            $('.deleteVehicle[vehicleId=' + id + ']').closest('tr').addClass('disabled');
+            $('.editVehicle[vehicleId=' + id + ']').removeAttr('href');
+        }
+    </script>
+
+    {#Delete service script#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.deleteService').click(function () {
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var serviceId = $(this).attr("serviceId");
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Service will be permanently deleted and cannot be recovered. Are you sure?');
+                    openDeleteDialog("#dialog", "Delete the Service?", "/services/" + serviceId, afterDeleteService, serviceId);
+                }
+            });
+        });
+
+        function afterDeleteService(id) {
+            $('.deleteService[serviceId=' + id + ']').closest('tr').addClass('disabled');
+            $('.editService[serviceId=' + id + ']').removeAttr('href');
+        }
+    </script>
+
+    {#Delete task script#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.deleteTask').click(function () {
+                if (!$(this).closest('tr').hasClass('disabled')) {
+                    var taskId = $(this).attr("taskId");
+                    $("#dialog").find("p").html('<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This Task will be permanently deleted and cannot be recovered. Are you sure?');
+
+                    openDeleteDialog("#dialog", "Delete the Task?", "/tasks/" + taskId, afterDeleteTask, taskId);
+                }
+            });
+        });
+
+        function afterDeleteTask(id) {
+            $('.deleteTask[taskId=' + id + ']').closest('tr').addClass('disabled');
+            $('.editTask[taskId=' + id + ']').removeAttr('href');
+        }
+    </script>
 {% endblock %}

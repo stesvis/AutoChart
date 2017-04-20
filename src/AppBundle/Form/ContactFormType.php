@@ -24,13 +24,6 @@ class ContactFormType extends AbstractType
                     'data-validation-error-msg' => 'Please provide your Name',
                 ]
             ))
-            ->add('subject', TextType::class, array(
-                'attr' => array('placeholder' => 'Subject'),
-                'attr' => [
-                    'data-validation' => 'required',
-                    'data-validation-error-msg' => 'Please enter a Subject',
-                ],
-            ))
             ->add('email', EmailType::class, array(
                 'attr' => array('placeholder' => 'Your email address'),
                 'constraints' => array(
@@ -41,6 +34,13 @@ class ContactFormType extends AbstractType
                     'data-validation' => 'email',
                     'data-validation-error-msg' => 'Please provide your Email address',
                 ]
+            ))
+            ->add('subject', TextType::class, array(
+                'attr' => array('placeholder' => 'Subject'),
+                'attr' => [
+                    'data-validation' => 'required',
+                    'data-validation-error-msg' => 'Please enter a Subject',
+                ],
             ))
             ->add('message', TextareaType::class, array(
                 'attr' => array('placeholder' => 'Your message here'),

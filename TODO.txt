@@ -15,4 +15,4 @@ Things to do:
     X Add Contact page
 	- Add Settings page
 		- Hide deleted records?
-	- Cross off deleted items
+	X Cross off deleted items

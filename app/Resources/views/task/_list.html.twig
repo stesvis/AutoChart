@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         {% for task in tasks %}
-            <tr>
+            <tr class="{% if task.status != 'A' %}disabled{% endif %}">
                 <td>{{ task.name }}</td>
                 <td>{{ task.description }}</td>
                 {#<td><a href="{{ path('category_show', {'id':task.category.id}) }}">{{ task.category.name }}</a></td>#}
@@ -28,11 +28,12 @@
                     <a href="{{ path('task_show', {'id':task.id}) }}" class="btn btn-xs btn-info">
                         <span class="fa fa-eye"></span>
                     </a>
-                    <a href="{{ path('task_edit', {'id':task.id}) }}"
-                       class="btn btn-xs btn-warning editTask {% if task.status != 'A' %}disabled{% endif %}">
+                    <a {% if task.status == 'A' %}href="{{ path('task_edit', {'id':task.id}) }}"{% endif %}
+                       class="btn btn-xs btn-warning editTask"
+                       taskId="{{ task.id }}">
                         <span class="fa fa-pencil"></span>
                     </a>
-                    <a class="btn btn-xs btn-danger deleteTask {% if task.status != 'A' %}disabled{% endif %}"
+                    <a class="btn btn-xs btn-danger deleteTask"
                        taskId="{{ task.id }}"
                        title="Delete this Task"><span class="fa fa-trash"></span>
                     </a>
