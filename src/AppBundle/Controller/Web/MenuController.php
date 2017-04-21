@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\NavMenu;
+namespace AppBundle\Controller\Web;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

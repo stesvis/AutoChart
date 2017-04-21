@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Web;
 
 use AppBundle\Entity\VehicleInfo;
 use AppBundle\Form\VehicleInfoFormType;
