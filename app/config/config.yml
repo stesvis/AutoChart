@@ -76,6 +76,7 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main
     user_class: UserBundle\Entity\User
+
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
@@ -84,6 +85,16 @@ fos_user:
     registration:
         form:
             type: UserBundle\Form\RegistrationType
+
+#FOSOAuth Server Bundle
+fos_oauth_server:
+    db_driver: orm
+    client_class:        AppApiBundle\Entity\Client
+    access_token_class:  AppApiBundle\Entity\AccessToken
+    refresh_token_class: AppApiBundle\Entity\RefreshToken
+    auth_code_class:     AppApiBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username
 
 #Doctrine Migrations Bundle
 doctrine_migrations:

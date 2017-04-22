@@ -18,10 +18,10 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             //custom bundles
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),
-//            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
