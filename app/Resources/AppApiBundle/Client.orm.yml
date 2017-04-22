@@ -1,0 +1,13 @@
+AppApiBundle\Entity\Client:
+    type: entity
+    table: client
+    id:
+        id:
+            id: true
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            lenght: 255
+    lifecycleCallbacks: {  }

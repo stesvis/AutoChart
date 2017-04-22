@@ -36,6 +36,21 @@ security:
             pattern:    ^/oauth/v2/token
             security:   false
 
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            # Add your favorite authentication process here
+            form_login:
+                provider: fos_userbundle
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  true # note that anonymous access is now enabled
+
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -46,3 +61,4 @@ security:
         - { path: ^/services, role: ROLE_ADMIN }
         - { path: ^/vehicles, role: ROLE_ADMIN }
         - { path: ^/, role: ROLE_ADMIN }
+        - { path: ^/api, role: IS_AUTHENTICATED_FULLY }

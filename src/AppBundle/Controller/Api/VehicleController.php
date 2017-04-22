@@ -10,9 +10,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class VehicleController extends Controller
 {
+    /**
+     *
+     */
+    public function getSecureResourceAction()
+    {
+        # this is it
+        if (false === $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException();
+        }
+    }
+
     /**
      * @Route("/api/vehicles", name="api_vehicle_new")
      * @Method("POST")

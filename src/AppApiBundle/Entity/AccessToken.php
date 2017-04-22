@@ -4,6 +4,8 @@ namespace AppApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -18,7 +20,7 @@ class AccessToken extends BaseAccessToken
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\ManyToOne(targetEntity="AppApiBundle\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
@@ -27,4 +29,38 @@ class AccessToken extends BaseAccessToken
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
     protected $user;
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
+
+
 }
