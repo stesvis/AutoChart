@@ -53,6 +53,18 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
+        $clientManager = $this->container->get('fos_oauth_server.client_manager.default');
+        $client = $clientManager->createClient();
+        $client->setRedirectUris(array('http://stesvis.com'));
+        $client->setAllowedGrantTypes(array('token', 'authorization_code'));
+        $clientManager->updateClient($client);
+
+        return $this->redirect($this->generateUrl('fos_user_security_login', array(
+            'client_id' => $client->getPublicId(),
+            'redirect_uri' => 'http://stesvis.com',
+            'response_type' => 'code'
+        )));
+
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         return new Response('indexAction');

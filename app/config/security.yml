@@ -41,8 +41,8 @@ security:
             # Add your favorite authentication process here
             form_login:
                 provider: fos_userbundle
-                check_path: /oauth/v2/auth_login_check
-                login_path: /oauth/v2/auth_login
+                check_path: /oauth/v2/auth_login_check #/login_check
+                login_path: /oauth/v2/auth_login #/login
             anonymous: true
 
         api:
@@ -55,10 +55,10 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+#        - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/categories, role: ROLE_ADMIN }
         - { path: ^/tasks, role: ROLE_ADMIN }
         - { path: ^/services, role: ROLE_ADMIN }
         - { path: ^/vehicles, role: ROLE_ADMIN }
-        - { path: ^/, role: ROLE_ADMIN }
-        - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/, role: ROLE_ADMIN }
+#        - { path: ^/api, role: IS_AUTHENTICATED_FULLY }

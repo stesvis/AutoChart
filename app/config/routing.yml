@@ -3,7 +3,7 @@ app:
     type:     annotation
 
 app_api:
-    resource:   "@AppBundle/Controller/Api"
+    resource:   "@AppApiBundle/Controller"
     type:       annotation
 
 fos_user:
