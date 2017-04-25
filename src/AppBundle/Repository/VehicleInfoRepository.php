@@ -12,7 +12,7 @@ class VehicleInfoRepository extends EntityRepository
      * @param $vehicleId
      * @return \Doctrine\ORM\Query
      */
-    public function findByVehicle($vehicleId)
+    public function findByVehicle(int $vehicleId)
     {
         $query = $this->createQueryBuilder('AppBundle:VehicleInfo info')
             ->andWhere('info.vehicle_id = :vehicleId')
@@ -20,6 +20,25 @@ class VehicleInfoRepository extends EntityRepository
             ->orderBy('info.name', 'ASC')
             ->getQuery();
 
+        return $query;
+    }
+
+    /**
+     * Same as above for testing purposes
+     *
+     * @param int $vehicleId
+     * @return \Doctrine\ORM\Query
+     */
+    public function createFindByVehicleQuery(int $vehicleId)
+    {
+        $query = $this->_em->createQuery(
+            '
+            SELECT spec
+            FORM AppBundle:VehicleInfo spec
+            WHERE spec.vehicle_id = :vehicleId
+            '
+        );
+        $query->setParameter('vehicle', $vehicleId);
         return $query;
     }
 }
