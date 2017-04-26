@@ -21,10 +21,11 @@ class VehicleController extends Controller
 //        $vehicles = $em->getRepository('AppBundle:Vehicle')
 //            ->findByUser($this->getUser()->getId());
 
-        $vehicles = $em->getRepository('AppBundle:Vehicle')
-            ->findAll();
-//        $vehicles = $this->get('vehicle_service')
-//            ->getMyVehicles(['name' => 'ASC']);
+//        $vehicles = $em->getRepository('AppBundle:Vehicle')
+//            ->findAll();
+
+        $vehicles = $this->get('vehicle_service')
+            ->getMyVehicles(['name' => 'ASC']);
 
         $data = array('vehicles' => array());
         foreach ($vehicles as $vehicle) {
