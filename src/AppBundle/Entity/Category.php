@@ -8,7 +8,7 @@ use UserBundle\Entity\User;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  * @ORM\Table(name="categories")
  */
 class Category
