@@ -69,4 +69,16 @@ class VehicleController extends Controller
 
         return new Response('indexAction');
     }
+
+    /**
+     * @Route("/api/demo")
+     * @return mixed
+     */
+    public function getDemosAction()
+    {
+        $data = array("hello" => "world");
+        $view = $this->view($data);
+        return $this->handleView($view);
+    }
+
 }
