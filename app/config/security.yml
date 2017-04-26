@@ -38,7 +38,11 @@ security:
             fos_oauth:  true
             stateless:  true
             anonymous:  false
-#            provider: user_provider
+#            form_login:
+#                provider: fos_userbundle
+#                csrf_token_generator: security.csrf.token_manager
+#                check_path: ^/login_check
+#                login_path: ^/login
 
         main:
             anonymous: ~

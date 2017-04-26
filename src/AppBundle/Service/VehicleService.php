@@ -28,6 +28,7 @@ class VehicleService
     /**
      * Returns the list of vehicles that belong to the logged in user
      *
+     * @param $orderBy array
      * @param $status
      * @return Vehicle[]|array
      */
