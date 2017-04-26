@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Web;
+namespace AppBundle\Controller;
 
 use AppBundle\Includes\RoleEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
