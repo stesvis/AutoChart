@@ -2,10 +2,13 @@
 
 namespace AppApiBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\Route;
-use FOS\RestBundle\Controller\FOSRestController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class VehicleController extends FOSRestController
+class VehicleController extends Controller
 {
 //    /**
 //     * @Route("/api/vehicles", name="api_vehicle_new")
@@ -40,39 +43,17 @@ class VehicleController extends FOSRestController
 //        return $response;
 //    }
 //
-//    /**
-//     * @Route("/api/vehicles")
-//     * @Method("GET")
-//     * @return Response
-//     */
-//    public function indexAction()
-//    {
-//        $clientManager = $this->container->get('fos_oauth_server.client_manager.default');
-//        $client = $clientManager->createClient();
-//        $client->setRedirectUris(array('http://stesvis.com'));
-//        $client->setAllowedGrantTypes(array('token', 'authorization_code'));
-//        $clientManager->updateClient($client);
-//
-//        return $this->redirect($this->generateUrl('fos_user_security_login', array(
-//            'client_id' => $client->getPublicId(),
-//            'redirect_uri' => 'http://stesvis.com',
-//            'response_type' => 'code'
-//        )));
-//
-//        $this->denyAccessUnlessGranted('ROLE_USER');
-//
-//        return new Response('indexAction');
-//    }
-
     /**
-     * @Route("/api/vehicles")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/api/vehicles", name="api_vehicle_list")
+     * @Method("GET")
+     * @return Response
      */
-    public function getVehiclesAction()
+    public function indexAction()
     {
-        $data = array("hello" => "world");
-        $view = $this->view($data);
-        return $this->handleView($view);
+        $data = array("api" => "vehicles");
+        return new JsonResponse($data);
+//        $view = $this->view($data);
+//        return $this->handleView($view);
     }
 
 }

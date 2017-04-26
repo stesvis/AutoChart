@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Web;
 
 use AppBundle\Includes\RoleEnums;
-use AppBundle\Includes\TypeEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,29 +64,29 @@ class DashboardController extends Controller
 //            'createdBy' => 'ASC'
 //        ]);
 
-        $queryBuilder = $em->getRepository('AppBundle:Category')->createQueryBuilder('c');
-
-        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
-            $categories = $queryBuilder
-                ->orderBy('c.createdBy')
-                ->getQuery()
-                ->execute();
-        } else {
-            $categories = $queryBuilder
-                ->Where('c.createdBy = :user_id')
-                ->setParameter('user_id', $this->getUser()->getId())
-                ->orWhere('c.type = :type')
-                ->setParameter('type', TypeEnums::System)
-                ->orderBy('c.name')
-                ->getQuery()
-                ->execute();
-        }
+//        $queryBuilder = $em->getRepository('AppBundle:Category')->createQueryBuilder('c');
+//
+//        if (in_array(RoleEnums::SuperAdmin, $this->getUser()->getRoles())) {
+//            $categories = $queryBuilder
+//                ->orderBy('c.createdBy')
+//                ->getQuery()
+//                ->execute();
+//        } else {
+//            $categories = $queryBuilder
+//                ->Where('c.createdBy = :user_id')
+//                ->setParameter('user_id', $this->getUser()->getId())
+//                ->orWhere('c.type = :type')
+//                ->setParameter('type', TypeEnums::System)
+//                ->orderBy('c.name')
+//                ->getQuery()
+//                ->execute();
+//        }
 
         return $this->render('dashboard/index.html.twig', [
             'vehicles' => $vehicles,
             'tasks' => $tasks,
             'services' => $services,
-            'categories' => $categories,
+//            'categories' => $categories,
         ]);
     }
 }

@@ -7,12 +7,22 @@ HOW TO GET A TOKEN
 >>> bin/console acme:oauth-server:client:create --redirect-uri="http://stesvis.com" --grant-type="authorization_code" --grant-type="password" --grant-type="refresh_token" --grant-type="token" --grant-type="client_credentials"
 
 Use these:
+    Desktop
 >>> client_id: 21_57cfrz5um60ww40w8gkcok4s4soowgk4g00wo0w8scows44880
 >>> client_secret: 2evhnip4178ko8gsk800k4kskckgko4kc40goowsw0o880ckgw
+
+    Laptop
+>>> client_id: 1_4daq5wxxvccgc0g4ks4440csgs44cck8s8oso4088og884w044
+>>> client_secret: 30hjger1yzc4wc00w0w4gkgcco48gkcc0ksoo8c0wk44o444ks
+
 
 
 2. Generate a token using the client_id and client_secret
 ---------------------------------------------------------
-
+    Desktop
 http://localhost:8000/app_dev.php/oauth/v2/token?client_id=21_57cfrz5um60ww40w8gkcok4s4soowgk4g00wo0w8scows44880&client_secret=2evhnip4178ko8gsk800k4kskckgko4kc40goowsw0o880ckgw&grant_type=client_credentials
 http://localhost:8000/app_dev.php/oauth/v2/token?client_id=21_57cfrz5um60ww40w8gkcok4s4soowgk4g00wo0w8scows44880&client_secret=2evhnip4178ko8gsk800k4kskckgko4kc40goowsw0o880ckgw&grant_type=password&username=admintest&password=password
+
+    Desktop
+http://localhost:8000/app_dev.php/oauth/v2/token?client_id=1_4daq5wxxvccgc0g4ks4440csgs44cck8s8oso4088og884w044&client_secret=30hjger1yzc4wc00w0w4gkgcco48gkcc0ksoo8c0wk44o444ks&grant_type=client_credentials
+http://localhost:8000/app_dev.php/oauth/v2/token?client_id=1_4daq5wxxvccgc0g4ks4440csgs44cck8s8oso4088og884w044&client_secret=30hjger1yzc4wc00w0w4gkgcco48gkcc0ksoo8c0wk44o444ks&grant_type=password&username=admintest&password=password

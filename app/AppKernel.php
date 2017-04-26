@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
             //custom bundles
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),

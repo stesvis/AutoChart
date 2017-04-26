@@ -60,5 +60,5 @@ security:
         - { path: ^/tasks, role: ROLE_ADMIN }
         - { path: ^/services, role: ROLE_ADMIN }
         - { path: ^/vehicles, role: ROLE_ADMIN }
-#        - { path: ^/, role: ROLE_ADMIN }
+        - { path: ^/, role: ROLE_ADMIN }
         - { path: ^/api, role: IS_AUTHENTICATED_FULLY }

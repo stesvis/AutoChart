@@ -35,8 +35,7 @@
     "ocramius/proxy-manager": "2.0.4",
     "guzzlehttp/guzzle": "~6.0",
     "friendsofsymfony/oauth-server-bundle": "dev-master",
-    "willdurand/propel-typehintable-behavior": "*",
-    "friendsofsymfony/rest-bundle": "^2.1"
+    "willdurand/propel-typehintable-behavior": "*"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",

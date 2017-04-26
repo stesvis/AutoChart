@@ -2,12 +2,11 @@ app:
     resource: "@AppBundle/Controller/Web"
     type:     annotation
 
-#app_api:
-#    resource:   "@AppApiBundle/Controller"
-#    type:       annotation
 app_api:
-    type: rest
-    resource: '@AppApiBundle/Controller/VehicleController.php'
+    resource:   "@AppApiBundle/Controller"
+    type:       annotation
+#    resource: '@AppApiBundle/Controller/VehicleController.php'
+#    type: rest
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
