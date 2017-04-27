@@ -9,7 +9,7 @@ class ServiceRepository extends EntityRepository
 {
     /**
      * @param $vehicleId
-     * @return \Doctrine\ORM\Query
+     * @return array
      */
     public function findByVehicle($vehicleId)
     {
@@ -19,7 +19,7 @@ class ServiceRepository extends EntityRepository
             ->orderBy('service.createdAt', 'DESC')
             ->getQuery();
 
-        return $query;
+        return $query->getResult();
     }
 
 }

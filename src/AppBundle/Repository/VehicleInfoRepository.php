@@ -10,7 +10,7 @@ class VehicleInfoRepository extends EntityRepository
      * Returns the query to find vehicled details by vehicle
      *
      * @param $vehicleId
-     * @return \Doctrine\ORM\Query
+     * @return array
      */
     public function findByVehicle(int $vehicleId)
     {
@@ -20,7 +20,7 @@ class VehicleInfoRepository extends EntityRepository
             ->orderBy('info.name', 'ASC')
             ->getQuery();
 
-        return $query;
+        return $query->getResult();
     }
 
     /**

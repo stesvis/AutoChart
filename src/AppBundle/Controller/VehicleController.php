@@ -203,7 +203,6 @@ class VehicleController extends Controller
         }
     }
 
-
     /**
      * @Route("/{id}", name="vehicle_show")
      * @param $id
