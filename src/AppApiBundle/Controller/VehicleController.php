@@ -24,6 +24,7 @@ class VehicleController extends Controller
     /**
      * @Route("/", name="api_vehicle_list")
      * @Method("GET")
+     *
      * @return Response
      */
     public function getAllAction()
@@ -77,9 +78,8 @@ class VehicleController extends Controller
 
         // Check if it exists
         if (!$vehicle) {
-            throw $this->createNotFoundException(
-                'No vehicle found for id ' . $id
-            );
+//            return new JsonResponse('No vehicle found with Id = ' . $id, Response::HTTP_NO_CONTENT);
+            throw $this->createNotFoundException(sprintf('No vehicle found with Id = ' . $id));
         }
 
         // Get all the vehicle info records
@@ -88,9 +88,6 @@ class VehicleController extends Controller
 
         $services = $em->getRepository('AppBundle:Service')
             ->findByVehicle($id);
-
-//        dump($vehicle);
-//        die();
 
         $data = array('vehicle' => array(), 'specs' => array(), 'services' => array());
         $data['vehicle'] = StaticFunctions::serializeObject($vehicle);
@@ -104,29 +101,22 @@ class VehicleController extends Controller
             $data['services'][] = StaticFunctions::serializeObject($service); //$this->serializeVehicle($vehicle);
         }
 
-//        $response = new Response(json_encode($data), Response::HTTP_OK);
         $response = new JsonResponse($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-
-//        return $this->render('vehicle/show.html.twig', [
-//            'vehicle' => $vehicle,
-//            'info' => $vehicleInfo,
-//            'services' => $services,
-//        ]);
     }
 
     /**
-     * @Route("/api/vehicles", name="api_vehicle_new")
+     * @Route("/", name="api_vehicle_new")
      * @Method("POST")
+     *
      * @param $request Request
      * @return Response
      */
     public function newAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
+//        $this->denyAccessUnlessGranted(RoleEnums::Admin);
         $data = json_decode($request->getContent(), true);
 
         $vehicle = new Vehicle();
@@ -140,19 +130,63 @@ class VehicleController extends Controller
         $vehicle->setStatus(StatusEnums::Active);
         $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($vehicle);
         $em->flush();
 
-        $response = new Response('Vehicle created', 201);
-        $response->headers->set('Location', path());
-
-//        $response = new Response(json_encode($data), Response::HTTP_OK);
-//        $response->headers->set('Content-Type', 'application/json');
+        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_CREATED);
+        $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
+            'id' => $vehicle->getId()
+        ]));
 
         return $response;
     }
 
+    /**
+     * @Route("/{id}")
+     * @Method("PUT")
+     *
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function editAction(int $id, Request $request)
+    {
+//        $this->denyAccessUnlessGranted(RoleEnums::Admin);
+        $em = $this->getDoctrine()->getManager();
 
+        $vehicle = $em->getRepository('AppBundle:Vehicle')
+            ->findOneBy([
+                'id' => $id,
+                'status' => StatusEnums::Active, // it's editable only if active, otherwise they are cheating
+                'createdBy' => $this->get('user_service')->getEntitledUsers(),
+            ]);
+
+        if (!$vehicle) {
+//            return new JsonResponse('No vehicle found with Id = ' . $id, Response::HTTP_NO_CONTENT);
+            throw $this->createNotFoundException(sprintf('No vehicle found with Id = ' . $id));
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $form = $this->createForm(VehicleFormType::class, $vehicle);
+        $form->submit($data);
+
+        $vehicle->setCreatedAt(new \DateTime('now'));
+        $vehicle->setModifiedAt(new \DateTime('now'));
+        $vehicle->setCreatedBy($this->getUser());
+        $vehicle->setModifiedBy($this->getUser());
+        $vehicle->setStatus(StatusEnums::Active);
+        $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
+
+        $em->persist($vehicle);
+        $em->flush();
+
+        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_OK);
+        $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
+            'id' => $vehicle->getId()
+        ]));
+
+        return $response;
+    }
 }
