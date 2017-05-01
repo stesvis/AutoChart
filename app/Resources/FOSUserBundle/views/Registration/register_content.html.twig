@@ -2,7 +2,7 @@
 
 <h2>{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</h2>
 
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{% if is_granted("ROLE_USER") %}
     <p>
         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
         <a href="{{ path('fos_user_security_logout') }}">

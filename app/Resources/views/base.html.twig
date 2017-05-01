@@ -4,7 +4,7 @@
     <div class="row">
         {#------------------------------------ LEFT SIDEBAR ------------------------------------#}
         <div class="col-sm-2">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% if is_granted("ROLE_USER") %}
                 {% include '_sidebar.html.twig' %}
             {% endif %}
         </div>
@@ -15,7 +15,7 @@
             </div>
         </div>
         {#------------------------------------ RIGHT SIDEBAR ------------------------------------#}
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% if is_granted("ROLE_USER") %}
             {% set class='sidebar-right' %}
         {% else %}
             {% set class='' %}
