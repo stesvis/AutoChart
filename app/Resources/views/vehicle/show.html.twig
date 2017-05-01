@@ -10,7 +10,7 @@
         <tr>
             <th>Maintenance History:</th>
             <td>
-                {% if services|length > 0 %}
+                {% if vehicle.services|length > 0 %}
                     <a href="{{ path('vehicle_service_list', {'id':vehicle.id}) }}">Click here to view</a>
                 {% else %}
                     You haven't done any service. <a href="{{ path('service_new', {'vehicle':vehicle.id}) }}">Add
@@ -68,7 +68,7 @@
         </tr>
         <tr>
             <th>Purchased On:</th>
-            <td>{{ vehicle.purchasedAt|date('F j, Y') }}</td>
+            <td>{{ vehicle.purchasedAt.date|date('F j, Y') }}</td>
         </tr>
         <tr>
             <th>Purchase Price:</th>
@@ -84,7 +84,8 @@
     <h4>Vehicle Specs</h4>
 
     <div class="table-responsive">
-        <table id="vehicleInfoTable" class="table table-striped table-hover {% if info|length == 0 %}hidden{% endif %}">
+        <table id="vehicleInfoTable"
+               class="table table-striped table-hover {% if vehicle.specs|length == 0 %}hidden{% endif %}">
             <thead>
             <tr>
                 <th>Name</th>
@@ -93,20 +94,20 @@
             </tr>
             </thead>
             <tbody>
-            {% for thisInfo in info %}
+            {% for thisInfo in vehicle.specs %}
                 <tr vehicleInfoId="{{ thisInfo.id }}"
                     class="{% if vehicle.status != 'A' or thisInfo.status != 'A' %}disabled{% endif %}">
                     <td>{{ thisInfo.name }}</td>
                     <td>{{ thisInfo.value }}</td>
                     <td style="text-align: right; width: 1%; white-space: nowrap;">
-                        {#<a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span#}
-                        {#class="fa fa-eye"></span></a>#}
+                        <a href="{{ path('vehicle_show', {'id':vehicle.id}) }}" class="btn btn-xs btn-success"><span
+                                    class="fa fa-eye"></span></a>
                         <a class="btn btn-xs btn-warning editInfoButton"
                            vehicleInfoId="{{ thisInfo.id }}"
                            onclick="{% if vehicle.status == 'A' and thisInfo.status == 'A' %}showVehicleInfoForm({{ thisInfo.id }});{% endif %}"><span
                                     class="fa fa-pencil"></span></a>
                         <a class="btn btn-xs btn-danger deleteInfoButton"
-                           vehicleId="{{ thisInfo.vehicle.id }}"
+                           vehicleId="{{ vehicle.id }}"
                            vehicleInfoId="{{ thisInfo.id }}"
                            title="Delete this Vehicle"> <span class="fa fa-trash"></span>
                         </a>
@@ -117,7 +118,7 @@
         </table>
     </div>
 
-    <p id="vehicleInfoText" class="{% if info|length > 0 %}hidden{% endif %}">
+    <p id="vehicleInfoText" class="{% if vehicle.specs|length > 0 %}hidden{% endif %}">
         No specs for this vehicle yet. Want to <a href="" class="newInfoButton">add one</a>?
     </p>
 

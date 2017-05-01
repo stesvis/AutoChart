@@ -10,6 +10,7 @@ use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -213,13 +214,16 @@ class VehicleController extends Controller
     {
         $vehicle = null;
 
-        $em = $this->getDoctrine()->getManager();
+        $response = $this->forward('AppApiBundle:Vehicle:getOne', [
+            'id' => $id
+        ]);
 
-        $vehicle = $em->getRepository('AppBundle:Vehicle')
-            ->findOneBy([
-                'id' => $id,
-                'createdBy' => $this->get('user_service')->getEntitledUsers(),
-            ]);
+        $serializer = $this->get('jms_serializer');
+        $content = $response->getContent();
+        $vehicle = $serializer->deserialize($content, Vehicle::class, 'json');
+
+//        dump($vehicle);
+//        die();
 
         // Check if it exists
         if (!$vehicle) {
@@ -228,17 +232,8 @@ class VehicleController extends Controller
             );
         }
 
-        // Get all the vehicle info records
-        $vehicleInfo = $em->getRepository('AppBundle:VehicleInfo')
-            ->findByVehicle($id);
-
-        $services = $em->getRepository('AppBundle:Service')
-            ->findByVehicle($id);
-
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
-            'info' => $vehicleInfo,
-            'services' => $services,
         ]);
     }
 

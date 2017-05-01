@@ -111,6 +111,10 @@ class Vehicle
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="vehicle")
      */
     private $services;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VehicleInfo", mappedBy="vehicle")
+     */
+    private $specs;
 
     public function __construct()
     {
@@ -475,6 +479,22 @@ class Vehicle
     public function getServices()
     {
         return $this->services;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSpecs()
+    {
+        return $this->specs;
+    }
+
+    /**
+     * @param mixed $specs
+     */
+    public function setSpecs($specs)
+    {
+        $this->specs = $specs;
     }
 
 }

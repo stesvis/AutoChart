@@ -6,8 +6,8 @@ use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
 use AppBundle\Includes\StaticFunctions;
 use AppBundle\Includes\StatusEnums;
-use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,41 +19,23 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("api/vehicles")
  * @package AppApiBundle\Controller
  */
-class VehicleController extends FOSRestController
+class VehicleController extends Controller
 {
+
     /**
      * @Route("/", name="api_vehicle_list")
      * @Method("GET")
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function getAllAction()
     {
-//        $em = $this->getDoctrine()->getManager();
-
-//        $vehicles = $em->getRepository('AppBundle:Vehicle')
-//            ->findByUser($this->getUser()->getId());
-
-//        $vehicles = $em->getRepository('AppBundle:Vehicle')
-//            ->findAll();
-
         $vehicles = $this->get('vehicle_service')
             ->getMyVehicles(['name' => 'ASC']);
 
-        $data = array('vehicles' => array());
-
-        foreach ($vehicles as $vehicle) {
-            $data['vehicles'][] = StaticFunctions::serializeObject($vehicle); //$this->serializeVehicle($vehicle);
-        }
-
-        if (false) {
-            $response = new Response(json_encode($data), Response::HTTP_OK);
-            $response->headers->set('Content-Type', 'application/json');
-        } else {
-            $data = array("hello" => "world");
-            $view = $this->view($data);
-            $response = $this->handleView($view);
-        }
+        $serializer = $this->get('jms_serializer');
+        $response = new JsonResponse($serializer->toArray($vehicles), JsonResponse::HTTP_OK);
+        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
@@ -83,26 +65,8 @@ class VehicleController extends FOSRestController
             throw $this->createNotFoundException(sprintf('No vehicle found with Id = ' . $id));
         }
 
-        // Get all the vehicle info records
-        $specs = $em->getRepository('AppBundle:VehicleInfo')
-            ->findByVehicle($id);
-
-        $services = $em->getRepository('AppBundle:Service')
-            ->findByVehicle($id);
-
-        $data = array('vehicle' => array(), 'specs' => array(), 'services' => array());
-        $data['vehicle'] = StaticFunctions::serializeObject($vehicle);
-
-
-        foreach ($specs as $spec) {
-            $data['specs'][] = StaticFunctions::serializeObject($spec); //$this->serializeVehicle($vehicle);
-        }
-
-        foreach ($services as $service) {
-            $data['services'][] = StaticFunctions::serializeObject($service); //$this->serializeVehicle($vehicle);
-        }
-
-        $response = new JsonResponse($data, Response::HTTP_OK);
+        $serializer = $this->get('jms_serializer');
+        $response = new JsonResponse($serializer->toArray($vehicle), Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -190,4 +154,5 @@ class VehicleController extends FOSRestController
 
         return $response;
     }
+
 }
