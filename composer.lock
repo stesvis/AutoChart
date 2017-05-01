@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bffdfe8305ea780f6638d3049abae2b",
+    "content-hash": "dbb41f4e251f174b52d0e7cdab5ca58f",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1103,16 +1103,16 @@
         },
         {
             "name": "friendsofsymfony/user-bundle",
-            "version": "dev-master",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "730a8a5f6633ae913a838d26b1c7156faa6ed697"
+                "reference": "2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/730a8a5f6633ae913a838d26b1c7156faa6ed697",
-                "reference": "730a8a5f6633ae913a838d26b1c7156faa6ed697",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a",
+                "reference": "2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a",
                 "shasum": ""
             },
             "require": {
@@ -1176,7 +1176,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2017-04-21 12:31:59"
+            "time": "2017-03-29T13:21:34+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2807,16 +2807,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64"
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
-                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/85959c2abbe4d2f050f950f39c9c3cf83819f3df",
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df",
                 "shasum": ""
             },
             "require": {
@@ -2947,7 +2947,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-05T12:52:29+00:00"
+            "time": "2017-05-01T17:47:03+00:00"
         },
         {
             "name": "twig/twig",
@@ -3334,16 +3334,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef"
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/9103d17dd57c512a3a027bb5628f6701464d6fef",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/00916603c524b8048906de460b7ea0dfa1651281",
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281",
                 "shasum": ""
             },
             "require": {
@@ -3392,13 +3392,12 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-03-09T12:58:16+00:00"
+            "time": "2017-04-12T14:13:17+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/user-bundle": 20,
         "friendsofsymfony/oauth-server-bundle": 20
     },
     "prefer-stable": false,

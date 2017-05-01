@@ -29,7 +29,7 @@
     "sensio/framework-extra-bundle": "^3.0.2",
     "incenteev/composer-parameter-handler": "^2.0",
     "twig/twig": "^1.0||^2.0",
-    "friendsofsymfony/user-bundle": "~2.0@dev",
+    "friendsofsymfony/user-bundle": "~2.0",
     "doctrine/doctrine-migrations-bundle": "^1.0",
     "knplabs/knp-paginator-bundle": "^2.5",
     "ocramius/proxy-manager": "2.0.4",
