@@ -6,8 +6,8 @@ use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
 use AppBundle\Includes\StaticFunctions;
 use AppBundle\Includes\StatusEnums;
+use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("api/vehicles")
  * @package AppApiBundle\Controller
  */
-class VehicleController extends Controller
+class VehicleController extends FOSRestController
 {
     /**
      * @Route("/", name="api_vehicle_list")
@@ -46,15 +46,16 @@ class VehicleController extends Controller
             $data['vehicles'][] = StaticFunctions::serializeObject($vehicle); //$this->serializeVehicle($vehicle);
         }
 
-        $response = new Response(json_encode($data), Response::HTTP_OK);
-        $response->headers->set('Content-Type', 'application/json');
+        if (false) {
+            $response = new Response(json_encode($data), Response::HTTP_OK);
+            $response->headers->set('Content-Type', 'application/json');
+        } else {
+            $data = array("hello" => "world");
+            $view = $this->view($data);
+            $response = $this->handleView($view);
+        }
 
         return $response;
-
-//        $data = array("api" => "vehicles");
-//        return new JsonResponse($data);
-//        $view = $this->view($data);
-//        return $this->handleView($view);
     }
 
     /**
