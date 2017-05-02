@@ -92,8 +92,8 @@ class VehicleController extends Controller
         $content = $serializer->deserialize($request->getContent(), Vehicle::class, 'json');
         $data = $serializer->toArray($content);
 //        $data = json_decode($request->getContent(), true);
-        dump($data);
-        die();
+//        dump($data);
+//        die();
 
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleFormType::class, $vehicle);
@@ -111,7 +111,7 @@ class VehicleController extends Controller
         $em->flush();
 
 //        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_CREATED);
-        $response = new JsonResponse($serializer->serialize($vehicle, 'json'), Response::HTTP_CREATED);
+        $response = new JsonResponse($serializer->toArray($vehicle), Response::HTTP_CREATED);
         $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
             'id' => $vehicle->getId()
         ]));
