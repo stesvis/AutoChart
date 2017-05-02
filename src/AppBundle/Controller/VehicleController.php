@@ -6,6 +6,7 @@ use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
 use AppBundle\Includes\Constants;
 use AppBundle\Includes\RoleEnums;
+use AppBundle\Includes\StaticFunctions;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -34,6 +35,8 @@ class VehicleController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        // Can't use the "/api/vehicles" because here i need only the query, for pagination
 
         $queryBuilder = $em->getRepository('AppBundle:Vehicle')->createQueryBuilder('v');
 
@@ -123,19 +126,33 @@ class VehicleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             $vehicle = $form->getData();
 
-            $vehicle->setCreatedAt(new \DateTime('now'));
-            $vehicle->setModifiedAt(new \DateTime('now'));
-            $vehicle->setCreatedBy($this->getUser());
-            $vehicle->setModifiedBy($this->getUser());
-            $vehicle->setStatus(StatusEnums::Active);
-            $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
+//            $em = $this->getDoctrine()->getManager();
+//
+//            $vehicle->setCreatedAt(new \DateTime('now'));
+//            $vehicle->setModifiedAt(new \DateTime('now'));
+//            $vehicle->setCreatedBy($this->getUser());
+//            $vehicle->setModifiedBy($this->getUser());
+//            $vehicle->setStatus(StatusEnums::Active);
+//            $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
+//
+//            $em->persist($vehicle);
+//            $em->flush();
+            $serializer = $this->get('jms_serializer');
+            $vehicleJson = $serializer->serialize($vehicle, 'json');
+//            dump(json_decode($vehicleJson));
+//            die();
+            $response = $this->forward('AppApiBundle:Vehicle:new', json_decode($vehicleJson));
 
-            $em->persist($vehicle);
-            $em->flush();
+            $content = $response->getContent();
+
+            if (!StaticFunctions::isJson($content)) {
+                throw $this->createNotFoundException('Vehicle could not be created');
+            }
+
+//            $vehicle = $serializer->deserialize($content, Vehicle::class, 'json');
+
 
             return $this->redirectToRoute('vehicle_list');
         }
@@ -214,16 +231,21 @@ class VehicleController extends Controller
     {
         $vehicle = null;
 
+        // Use the api that returns one vehicle, to avoid duplicating code
         $response = $this->forward('AppApiBundle:Vehicle:getOne', [
             'id' => $id
         ]);
 
         $serializer = $this->get('jms_serializer');
         $content = $response->getContent();
-        $vehicle = $serializer->deserialize($content, Vehicle::class, 'json');
 
-//        dump($vehicle);
-//        die();
+        if (!StaticFunctions::isJson($content)) {
+            throw $this->createNotFoundException(
+                'No vehicle found for id ' . $id
+            );
+        }
+
+        $vehicle = $serializer->deserialize($content, Vehicle::class, 'json');
 
         // Check if it exists
         if (!$vehicle) {
@@ -235,6 +257,7 @@ class VehicleController extends Controller
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
         ]);
+
     }
 
     /**

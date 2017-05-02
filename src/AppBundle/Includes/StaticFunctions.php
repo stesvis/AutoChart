@@ -29,4 +29,16 @@ class StaticFunctions
 
         return $array;
     }
+
+    /**
+     * Checks if a variable is a valid JSON object
+     *
+     * @param array ...$args
+     * @return bool
+     */
+    public static function isJson(...$args)
+    {
+        json_decode(...$args);
+        return (json_last_error() === JSON_ERROR_NONE);
+    }
 }

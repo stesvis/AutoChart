@@ -23,6 +23,8 @@ class VehicleController extends Controller
 {
 
     /**
+     * Returns all the vehicles that belong to the current user
+     *
      * @Route("/", name="api_vehicle_list")
      * @Method("GET")
      *
@@ -41,6 +43,8 @@ class VehicleController extends Controller
     }
 
     /**
+     * Returns on vehicle, if found
+     *
      * @Route("/{id}", name="api_vehicle_show")
      * @Method("GET")
      *
@@ -73,7 +77,9 @@ class VehicleController extends Controller
     }
 
     /**
-     * @Route("/", name="api_vehicle_new")
+     * Creates a new vehicle
+     *
+     * @Route("/new", name="api_vehicle_new")
      * @Method("POST")
      *
      * @param $request Request
@@ -82,7 +88,12 @@ class VehicleController extends Controller
     public function newAction(Request $request)
     {
 //        $this->denyAccessUnlessGranted(RoleEnums::Admin);
-        $data = json_decode($request->getContent(), true);
+        $serializer = $this->get('jms_serializer');
+        $content = $serializer->deserialize($request->getContent(), Vehicle::class, 'json');
+        $data = $serializer->toArray($content);
+//        $data = json_decode($request->getContent(), true);
+        dump($data);
+        die();
 
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleFormType::class, $vehicle);
@@ -99,7 +110,8 @@ class VehicleController extends Controller
         $em->persist($vehicle);
         $em->flush();
 
-        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_CREATED);
+//        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_CREATED);
+        $response = new JsonResponse($serializer->serialize($vehicle, 'json'), Response::HTTP_CREATED);
         $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
             'id' => $vehicle->getId()
         ]));
