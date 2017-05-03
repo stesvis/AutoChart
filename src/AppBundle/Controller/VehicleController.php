@@ -126,10 +126,11 @@ class VehicleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $vehicle = $form->getData();
 
+            //-------------------------- DOCTRINE --------------------------//
 //            $em = $this->getDoctrine()->getManager();
 //
+//            $vehicle = $form->getData();
 //            $vehicle->setCreatedAt(new \DateTime('now'));
 //            $vehicle->setModifiedAt(new \DateTime('now'));
 //            $vehicle->setCreatedBy($this->getUser());
@@ -140,16 +141,13 @@ class VehicleController extends Controller
 //            $em->persist($vehicle);
 //            $em->flush();
 
-            $serializer = $this->get('jms_serializer');
-            $vehicleJson = $serializer->serialize($vehicle, 'json');
-//            dump($serializer->toArray($serializer->serialize($request->getContent(), 'json')));
-//            dump($vehicle);
-//            dump(json_decode($vehicleJson, true));
-//            dump(json_decode(json_encode($vehicle), true));
-//            die();
-
+            //-------------------------- DIRECT --------------------------//
             $apiVehicleController = new \AppApiBundle\Controller\VehicleController();
             $response = $apiVehicleController->newAction($request);
+
+            //-------------------------- FORWARD --------------------------//
+//            $serializer = $this->get('jms_serializer');
+//            $vehicleJson = $serializer->serialize($vehicle, 'json');
 //            $response = $this->forward('AppApiBundle:Vehicle:new', json_decode($vehicleJson, true));
 
 //            $content = $response->getContent();
@@ -239,6 +237,9 @@ class VehicleController extends Controller
         $vehicle = null;
 
         // Use the api that returns one vehicle, to avoid duplicating code
+//        $apiVehicleController = new \AppApiBundle\Controller\VehicleController();
+//        $response = $apiVehicleController->getOneAction($id);
+
         $response = $this->forward('AppApiBundle:Vehicle:getOne', [
             'id' => $id
         ]);
