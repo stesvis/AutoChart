@@ -139,17 +139,24 @@ class VehicleController extends Controller
 //
 //            $em->persist($vehicle);
 //            $em->flush();
+
             $serializer = $this->get('jms_serializer');
             $vehicleJson = $serializer->serialize($vehicle, 'json');
-//            dump(json_decode($vehicleJson));
+//            dump($serializer->toArray($serializer->serialize($request->getContent(), 'json')));
+//            dump($vehicle);
+//            dump(json_decode($vehicleJson, true));
+//            dump(json_decode(json_encode($vehicle), true));
 //            die();
-            $response = $this->forward('AppApiBundle:Vehicle:new', json_decode($vehicleJson));
 
-            $content = $response->getContent();
+            $apiVehicleController = new \AppApiBundle\Controller\VehicleController();
+            $response = $apiVehicleController->newAction($request);
+//            $response = $this->forward('AppApiBundle:Vehicle:new', json_decode($vehicleJson, true));
 
-            if (!StaticFunctions::isJson($content)) {
-                throw $this->createNotFoundException('Vehicle could not be created');
-            }
+//            $content = $response->getContent();
+//
+//            if (!StaticFunctions::isJson($content)) {
+//                throw $this->createNotFoundException('Did not return valid JSON');
+//            }
 
 //            $vehicle = $serializer->deserialize($content, Vehicle::class, 'json');
 

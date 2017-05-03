@@ -4,7 +4,6 @@ namespace AppApiBundle\Controller;
 
 use AppBundle\Entity\Vehicle;
 use AppBundle\Form\VehicleFormType;
-use AppBundle\Includes\StaticFunctions;
 use AppBundle\Includes\StatusEnums;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -88,35 +87,10 @@ class VehicleController extends Controller
     public function newAction(Request $request)
     {
 //        $this->denyAccessUnlessGranted(RoleEnums::Admin);
-        $serializer = $this->get('jms_serializer');
-        $content = $serializer->deserialize($request->getContent(), Vehicle::class, 'json');
-        $data = $serializer->toArray($content);
-//        $data = json_decode($request->getContent(), true);
-//        dump($data);
-//        die();
+//        $content = $serializer->deserialize($request->getContent(), Vehicle::class, 'json');
+//        $data = $serializer->toArray($content);
 
-        $vehicle = new Vehicle();
-        $form = $this->createForm(VehicleFormType::class, $vehicle);
-        $form->submit($data);
-
-        $vehicle->setCreatedAt(new \DateTime('now'));
-        $vehicle->setModifiedAt(new \DateTime('now'));
-        $vehicle->setCreatedBy($this->getUser());
-        $vehicle->setModifiedBy($this->getUser());
-        $vehicle->setStatus(StatusEnums::Active);
-        $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($vehicle);
-        $em->flush();
-
-//        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_CREATED);
-        $response = new JsonResponse($serializer->toArray($vehicle), Response::HTTP_CREATED);
-        $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
-            'id' => $vehicle->getId()
-        ]));
-
-        return $response;
+        return $this->processForm(new Vehicle(), $request);
     }
 
     /**
@@ -144,8 +118,17 @@ class VehicleController extends Controller
             throw $this->createNotFoundException(sprintf('No vehicle found with Id = ' . $id));
         }
 
-        $data = json_decode($request->getContent(), true);
+        return $this->processForm($vehicle, $request);
+    }
 
+    /**
+     * @param Vehicle $vehicle
+     * @param Request $request
+     * @return JsonResponse
+     */
+    private function processForm(Vehicle $vehicle, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
         $form = $this->createForm(VehicleFormType::class, $vehicle);
         $form->submit($data);
 
@@ -156,15 +139,16 @@ class VehicleController extends Controller
         $vehicle->setStatus(StatusEnums::Active);
         $vehicle->setName($vehicle->getYear() . ' ' . $vehicle->getMake() . ' ' . $vehicle->getModel());
 
+        $em = $this->getDoctrine()->getManager();
         $em->persist($vehicle);
         $em->flush();
 
-        $response = new JsonResponse(StaticFunctions::serializeObject($vehicle), Response::HTTP_OK);
+        $serializer = $this->get('jms_serializer');
+        $response = new JsonResponse($serializer->toArray($vehicle), Response::HTTP_CREATED);
         $response->headers->set('Location', $this->generateUrl('api_vehicle_show', [
             'id' => $vehicle->getId()
         ]));
 
         return $response;
     }
-
 }
